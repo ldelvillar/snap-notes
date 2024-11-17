@@ -10,6 +10,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FirebaseError } from "firebase/app";
 
 interface LoginForm {
     email: string;
@@ -90,9 +91,13 @@ export default function LoginPage() {
         try {
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
             router.push("/notes");
-        } catch (err: any) {
-            const errorCode = err?.code as string;
-            setError(ERROR_MESSAGES[errorCode] || 'Failed to login. Please try again.');
+        } catch (err) {
+            if (err instanceof FirebaseError) {
+                const errorCode = err?.code as string;
+                setError(ERROR_MESSAGES[errorCode] || 'Failed to login. Please try again.');
+            } else {
+                setError('An unexpected error occurred. Please try again.');
+            }
             
             // Clear password on error for security
             setFormData(prev => ({
