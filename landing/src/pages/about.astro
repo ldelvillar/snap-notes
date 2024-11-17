@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About - SnapNotes">
+    <main class="mt-14 max-w-4xl mx-auto px-4 py-12">
+        <h1 class="text-4xl font-bold text-center mb-8">About SnapNotes</h1>
+        
+        <div class="bg-[white] rounded-lg shadow-sm p-8 mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Our Story</h2>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                SnapNotes was born from a simple idea: note-taking shouldn't be complicated. 
+                We believe that capturing your thoughts should be as quick and effortless as taking a snapshot. 
+                That's why we created a straightforward, no-frills note-taking application that lets you focus 
+                on what matters most - your ideas.
+            </p>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                Built with modern web technologies like Next.js and Firebase, SnapNotes combines simplicity 
+                with reliability to provide you with a seamless note-taking experience.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+            <div class="bg-[white] rounded-lg shadow-sm p-6 text-center">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Simple</h3>
+                <p class="text-gray-700">
+                    Clean interface and intuitive design make note-taking effortless.
+                </p>
+            </div>
+
+            <div class="bg-[white] rounded-lg shadow-sm p-6 text-center">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Fast</h3>
+                <p class="text-gray-700">
+                    Instantly create and edit notes without any unnecessary features slowing you down.
+                </p>
+            </div>
+
+            <div class="bg-[white] rounded-lg shadow-sm p-6 text-center">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Secure</h3>
+                <p class="text-gray-700">
+                    Your notes are protected with modern security practices and reliable cloud storage.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-[white] rounded-lg shadow-sm p-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Our Mission</h2>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                Our mission is to provide a reliable and straightforward platform for everyone who needs 
+                to quickly capture and organize their thoughts. We believe that sometimes the simplest 
+                solution is the best solution.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                Whether you're a student taking class notes, a professional tracking meeting minutes, 
+                or anyone who wants to keep their thoughts organized, SnapNotes is here to help you 
+                capture what matters, when it matters.
+            </p>
+        </div>
+
+        <div class="mt-12 text-center">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Ready to Get Started?</h2>
+            <a 
+                href="https://snap-notes.vercel.app"
+                target="_blank" 
+                class="bg-primary hover:bg-primary/90 inline-block bg-blue-600 text-[white] px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Create Your First Note
+            </a>
+        </div>
+    </main>
+</Layout>

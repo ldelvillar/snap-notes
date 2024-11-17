@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+---
+
+<section id="pricing" class="max-w-[90%] xl:max-w-6xl mx-auto">
+    <h2 class="relative text-4xl text-center font-bold pt-20 pb-4">
+        Flexible work, simple price
+    </h2>
+    <p class="text-gray-800 text-center text-lg font-light">Grow your business with our product</p>
+    <div class="relative flex flex-col md:flex-row gap-6 justify-center pt-10">
+        <div class="flex flex-col items-center border border-primary rounded-3xl py-6 px-12 z-10">
+            <h3 class="text-2xl text-[black] font-bold mb-6">Free</h3>
+            <h4 class="text-lg text-primary font-semibold">1 seat</h4>
+            <h4 class="text-lg text-primary font-semibold">2 projects</h4>
+            <h4 class="text-lg text-[black] font-semibold mt-6">$0/month</h4>
+            <a href="https://snap-notes.vercel.app" target="_blank" class="bg-primary rounded-full text-[white] text-sm font-medium px-7 py-4 mt-10">Start Taking Notes</a>
+        </div>
+
+        <div class="flex flex-col items-center text-[white] bg-primary border border-primary rounded-3xl py-6 px-12 z-10">
+            <h3 class="text-2xl font-bold mb-6">Premium</h3>
+            <h4 class="text-lg font-semibold">Unlimited seats</h4>
+            <h4 class="text-lg font-semibold">Unlimited projects</h4>
+            <h4 class="text-lg font-semibold mt-6">$30/month</h4>
+            <a href="https://snap-notes.vercel.app" target="_blank" class="bg-[white] rounded-full text-primary text-sm font-medium px-7 py-4 mt-10">Start 14 Days Trial</a>
+        </div>
+
+        <div class='absolute hidden md:block top-0 right-0 lg:right-[17%]'>
+            <Image width={40} height={40} src="/images/sandwatch.webp" alt='sand watch' class='h-32 w-auto -rotate-12 select-none pointer-events-none' />
+        </div>
+    </div>
+</section>
