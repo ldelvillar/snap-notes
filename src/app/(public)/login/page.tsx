@@ -133,115 +133,95 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="min-h-screen bg-[#FFF8F2] py-10 px-4">
-      <div className="max-w-md mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl text-black font-bold">Welcome back!</h1>
-          <p className="text-sm text-gray-800 mt-2">
-            Log in to access your account
-          </p>
+    <section className="pt-20 pb-8 px-4 min-h-screen text-white">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl text-gray-100 text-center font-bold">
+          Welcome back!
+        </h1>
+        <p className="pt-1 text-sm text-gray-200 text-center">
+          Log in to access your account
+        </p>
+      </div>
+
+      {error && (
+        <div className="mt-12 md:mx-20">
+          <ErrorMessage message={error} />
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
+        <div className="mb-3 flex flex-col">
+          <label htmlFor="email">Email address</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="py-2 border-b border-primary focus:outline-none"
+            placeholder="your@email.com"
+            disabled={isSubmitting}
+            autoComplete="email"
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
-        {error && (
-          <div className="mt-12 md:mx-20">
-            <ErrorMessage message={error} />
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Email address
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`w-full bg-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all
-                                ${
-                                  errors.email ? "border-2 border-red-500" : ""
-                                }`}
-              placeholder="your@email.com"
-              disabled={isSubmitting}
-              autoComplete="email"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className={`w-full bg-gray-200 rounded-lg px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition-all
-                                    ${
-                                      errors.password
-                                        ? "border-2 border-red-500"
-                                        : ""
-                                    }`}
-                placeholder="Enter your password"
-                disabled={isSubmitting}
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
-                tabIndex={-1}
-              >
-                {showPassword ? (
-                  <EyedClosedIcon className="h-5 w-5" />
-                ) : (
-                  <EyeIcon className="h-5 w-5" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-500 text-sm">{errors.password}</p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className="w-full px-6 py-3 rounded-lg bg-primary hover:bg-[#E64A35] text-white text-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        <div className="mb-3 relative flex flex-col">
+          <label htmlFor="password">Password</label>
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="py-2 border-b border-primary focus:outline-none"
+            placeholder="Enter your password"
             disabled={isSubmitting}
+            autoComplete="current-password"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 bottom-0 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+            tabIndex={-1}
           >
-            {isSubmitting ? (
-              <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-              </div>
+            {showPassword ? (
+              <EyedClosedIcon className="size-5" />
             ) : (
-              "Login"
+              <EyeIcon className="size-5" />
             )}
           </button>
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
+        </div>
 
-          <div className="text-center space-y-4">
-            <p className="text-sm">
-              New user?{" "}
-              <Link
-                href="/signup"
-                className="text-primary hover:text-[#E64A35] transition-colors"
-              >
-                Register Here
-              </Link>
-            </p>
+        <button
+          type="submit"
+          className="mt-4 w-full px-6 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white text-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+            </div>
+          ) : (
+            "Login"
+          )}
+        </button>
+
+        <div className="text-center space-y-4">
+          <p>
+            New user?{" "}
             <Link
-              href="/"
-              className="block text-primary hover:text-[#E64A35] transition-colors"
+              href="/register"
+              className="text-primary hover:text-primary/90 transition-colors"
             >
-              Back to home
+              Register here
             </Link>
-          </div>
-        </form>
-      </div>
+          </p>
+        </div>
+      </form>
     </section>
   );
 }

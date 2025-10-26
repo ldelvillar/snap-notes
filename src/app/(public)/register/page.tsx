@@ -105,15 +105,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <section id="login" className="pt-20 min-h-screen text-white">
+    <section id="login" className="pt-20 pb-8 px-4 min-h-screen text-white">
       <h1 className="text-4xl text-gray-100 font-bold text-center">
         Get started
       </h1>
       <p className="text-sm text-gray-200 text-center pt-1">
-        by creating a free account.
+        by creating a free account
       </p>
 
-      <form className="mt-6 px-6 mx-auto max-w-3xl" onSubmit={handleSubmit}>
+      <form className="mt-6 mx-auto max-w-3xl" onSubmit={handleSubmit}>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="relative flex flex-col mb-3">
             <label htmlFor="fname">First name*</label>
@@ -231,7 +231,7 @@ export default function RegisterPage() {
         <p className="text-center mt-5">
           Already have an account?{" "}
           <a href="/login" className="text-primary">
-            Login Here
+            Login here
           </a>
         </p>
       </form>
