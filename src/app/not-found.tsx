@@ -1,8 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 
 export default function NotFoundPage() {
+  useEffect(() => {
+    document.title = "404 Not Found | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        "content",
+        "Oops! The page you are looking for does not exist. Explore Snap Notes for all your note-taking needs."
+      );
+  }, []);
+
   return (
     <div className="p-4 min-h-screen flex items-center justify-center text-white animate-fade-in">
       <div className="relative z-10 max-w-md text-center space-y-8">

@@ -1,10 +1,10 @@
 "use client";
 
-import { useAuth } from "@/context/useGlobalContext";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ContentSkeleton from "@/components/ContentSkeleton";
-import { useState } from "react";
+import { useAuth } from "@/context/useGlobalContext";
 
 type ProfileField = {
   label: string;
@@ -15,6 +15,13 @@ export default function AccountPage() {
   const { user, loading, handleLogout } = useAuth();
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    document.title = "Your Account | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", "Manage your account settings on SnapNotes");
+  }, []);
 
   const profileFields: ProfileField[] = user
     ? [

@@ -19,6 +19,13 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    document.title = "Your Notes | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", "Manage your notes with SnapNotes");
+  }, []);
+
   const fetchNotes = useCallback(async () => {
     if (!user) return;
     try {

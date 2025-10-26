@@ -3,6 +3,12 @@ import Link from "next/link";
 import Cta from "@/components/Cta";
 import { FEATURES } from "@/data/features";
 
+export const metadata = {
+  title: "Features | SnapNotes",
+  description:
+    "Discover the powerful features of Snap Notes that make note-taking effortless and secure. From seamless syncing to robust privacy, explore how Snap Notes can enhance your productivity.",
+};
+
 interface Highlight {
   title: string;
   description: string;

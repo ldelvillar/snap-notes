@@ -1,6 +1,12 @@
 import Link from "next/link";
 import Arrow from "@/assets/Arrow";
 
+export const metadata = {
+  title: "FAQ | Snap Notes",
+  description:
+    "Find answers to common questions about Snap Notes, our features, pricing, security, and more.",
+};
+
 interface FAQ {
   category: string;
   questions: {

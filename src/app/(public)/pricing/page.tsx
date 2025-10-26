@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Cta from "@/components/Cta";
 
@@ -74,6 +74,16 @@ const faqs: FAQ[] = [
 
 export default function PricingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+
+  useEffect(() => {
+    document.title = "Pricing Plans | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        "content",
+        "Explore Snap Notes pricing plans and choose the one that fits your needs. From free to premium options, find the perfect plan for you."
+      );
+  }, []);
 
   return (
     <div className="min-h-screen text-white">

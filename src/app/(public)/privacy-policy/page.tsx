@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
 
+export const metadata = {
+  title: "Privacy Policy | SnapNotes",
+  description: "Read the Privacy Policy for using Snap Notes.",
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <section className="pt-32 pb-16 px-4 mx-auto max-w-4xl text-white animate-fade-in">

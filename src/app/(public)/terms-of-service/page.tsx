@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
 
+export const metadata = {
+  title: "Terms of Service | SnapNotes",
+  description: "Read the Terms of Service for using Snap Notes.",
+};
+
 export default function TermsOfServicePage() {
   return (
     <section className="pt-32 pb-16 px-4 mx-auto max-w-4xl text-white animate-fade-in">

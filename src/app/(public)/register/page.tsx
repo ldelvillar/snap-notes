@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -32,6 +32,16 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    document.title = "Register | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        "content",
+        "Create a new account on Snap Notes to start taking and organizing your notes."
+      );
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

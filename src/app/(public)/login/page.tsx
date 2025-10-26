@@ -35,6 +35,16 @@ export default function LoginPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    document.title = "Login | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute(
+        "content",
+        "Log in to your Snap Notes account to access your notes."
+      );
+  }, []);
+
   // Redirect after render to avoid updating Router during render
   useEffect(() => {
     if (user) {

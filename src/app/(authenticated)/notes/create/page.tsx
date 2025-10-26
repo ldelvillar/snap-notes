@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import ErrorMessage from "@/components/ErrorMessage";
@@ -28,6 +28,13 @@ export default function CreateNotePage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.title = "Create New Note | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", "Create a new note with SnapNotes");
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};

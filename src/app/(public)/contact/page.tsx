@@ -5,6 +5,12 @@ import InstagramIcon from "@/assets/logos/Instagram";
 import ContactForm from "@/components/ContactForm";
 import { SITE_CONFIG } from "@/config/site";
 
+export const metadata = {
+  title: "Contact Us | Snap Notes",
+  description:
+    "Get in touch with the Snap Notes team for support, inquiries, or feedback. We're here to help!",
+};
+
 interface ContactMethod {
   icon: React.ElementType;
   label: string;
