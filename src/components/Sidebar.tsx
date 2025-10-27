@@ -1,45 +1,32 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { Note } from "@/types";
-import { getNotes } from "@/lib/notesService";
-import ErrorMessage from "./ErrorMessage";
 import MenuIcon from "@/assets/Menu";
 import CrossIcon from "@/assets/Cross";
 import ArrowIcon from "@/assets/Arrow";
 import SidebarArrow from "@/assets/SidebarArrow";
 import DocumentIcon from "@/assets/Document";
 
-export default function Sidebar({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-  const { user, loading } = useAuth();
+interface SidebarProps {
+  children: React.ReactNode;
+  notes: Note[];
+  notesLoading: boolean;
+  refetchNotes: () => void;
+}
+
+export default function Sidebar({
+  children,
+  notes,
+  notesLoading,
+}: SidebarProps) {
+  const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchNotes = useCallback(async () => {
-    if (!user) return;
-    try {
-      const data = await getNotes(user);
-      setNotes(data);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Failed to fetch notes, please try again later.");
-      }
-    }
-  }, [user]);
-
-  useEffect(() => {
-    fetchNotes();
-  }, [fetchNotes]);
 
   // Close mobile sidebar when clicking outside
   useEffect(() => {
@@ -54,22 +41,7 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileOpen]);
 
-  if (loading) {
-    return;
-  }
-
-  if (!user) {
-    router.push("/login");
-    return;
-  }
-
-  if (error) {
-    return (
-      <div className="mt-12 md:mx-20">
-        <ErrorMessage message={error} />
-      </div>
-    );
-  }
+  if (!user) return null;
 
   return (
     <div className="flex min-h-screen relative">
@@ -137,36 +109,46 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
               Today
             </h2>
             <nav className="space-y-1">
-              {notes.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/notes/${item.id}`}
-                  className={`flex items-center ${
-                    isCollapsed ? "justify-center" : "justify-start"
-                  } py-2 px-2 text-sm rounded-lg hover:bg-gray-500 group`}
-                  onClick={() => setIsMobileOpen(false)}
-                >
-                  <div className="flex items-center justify-center min-w-0">
-                    <span className="shrink-0">
-                      <DocumentIcon className="size-5" />
-                    </span>
-                    <span
-                      className={`ml-3 truncate transition-opacity duration-300 ${
-                        isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
-                      }`}
-                    >
-                      {item.title}
-                    </span>
-                  </div>
-                  <span
-                    className={`text-xs text-gray-500 transition-opacity duration-300 ${
-                      isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
-                    } ml-auto`}
+              {notesLoading ? (
+                <div className="px-2 py-2 text-sm text-gray-400">
+                  Loading notes...
+                </div>
+              ) : notes.length === 0 ? (
+                <div className="px-2 py-2 text-sm text-gray-400">
+                  No notes yet
+                </div>
+              ) : (
+                notes.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/notes/${item.id}`}
+                    className={`flex items-center ${
+                      isCollapsed ? "justify-center" : "justify-start"
+                    } py-2 px-2 text-sm rounded-lg hover:bg-gray-500 group`}
+                    onClick={() => setIsMobileOpen(false)}
                   >
-                    <ArrowIcon />
-                  </span>
-                </Link>
-              ))}
+                    <div className="flex items-center justify-center min-w-0">
+                      <span className="shrink-0">
+                        <DocumentIcon className="size-5" />
+                      </span>
+                      <span
+                        className={`ml-3 truncate transition-opacity duration-300 ${
+                          isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
+                        }`}
+                      >
+                        {item.title}
+                      </span>
+                    </div>
+                    <span
+                      className={`text-xs text-gray-500 transition-opacity duration-300 ${
+                        isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
+                      } ml-auto`}
+                    >
+                      <ArrowIcon />
+                    </span>
+                  </Link>
+                ))
+              )}
             </nav>
           </div>
 

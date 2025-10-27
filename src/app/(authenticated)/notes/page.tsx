@@ -1,23 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { getNotes, handleDeleteNote } from "@/lib/notesService";
-import ContentSkeleton from "@/components/ContentSkeleton";
 import ErrorMessage from "@/components/ErrorMessage";
 import { Note } from "@/types/index";
 import PlusIcon from "@/assets/Plus";
 import TrashIcon from "@/assets/Trash";
 
 export default function Home() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
@@ -51,19 +48,6 @@ export default function Home() {
     await handleDeleteNote(e, noteId, setIsDeleting, setError);
     await fetchNotes();
   };
-
-  if (loading) {
-    return (
-      <div className="mt-12 md:mx-20">
-        <ContentSkeleton lines={6} />
-      </div>
-    );
-  }
-
-  if (!user) {
-    router.push("/login");
-    return null;
-  }
 
   if (error) {
     return (
