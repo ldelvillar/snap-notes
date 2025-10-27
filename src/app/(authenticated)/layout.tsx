@@ -52,12 +52,14 @@ export default function AuthenticatedLayout({
   }
 
   return (
-    <Sidebar
-      notes={notes}
-      notesLoading={notesLoading}
-      refetchNotes={fetchNotes}
-    >
-      {children}
-    </Sidebar>
+    <div className="bg-[#242424]">
+      <Sidebar
+        notes={notes}
+        notesLoading={notesLoading}
+        refetchNotes={fetchNotes}
+      >
+        {children}
+      </Sidebar>
+    </div>
   );
 }

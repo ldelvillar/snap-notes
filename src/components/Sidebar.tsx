@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { Note } from "@/types";
@@ -11,6 +11,7 @@ import CrossIcon from "@/assets/Cross";
 import ArrowIcon from "@/assets/Arrow";
 import SidebarArrow from "@/assets/SidebarArrow";
 import DocumentIcon from "@/assets/Document";
+import EditIcon from "@/assets/Edit";
 
 interface SidebarProps {
   children: React.ReactNode;
@@ -56,13 +57,13 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-50 transform bg-black/10 text-gray-100 transition-all duration-300 ease-in-out
+        className={`fixed inset-y-0 left-0 z-50 transform bg-[hsl(30,3.3%,11.8%)] text-gray-100 transition-all duration-300 ease-in-out
                     ${
                       isMobileOpen
                         ? "translate-x-0"
                         : "-translate-x-full md:translate-x-0"
                     }
-                    ${isCollapsed ? "w-16" : "w-64"}
+                    ${isCollapsed ? "w-16" : "w-72"}
                     md:relative`}
       >
         {/* Sidebar Header */}
@@ -100,13 +101,25 @@ export default function Sidebar({
 
         {/* Sidebar Content */}
         <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
+          <div className="space-y-4 px-2 py-4 overflow-y-auto">
+            <Link
+              href="/notes/create"
+              className={`mb-2 p-2 flex items-center font-medium text-gray-200 rounded-lg transition-opacity duration-300 hover:bg-gray-500  ${
+                isCollapsed ? "opacity-0 h-0" : "opacity-100"
+              }`}
+            >
+              <EditIcon className="inline size-4 mr-2" />
+              New note
+            </Link>
+          </div>
+
           <div className="flex-1 space-y-4 px-2 py-4 overflow-y-auto">
             <h2
               className={`mb-2 px-2 text-sm font-medium text-gray-400 transition-opacity duration-300 ${
                 isCollapsed ? "opacity-0 h-0" : "opacity-100"
               }`}
             >
-              Today
+              Recent
             </h2>
             <nav className="space-y-1">
               {notesLoading ? (

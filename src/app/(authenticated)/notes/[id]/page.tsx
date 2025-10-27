@@ -129,25 +129,25 @@ export default function NotePage() {
   }
 
   return (
-    <article className="relative mt-12 mx-10 md:mx-20 bg-gray-50 rounded-lg p-6">
+    <article className="relative mt-12 mx-10 md:mx-20 text-gray-50 rounded-lg p-6">
       <div className="absolute top-2 right-2">
         <button
           onClick={(e) => handleNoteDeletion(e, note.id)}
-          className="z-20 hover:bg-gray-400 p-2 rounded-full transition-colors"
+          className="group p-2 hover:bg-gray-500 z-20 rounded-full transition-colors"
           disabled={isDeleting === note.id || isEditing}
           aria-label="Delete note"
         >
           {isDeleting === note.id ? (
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900" />
           ) : (
-            <TrashIcon className="text-gray-700 hover:text-red-600 transition-colors" />
+            <TrashIcon className="group-hover:text-red-600 transition-colors" />
           )}
         </button>
       </div>
       <div className="absolute top-2 right-12">
         <button
           onClick={isEditing ? handleSave : handleEdit}
-          className="z-20 hover:bg-gray-400 p-2 rounded-full transition-colors"
+          className="group p-2 hover:bg-gray-500 z-20 rounded-full transition-colors"
           disabled={isDeleting === note.id || isSaving}
           aria-label={isEditing ? "Save note" : "Edit note"}
         >
@@ -155,29 +155,29 @@ export default function NotePage() {
             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900" />
           ) : (
             <PencilIcon
-              className={`text-gray-700 ${
-                isEditing ? "text-primary" : "hover:text-primary"
+              className={`${
+                isEditing ? "text-primary" : "group-hover:text-primary"
               } transition-colors`}
             />
           )}
         </button>
       </div>
       {isEditing ? (
-        <>
+        <div className="pt-10">
           <input
             type="text"
             value={editedNote.title}
             onChange={(e) =>
               setEditedNote({ ...editedNote, title: e.target.value })
             }
-            className="text-3xl font-bold mb-6 w-full bg-white border rounded px-2 py-1"
+            className="text-3xl font-bold mb-6 w-full text-gray-50 border rounded px-2 py-1"
           />
           <textarea
             value={editedNote.text}
             onChange={(e) =>
               setEditedNote({ ...editedNote, text: e.target.value })
             }
-            className="text-lg w-full min-h-[200px] bg-white border rounded px-2 py-1"
+            className="text-lg w-full min-h-[200px] text-gray-50 border rounded px-2 py-1"
           />
           <div className="mt-4 flex gap-2">
             <button
@@ -195,7 +195,7 @@ export default function NotePage() {
               Cancel
             </button>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-6">{note.title}</h1>
