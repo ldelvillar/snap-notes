@@ -193,7 +193,7 @@ export default function RegisterPage() {
             <label htmlFor="repeat-password">Repeat Password*</label>
             <input
               type="password"
-              name="repeat-password"
+              name="repeatPassword"
               value={formData.repeatPassword}
               onChange={handleChange}
               className="py-2 border-b border-primary focus:outline-none"
