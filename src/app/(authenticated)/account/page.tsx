@@ -34,7 +34,7 @@ export default function AccountPage() {
   if (loading) {
     return (
       <div className="mt-12 mx-10 md:mx-20">
-        <ContentSkeleton lines={3} className="max-w-xl" />
+        <ContentSkeleton lines={3} />
       </div>
     );
   }
