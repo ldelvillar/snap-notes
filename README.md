@@ -2,6 +2,8 @@
 
 A modern note-taking application that allows you to capture, organize, and manage your notes with ease. Built with React, TypeScript, and Vite for a fast and responsive experience.
 
+![Snap Notes Landing Page](https://snap-notes.vercel.app/images/landing-page.webp)
+
 ## ✨ Features
 
 - 📝 Create, edit, and delete notes
