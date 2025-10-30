@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FEATURES } from "@/data/features";
 
 export default function FeaturesHighlight() {
@@ -44,12 +45,12 @@ export default function FeaturesHighlight() {
 
       {/* Bottom CTA */}
       <div className="text-center mt-16">
-        <a
+        <Link
           href="/features"
           className="inline-block px-8 py-3 text-primary border-2 border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300 font-bold"
         >
           Explore All Features →
-        </a>
+        </Link>
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PhoneIcon from "@/assets/Phone";
 import EnvelopeIcon from "@/assets/Envelope";
 import LinkedInIcon from "@/assets/logos/LinkedIn";
@@ -65,13 +66,13 @@ export default function ContactPage() {
             <p className="flex items-center gap-2 mb-1.5" key={idx}>
               <method.icon className="size-6" />
               {method.href ? (
-                <a
+                <Link
                   href={method.href}
                   target="_blank"
                   className="hover:text-primary transition"
                 >
                   {method.value}
-                </a>
+                </Link>
               ) : (
                 <span>{method.value}</span>
               )}

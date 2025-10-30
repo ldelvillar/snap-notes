@@ -305,21 +305,21 @@ export default function TermsOfServicePage() {
       <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
         <li>
           <strong>Email:</strong>{" "}
-          <a
+          <Link
             href={`mailto:${SITE_CONFIG.company.email}`}
             className="text-primary hover:underline"
           >
             {SITE_CONFIG.company.email}
-          </a>
+          </Link>
         </li>
         <li>
           <strong>Phone:</strong>{" "}
-          <a
+          <Link
             href={`tel:${SITE_CONFIG.company.phone}`}
             className="text-primary hover:underline"
           >
             {SITE_CONFIG.company.phone}
-          </a>
+          </Link>
         </li>
         <li>
           <strong>Support Form:</strong>{" "}

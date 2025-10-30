@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface Step {
   number: string;
   title: string;
@@ -91,12 +93,12 @@ export default function HowItWorks() {
 
       {/* Bottom CTA */}
       <div className="text-center mt-16">
-        <a
+        <Link
           href="/pricing"
           className="inline-block px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all duration-300 transform hover:scale-105"
         >
           Choose Your Plan
-        </a>
+        </Link>
       </div>
     </section>
   );

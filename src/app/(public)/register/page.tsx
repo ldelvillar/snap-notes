@@ -240,9 +240,9 @@ export default function RegisterPage() {
         </button>
         <p className="text-center mt-5">
           Already have an account?{" "}
-          <a href="/login" className="text-primary">
+          <Link href="/login" className="text-primary">
             Login here
-          </a>
+          </Link>
         </p>
       </form>
     </section>

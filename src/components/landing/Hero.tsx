@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Hero() {
   return (
     <section className="min-h-[700px] text-center text-white overflow-hidden">
@@ -9,18 +11,18 @@ export default function Hero() {
           The #1 app to organize and manage your notes efficiently and securely.
         </p>
         <div className="flex flex-col md:flex-row items-center gap-3 font-medium">
-          <a
+          <Link
             href="/notes"
             className="inline-block px-6 py-3 text-white text-center bg-primary border-2 border-primary rounded-lg shadow-lg transition hover:bg-primary/90 hover:border-primary/90"
           >
             Go to SnapNotes
-          </a>
-          <a
+          </Link>
+          <Link
             href="/register"
             className="inline-block w-fit px-6 py-3 text-gray-100 text-center border-2 border-gray-800 rounded-lg transition-colors hover:border-gray-700"
           >
             Sign up for free
-          </a>
+          </Link>
         </div>
       </div>
 
