@@ -27,9 +27,9 @@ export default function AccountPage() {
 
   const profileFields: ProfileField[] = user
     ? [
-        { label: "Email", value: user.email },
         { label: "First Name", value: user.firstName },
         { label: "Last Name", value: user.lastName },
+        { label: "Email", value: user.email },
       ]
     : [];
 
@@ -54,45 +54,35 @@ export default function AccountPage() {
       )}
 
       {/* Main Content */}
-      <section className="p-12 md:px-20">
-        <div className="flex flex-col items-start gap-6 max-w-4xl">
-          {/* Profile Header */}
-          <div className="flex items-center gap-4 w-full">
-            <div className="size-16 shrink-0">
+      <section className="mx-2 max-w-4xl rounded-lg border border-[#4d4d4d]">
+        <div className="p-6">
+          {/* Profile Information */}
+          <div className="w-full space-y-4 rounded-lg">
+            <div className="p-2 rounded-lg border border-[#4d4d4d] inline-block">
               <Image
-                src={user.photo || "/images/nopicture.webp"}
-                width={64}
-                height={64}
-                alt="Profile picture"
-                className="rounded-full object-cover w-full h-full"
-                priority
+                src={user?.photo || "/images/nopicture.webp"}
+                alt="Profile Picture"
+                width={100}
+                height={100}
+                className="size-10 rounded-full"
               />
             </div>
-            <h1 className="text-3xl text-gray-200 font-bold">
-              Welcome Back, {user.firstName}
-            </h1>
-          </div>
-
-          {/* Profile Information */}
-          <div className="w-full space-y-4 bg-gray-50 rounded-lg p-6">
             {profileFields.map(({ label, value }) => (
               <div key={label} className="flex flex-col gap-1">
-                <dt className="text-sm text-gray-500 font-medium">{label}</dt>
-                <dd className="text-base font-medium">{value}</dd>
+                <h4 className="text-gray-100">{label}</h4>
+                <p className="text-sm">{value}</p>
               </div>
             ))}
           </div>
 
           {/* Actions */}
-          <div className="w-full pt-4">
+          <div className="pt-4 w-full flex items-center justify-between">
+            <p>Log out from this device</p>
             <button
               onClick={() => setConfirmationOpen(true)}
-              className="bg-primary hover:bg-primary/90 transition-colors 
-                            rounded-full px-6 py-2.5 text-lg text-white 
-                            font-semibold focus:outline-none focus:ring-2 
-                            focus:ring-primary/50 active:scale-95 transform"
+              className="px-4 py-1 text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 active:scale-95 transform"
             >
-              Logout
+              Log out
             </button>
           </div>
         </div>

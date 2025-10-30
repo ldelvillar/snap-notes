@@ -24,7 +24,7 @@ export default function AccountMenu({ user }: AccountMenuProps) {
       <p className="px-2 pb-2 pt-1 text-gray-400">{user.email}</p>
 
       <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
-        <Link href="/account" className="flex items-center gap-2">
+        <Link href="/settings" className="flex items-center gap-2">
           <SettingsIcon className="size-4" />
           Settings
         </Link>

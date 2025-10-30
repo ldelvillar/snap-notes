@@ -64,11 +64,11 @@ export default function Sidebar({
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="flex h-screen overflow-hidden relative">
       {/* Overlay for mobile */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0  bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 z-40 bg-opacity-50 md:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
@@ -76,7 +76,7 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-50 text-gray-100 bg-[#1f1e1d] border-r border-[#4d4d4d] transform transition-all duration-300 ease-in-out
+        className={`fixed inset-y-0 left-0 z-50 text-gray-100 bg-[#1f1e1d] border-r border-[#4d4d4d] transform transition-all duration-300 ease-in-out h-screen
                     ${
                       isMobileOpen
                         ? "translate-x-0"
@@ -252,7 +252,7 @@ export default function Sidebar({
       </button>
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full transition-all duration-300 ease-in-out">
+      <main className="flex-1 w-full h-screen overflow-y-auto transition-all duration-300 ease-in-out">
         {children}
       </main>
     </div>
