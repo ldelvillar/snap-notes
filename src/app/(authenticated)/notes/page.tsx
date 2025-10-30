@@ -23,6 +23,24 @@ export default function Home() {
       ?.setAttribute("content", "Manage your notes with SnapNotes");
   }, []);
 
+  useEffect(() => {
+    const loadNotes = async () => {
+      if (!user) return;
+      try {
+        const data = await getNotes(user);
+        setNotes(data);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Failed to fetch notes, please try again later");
+        }
+      }
+    };
+
+    loadNotes();
+  }, [user]);
+
   const fetchNotes = useCallback(async () => {
     if (!user) return;
     try {
@@ -36,10 +54,6 @@ export default function Home() {
       }
     }
   }, [user]);
-
-  useEffect(() => {
-    fetchNotes();
-  }, [fetchNotes]);
 
   const handleNoteDeletion = async (
     e: React.MouseEvent,
