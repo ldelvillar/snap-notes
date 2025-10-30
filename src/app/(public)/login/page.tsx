@@ -137,10 +137,7 @@ export default function LoginPage() {
     );
   }
 
-  if (user) {
-    // User already present: don't render the login form while redirecting
-    return null;
-  }
+  if (user) return null;
 
   return (
     <section className="pt-20 pb-8 px-4 min-h-screen text-white">

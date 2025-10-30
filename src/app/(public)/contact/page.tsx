@@ -3,7 +3,7 @@ import PhoneIcon from "@/assets/Phone";
 import EnvelopeIcon from "@/assets/Envelope";
 import LinkedInIcon from "@/assets/logos/LinkedIn";
 import InstagramIcon from "@/assets/logos/Instagram";
-import ContactForm from "@/components/ContactForm";
+import ContactForm from "@/components/landing/ContactForm";
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata = {

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import Cta from "@/components/Cta";
+import Cta from "@/components/landing/Cta";
 import { FEATURES } from "@/data/features";
 
 export const metadata = {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import Header from "@/components/landing/Header";
+import Footer from "@/components/landing/Footer";
 import "@/styles/globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "The #1 Note-Taking App | SnapNotes",

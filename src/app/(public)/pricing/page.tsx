@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Cta from "@/components/Cta";
+import Cta from "@/components/landing/Cta";
 
 interface Plan {
   name: string;
