@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import ErrorMessage from "@/components/ErrorMessage";
@@ -21,6 +21,7 @@ interface FormErrors {
 export default function CreateNotePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
     text: "",
@@ -34,21 +35,24 @@ export default function CreateNotePage() {
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", "Create a new note with SnapNotes");
+
+    // Auto-focus the textarea when component mounts
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
   }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
-    } else if (formData.title.length > 100) {
+    if (formData.title.length > 100) {
       newErrors.title = "Title must be less than 100 characters";
     }
 
     if (!formData.text.trim()) {
       newErrors.text = "Text is required";
-    } else if (formData.text.length > 1000) {
-      newErrors.text = "Text must be less than 1000 characters";
+    } else if (formData.text.length > 3000) {
+      newErrors.text = "Text must be less than 3000 characters";
     }
 
     setErrors(newErrors);
@@ -127,7 +131,7 @@ export default function CreateNotePage() {
             <input
               type="text"
               name="title"
-              placeholder="Enter note title"
+              placeholder="Title"
               value={formData.title}
               onChange={handleChange}
               className={`w-full text-gray-100 border-b border-gray-200 p-2 placeholder:text-gray-100 focus:outline-none focus:border-primary transition-colors
@@ -141,8 +145,9 @@ export default function CreateNotePage() {
 
           <div className="space-y-2">
             <textarea
+              ref={textareaRef}
               name="text"
-              placeholder="Enter note content *"
+              placeholder="Start typing..."
               value={formData.text}
               onChange={handleChange}
               required
@@ -158,12 +163,12 @@ export default function CreateNotePage() {
 
           <button
             type="submit"
-            className="bg-primary hover:bg-primary/90 transition-colors w-full md:w-auto rounded-lg text-white text-lg font-medium px-10 py-4 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full md:w-auto px-10 py-4 mt-6 text-white text-lg font-medium bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isSubmitting}
           >
             <div className="flex flex-row items-center justify-center gap-2">
               {isSubmitting ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                <div className="animate-spin size-5 border-b-2 border-white rounded-full" />
               ) : (
                 <>
                   <PlusIcon /> Create Note
