@@ -3,57 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Cta from "@/components/landing/Cta";
-
-interface Plan {
-  name: string;
-  price: string;
-  description: string;
-  features: string[];
-  cta: string;
-  popular?: boolean;
-}
+import { PLANS } from "@/data/plans";
 
 interface FAQ {
   question: string;
   answer: string;
 }
-
-const plans: Plan[] = [
-  {
-    name: "Free",
-    price: "$0",
-    description: "Perfect for getting started",
-    features: ["50MB storage", "100 notes", "Basic features", "1 device sync"],
-    cta: "Get Started",
-  },
-  {
-    name: "Pro",
-    price: "$9.99",
-    description: "For individuals and power users",
-    features: [
-      "1GB storage",
-      "Unlimited notes",
-      "Advanced features",
-      "Offline access",
-      "5 device sync",
-    ],
-    cta: "Upgrade to Pro",
-    popular: true,
-  },
-  {
-    name: "Team",
-    price: "$19.99",
-    description: "For teams and collaboration",
-    features: [
-      "5GB storage",
-      "Unlimited notes",
-      "Team collaboration",
-      "10 members",
-      "Priority support",
-    ],
-    cta: "Start Team Plan",
-  },
-];
 
 const faqs: FAQ[] = [
   {
@@ -101,7 +56,7 @@ export default function PricingPage() {
 
         {/* Pricing Cards */}
         <div className="max-w-6xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {plans.map((plan, idx) => (
+          {PLANS.map((plan, idx) => (
             <div
               key={idx}
               className={`relative rounded-lg overflow-hidden transition-all duration-300 ${
