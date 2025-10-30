@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { Note } from "@/types";
+import AccountMenu from "@/components/AccountMenu";
 import MenuIcon from "@/assets/Menu";
 import CrossIcon from "@/assets/Cross";
 import ArrowIcon from "@/assets/Arrow";
@@ -28,6 +29,8 @@ export default function Sidebar({
   const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
 
   // Close mobile sidebar when clicking outside
   useEffect(() => {
@@ -42,6 +45,22 @@ export default function Sidebar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileOpen]);
 
+  // Close account menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        accountMenuOpen &&
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target as Node)
+      ) {
+        setAccountMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [accountMenuOpen]);
+
   if (!user) return null;
 
   return (
@@ -49,7 +68,7 @@ export default function Sidebar({
       {/* Overlay for mobile */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0  bg-opacity-50 z-40 md:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
@@ -57,7 +76,7 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-50 transform bg-[hsl(30,3.3%,11.8%)] text-gray-100 transition-all duration-300 ease-in-out
+        className={`fixed inset-y-0 left-0 z-50 text-gray-100 bg-[#1f1e1d] border-r border-[#4d4d4d] transform transition-all duration-300 ease-in-out
                     ${
                       isMobileOpen
                         ? "translate-x-0"
@@ -81,7 +100,7 @@ export default function Sidebar({
           </Link>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="rounded-lg p-2 hover:bg-gray-500 hidden md:block"
+            className="rounded-lg p-2 hover:bg-gray-700 hidden md:block"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <SidebarArrow
@@ -92,7 +111,7 @@ export default function Sidebar({
           </button>
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="rounded-lg p-2 hover:bg-gray-500 md:hidden"
+            className="rounded-lg p-2 hover:bg-gray-700 md:hidden"
             aria-label="Close sidebar"
           >
             <CrossIcon />
@@ -104,12 +123,20 @@ export default function Sidebar({
           <div className="space-y-4 px-2 py-4 overflow-y-auto">
             <Link
               href="/notes/create"
-              className={`mb-2 p-2 flex items-center font-medium text-gray-200 rounded-lg transition-opacity duration-300 hover:bg-gray-500  ${
-                isCollapsed ? "opacity-0 h-0" : "opacity-100"
+              className={`mb-2 p-2 flex items-center font-medium text-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-700 ${
+                isCollapsed ? "justify-center" : ""
               }`}
             >
-              <EditIcon className="inline size-4 mr-2" />
-              New note
+              <EditIcon
+                className={`inline size-4 ${isCollapsed ? "" : "mr-2"}`}
+              />
+              <span
+                className={`transition-opacity duration-300 ${
+                  isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
+                }`}
+              >
+                New note
+              </span>
             </Link>
           </div>
 
@@ -123,11 +150,19 @@ export default function Sidebar({
             </h2>
             <nav className="space-y-1">
               {notesLoading ? (
-                <div className="px-2 py-2 text-sm text-gray-400">
+                <div
+                  className={`px-2 py-2 text-sm text-gray-400 transition-opacity duration-300 ${
+                    isCollapsed ? "opacity-0 h-0 hidden" : "opacity-100"
+                  }`}
+                >
                   Loading notes...
                 </div>
               ) : notes.length === 0 ? (
-                <div className="px-2 py-2 text-sm text-gray-400">
+                <div
+                  className={`px-2 py-2 text-sm text-gray-400 transition-opacity duration-300 ${
+                    isCollapsed ? "opacity-0 h-0 hidden" : "opacity-100"
+                  }`}
+                >
                   No notes yet
                 </div>
               ) : (
@@ -137,7 +172,7 @@ export default function Sidebar({
                     href={`/notes/${item.id}`}
                     className={`flex items-center ${
                       isCollapsed ? "justify-center" : "justify-start"
-                    } py-2 px-2 text-sm rounded-lg hover:bg-gray-500 group`}
+                    } py-2 px-2 text-sm rounded-lg hover:bg-gray-700 group`}
                     onClick={() => setIsMobileOpen(false)}
                   >
                     <div className="flex items-center justify-center min-w-0">
@@ -166,36 +201,41 @@ export default function Sidebar({
           </div>
 
           {/* Sidebar Footer */}
-          <div className="p-4">
-            <Link
-              href="/account"
-              className={`flex items-center ${
+          <div className="p-2" ref={accountMenuRef}>
+            <button
+              className={`w-full p-2 flex hover:bg-gray-700 rounded-lg ${
                 isCollapsed ? "justify-center" : "space-x-3"
               }`}
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => setAccountMenuOpen(!accountMenuOpen)}
             >
-              <div className={`shrink-0 ${isCollapsed ? "size-10" : ""}`}>
+              <div className="shrink-0">
                 <Image
                   src={user.photo || "/images/nopicture.webp"}
                   width={36}
                   height={36}
                   alt="profile picture"
-                  className="size-10 rounded-full object-cover"
+                  className="size-8 rounded-full object-cover"
                 />
               </div>
+
               <div
-                className={`flex-1 min-w-0 transition-opacity duration-300 ${
+                className={`min-w-0 flex flex-col items-start transition-opacity duration-300 ${
                   isCollapsed ? "hidden" : "block"
                 }`}
               >
-                <p className="text-sm font-medium truncate">{user.firstName}</p>
-                <p className="text-xs text-gray-500">
+                <h3 className="text-sm text-gray-100 font-medium truncate">
+                  {user.firstName} {user.lastName}
+                </h3>
+                <p className="text-xs text-gray-300 truncate">
                   {notes.length === 1
                     ? notes.length + " note"
                     : notes.length + " notes"}
                 </p>
               </div>
-            </Link>
+            </button>
+
+            {/* Account Menu */}
+            {accountMenuOpen && <AccountMenu user={user} />}
           </div>
         </div>
       </div>
