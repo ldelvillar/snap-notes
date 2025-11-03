@@ -203,7 +203,7 @@ export default function Sidebar({
           {/* Sidebar Footer */}
           <div className="p-2" ref={accountMenuRef}>
             <button
-              className={`w-full p-2 flex hover:bg-gray-700 rounded-lg ${
+              className={`w-full p-2 flex items-center hover:bg-gray-700 rounded-lg ${
                 isCollapsed ? "justify-center" : "space-x-3"
               }`}
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
