@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { useAuth } from "@/context/useGlobalContext";
+import { useNotes } from "@/context/NotesContext";
 import { getNoteById, handleDeleteNote, updateNote } from "@/lib/notesService";
 import { Note } from "@/types";
 import ContentSkeleton from "@/components/ContentSkeleton";
@@ -20,6 +21,7 @@ const INITIAL_NOTE: Note = {
 
 export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
+  const { refetchNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
   const [note, setNote] = useState<Note>(INITIAL_NOTE);
   const [isEditing, setIsEditing] = useState(false);
@@ -70,6 +72,7 @@ export default function NotePage() {
     noteId: string
   ): Promise<void> => {
     await handleDeleteNote(e, noteId, setIsDeleting, setDeletionError);
+    refetchNotes(); // Update sidebar after deletion
     router.push("/notes");
   };
 
@@ -88,6 +91,7 @@ export default function NotePage() {
       await updateNote(user, editedNote);
       setNote(editedNote);
       setIsEditing(false);
+      refetchNotes(); // Update sidebar after editing
     } catch (error) {
       setLoadingState({
         isLoading: false,

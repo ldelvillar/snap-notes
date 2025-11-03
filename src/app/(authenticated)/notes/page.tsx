@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import { useAuth } from "@/context/useGlobalContext";
+import { useNotes } from "@/context/NotesContext";
 import { getNotes, handleDeleteNote } from "@/lib/notesService";
 import { Note } from "@/types/index";
 import PlusIcon from "@/assets/Plus";
@@ -13,9 +14,24 @@ import DocumentIcon from "@/assets/Document";
 
 export default function Home() {
   const { user } = useAuth();
+  const { registerRefetch, refetchNotes } = useNotes();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchNotes = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await getNotes(user);
+      setNotes(data);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to fetch notes, please try again later");
+      }
+    }
+  }, [user]);
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
@@ -42,26 +58,17 @@ export default function Home() {
     loadNotes();
   }, [user]);
 
-  const fetchNotes = useCallback(async () => {
-    if (!user) return;
-    try {
-      const data = await getNotes(user);
-      setNotes(data);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Failed to fetch notes, please try again later");
-      }
-    }
-  }, [user]);
+  // Register this component's fetchNotes with the context
+  useEffect(() => {
+    registerRefetch(fetchNotes);
+  }, [registerRefetch, fetchNotes]);
 
   const handleNoteDeletion = async (
     e: React.MouseEvent,
     noteId: string
   ): Promise<void> => {
     await handleDeleteNote(e, noteId, setIsDeleting, setError);
-    await fetchNotes();
+    refetchNotes();
   };
 
   if (error) {
@@ -136,7 +143,19 @@ export default function Home() {
                 </p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span className="flex items-center gap-1">
-                    <DocumentIcon className="size-4" />
+                    <svg
+                      className="size-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
                     {note.text.length} chars
                   </span>
                 </div>

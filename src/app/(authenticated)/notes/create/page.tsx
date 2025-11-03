@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import ErrorMessage from "@/components/ErrorMessage";
 import PlusIcon from "@/assets/Plus";
 import { useAuth } from "@/context/useGlobalContext";
+import { useNotes } from "@/context/NotesContext";
 import { createNote } from "@/lib/notesService";
 
 interface NoteFormData {
@@ -21,6 +22,7 @@ interface FormErrors {
 export default function CreateNotePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
+  const { refetchNotes } = useNotes();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
@@ -93,6 +95,7 @@ export default function CreateNotePage() {
 
     try {
       await createNote(user, e, formData.title, formData.text);
+      refetchNotes(); // Refetch notes to update sidebar
       router.replace("/notes");
     } catch (err) {
       setError("Failed to create note. Please try again later.");

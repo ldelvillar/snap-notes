@@ -3,17 +3,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useGlobalContext";
+import { NotesProvider, useNotes } from "@/context/NotesContext";
 import { getNotes } from "@/lib/notesService";
 import { Note } from "@/types";
 import Sidebar from "@/components/Sidebar";
 import ContentSkeleton from "@/components/ContentSkeleton";
 
-export default function AuthenticatedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
+  const { registerRefetch } = useNotes();
   const router = useRouter();
   const [notes, setNotes] = useState<Note[]>([]);
   const [notesLoading, setNotesLoading] = useState(true);
@@ -43,6 +41,10 @@ export default function AuthenticatedLayout({
     }
   }, [user, fetchNotes]);
 
+  useEffect(() => {
+    registerRefetch(fetchNotes);
+  }, [registerRefetch, fetchNotes]);
+
   if (loading || !user) {
     return (
       <div className="mt-12 md:mx-20">
@@ -61,5 +63,17 @@ export default function AuthenticatedLayout({
         {children}
       </Sidebar>
     </div>
+  );
+}
+
+export default function AuthenticatedLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <NotesProvider>
+      <AuthenticatedContent>{children}</AuthenticatedContent>
+    </NotesProvider>
   );
 }
