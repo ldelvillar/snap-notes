@@ -12,4 +12,5 @@ export interface Note {
   title: string;
   text: string;
   creator: string;
+  updatedAt: Date;
 }

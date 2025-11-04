@@ -15,8 +15,8 @@ import { User, Note } from "@/types/index";
 export const createNote = async (
   user: User,
   e: React.FormEvent,
-  title: string = "Untitled",
-  text: string = "No text"
+  title: string,
+  text: string
 ): Promise<void> => {
   e.preventDefault();
   if (!user) {
@@ -29,6 +29,7 @@ export const createNote = async (
       title: title || "Untitled",
       text,
       creator: user.email,
+      updatedAt: new Date(),
     };
     await setDoc(doc(collection(db, "Notes")), newNote);
   } catch (error) {
@@ -51,10 +52,17 @@ export const getNotes = async (user: User): Promise<Note[]> => {
       where("creator", "==", user.email)
     );
     const querySnapshot = await getDocs(q);
-    const dataArr = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as Note[];
+    const dataArr = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        ...data,
+        id: doc.id,
+        // Convert Firestore Timestamp to JavaScript Date
+        updatedAt: data.updatedAt?.toDate
+          ? data.updatedAt.toDate()
+          : new Date(data.updatedAt),
+      };
+    }) as Note[];
 
     return dataArr;
   } catch (error) {
@@ -128,6 +136,7 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
       {
         ...note,
         creator: user.email, // Ensure creator remains unchanged
+        updatedAt: new Date(), // Update the updatedAt timestamp
       },
       { merge: true }
     );

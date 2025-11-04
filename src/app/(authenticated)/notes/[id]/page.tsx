@@ -11,12 +11,15 @@ import ContentSkeleton from "@/components/ContentSkeleton";
 import ErrorMessage from "@/components/ErrorMessage";
 import TrashIcon from "@/assets/Trash";
 import PencilIcon from "@/assets/Pencil";
+import DocumentIcon from "@/assets/Document";
+import CalendarIcon from "@/assets/Calendar";
 
 const INITIAL_NOTE: Note = {
-  creator: "",
   title: "",
   text: "",
+  creator: "",
   id: "",
+  updatedAt: new Date(0),
 };
 
 export default function NotePage() {
@@ -72,7 +75,7 @@ export default function NotePage() {
     noteId: string
   ): Promise<void> => {
     await handleDeleteNote(e, noteId, setIsDeleting, setDeletionError);
-    refetchNotes(); // Update sidebar after deletion
+    refetchNotes();
     router.push("/notes");
   };
 
@@ -91,7 +94,7 @@ export default function NotePage() {
       await updateNote(user, editedNote);
       setNote(editedNote);
       setIsEditing(false);
-      refetchNotes(); // Update sidebar after editing
+      refetchNotes();
     } catch (error) {
       setLoadingState({
         isLoading: false,
@@ -203,6 +206,20 @@ export default function NotePage() {
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-6">{note.title}</h1>
+          <div className="flex items-center gap-4 mb-6 text-sm text-gray-400">
+            <span className="flex items-center gap-1">
+              <CalendarIcon className="size-4" />
+              {note.updatedAt.toLocaleDateString("en-GB", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+            <span className="flex items-center gap-1">
+              <DocumentIcon className="size-4" /> {note.text.length}{" "}
+              {note.text.length === 1 ? "character" : "characters"}
+            </span>
+          </div>
           <div className="text-lg whitespace-pre-wrap leading-relaxed">
             {note.text}
           </div>
