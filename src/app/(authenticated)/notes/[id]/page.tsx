@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { useNotes } from "@/context/NotesContext";
@@ -26,6 +26,7 @@ export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
   const { refetchNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
   const [note, setNote] = useState<Note>(INITIAL_NOTE);
   const [isEditing, setIsEditing] = useState(false);
   const [editedNote, setEditedNote] = useState<Note>(INITIAL_NOTE);
@@ -55,6 +56,13 @@ export default function NotePage() {
         }
         setNote(noteData);
         setEditedNote(noteData);
+
+        // Check if edit mode should be enabled from URL
+        const editParam = searchParams.get("edit");
+        if (editParam === "true") {
+          setIsEditing(true);
+        }
+
         setLoadingState({ isLoading: false, error: null });
       } catch (error) {
         setLoadingState({
@@ -68,7 +76,7 @@ export default function NotePage() {
     };
 
     fetchNote();
-  }, [id, user, router, authLoading]);
+  }, [id, user, router, authLoading, searchParams]);
 
   const handleNoteDeletion = async (
     e: React.MouseEvent,

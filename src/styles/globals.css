@@ -6,9 +6,11 @@
   --color-text-200: #1e2939;
   --color-text-300: #364153;
   --color-text-400: #4a5565;
+  --color-text-danger: #bd3232;
   --color-bg-primary: #faf9f5;
   --color-bg-sidebar: #f5f4ed;
   --color-bg-menu: #faf9f5;
+  --color-bg-danger: #ffe5e5;
   --color-bg-600: #99a1af;
   --color-bg-700: #d1d5dc;
   --color-bg-800: #e5e7eb;
@@ -21,9 +23,11 @@
   --color-text-200: #e5e7eb;
   --color-text-300: #d1d5dc;
   --color-text-400: #99a1af;
+  --color-text-danger: #fe8181;
   --color-bg-primary: #242424;
   --color-bg-sidebar: #1f1e1d;
   --color-bg-menu: #353535;
+  --color-bg-danger: #8d2727b6;
   --color-bg-600: #4a5565;
   --color-bg-700: #364153;
   --color-bg-800: #1e2939;
