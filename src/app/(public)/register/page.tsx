@@ -107,7 +107,7 @@ export default function RegisterPage() {
       if (error instanceof Error) {
         setError(error.message);
       } else {
-        setError("An unknown error ocurred");
+        setError("An unknown error occurred");
       }
     } finally {
       setIsLoading(false);
