@@ -96,10 +96,10 @@ export default function Home() {
       {/* Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="mb-2 text-3xl md:text-4xl text-gray-100 font-bold">
-            {notes.length === 0 ? "Your Notes" : "Your Notes"}
+          <h1 className="mb-2 text-3xl md:text-4xl text-text-100 font-bold">
+            Your notes
           </h1>
-          <p className="text-gray-400">
+          <p className="text-text-400">
             {notes.length === 0
               ? "Start creating your first note"
               : `${notes.length} ${
@@ -119,10 +119,10 @@ export default function Home() {
       {/* Notes Grid */}
       {notes.length === 0 ? (
         <div className="py-20 flex flex-col items-center justify-center text-center">
-          <div className="mb-6 size-24 flex items-center justify-center bg-gray-800 rounded-full">
+          <div className="mb-6 size-24 flex items-center justify-center bg-bg-800 rounded-full">
             <DocumentIcon className="size-12 text-gray-500" />
           </div>
-          <h3 className="mb-2 text-xl text-gray-300 font-semibold">
+          <h3 className="mb-2 text-xl text-text-300 font-semibold">
             No notes yet
           </h3>
           <p className="mb-6 max-w-md text-gray-500">
@@ -142,15 +142,15 @@ export default function Home() {
           {notes.map((note) => (
             <div
               key={note.id}
-              className="group relative bg-linear-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-primary/50 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
+              className="group relative bg-linear-to-br from-bg-800 to-bg-900 border border-border hover:border-primary/50 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"
             >
               <Link href={`/notes/${note.id}`} className="p-5 block">
                 <div className="mb-3 flex items-start justify-between gap-3">
-                  <h3 className="flex-1 text-lg font-semibold text-gray-100 line-clamp-2">
+                  <h3 className="flex-1 text-lg font-semibold text-text-100 line-clamp-2">
                     {note.title || "Untitled Note"}
                   </h3>
                 </div>
-                <p className="mb-4 text-sm text-gray-400 line-clamp-3">
+                <p className="mb-4 text-sm text-text-400 line-clamp-3">
                   {note.text}
                 </p>
                 <div className="flex items-center justify-between text-xs text-gray-500">
@@ -167,14 +167,14 @@ export default function Home() {
               {/* Delete Button */}
               <button
                 onClick={(e) => handleNoteDeletion(e, note.id)}
-                className="absolute top-3 right-3 p-2 bg-gray-900/80 hover:bg-red-600/90 rounded-lg transition-all opacity-0 group-hover:opacity-100 z-10"
+                className="p-2 absolute top-3 right-3 z-10 text-text-300 bg-bg-900/80 rounded-lg transition-all hover:text-white hover:bg-red-600/90 opacity-0 group-hover:opacity-100"
                 disabled={isDeleting === note.id}
                 aria-label="Delete note"
               >
                 {isDeleting === note.id ? (
                   <div className="size-5 rounded-full border-b-2 border-white animate-spin" />
                 ) : (
-                  <TrashIcon className="size-5 text-gray-300 hover:text-white transition-colors" />
+                  <TrashIcon className="size-5 transition-colors" />
                 )}
               </button>
             </div>

@@ -76,7 +76,7 @@ export default function Sidebar({
       {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-50 text-gray-100 bg-[#1f1e1d] border-r border-[#4d4d4d] transform transition-all duration-300 ease-in-out h-screen
+        className={`fixed inset-y-0 left-0 z-50 text-text-100 bg-bg-sidebar border-r border-border transform transition-all duration-300 ease-in-out h-screen
                     ${
                       isMobileOpen
                         ? "translate-x-0"
@@ -100,7 +100,7 @@ export default function Sidebar({
           </Link>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="rounded-lg p-2 hover:bg-gray-700 hidden md:block"
+            className="rounded-lg p-2 hover:bg-bg-700 hidden md:block"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <SidebarArrow
@@ -111,7 +111,7 @@ export default function Sidebar({
           </button>
           <button
             onClick={() => setIsMobileOpen(false)}
-            className="rounded-lg p-2 hover:bg-gray-700 md:hidden"
+            className="rounded-lg p-2 hover:bg-bg-700 md:hidden"
             aria-label="Close sidebar"
           >
             <CrossIcon />
@@ -123,7 +123,7 @@ export default function Sidebar({
           <div className="space-y-4 px-2 py-4 overflow-y-auto">
             <Link
               href="/notes/create"
-              className={`mb-2 p-2 flex items-center font-medium text-gray-200 rounded-lg transition-all duration-300 hover:bg-gray-700 ${
+              className={`mb-2 p-2 flex items-center font-medium text-text-200 rounded-lg transition-all duration-300 hover:bg-bg-700 ${
                 isCollapsed ? "justify-center" : ""
               }`}
             >
@@ -142,7 +142,7 @@ export default function Sidebar({
 
           <div className="flex-1 space-y-4 px-2 py-4 overflow-y-auto">
             <h2
-              className={`mb-2 px-2 text-sm font-medium text-gray-400 transition-opacity duration-300 ${
+              className={`mb-2 px-2 text-sm font-medium text-text-400 transition-opacity duration-300 ${
                 isCollapsed ? "opacity-0 h-0" : "opacity-100"
               }`}
             >
@@ -151,7 +151,7 @@ export default function Sidebar({
             <nav className="space-y-1">
               {notesLoading ? (
                 <div
-                  className={`px-2 py-2 text-sm text-gray-400 transition-opacity duration-300 ${
+                  className={`px-2 py-2 text-sm text-text-400 transition-opacity duration-300 ${
                     isCollapsed ? "opacity-0 h-0 hidden" : "opacity-100"
                   }`}
                 >
@@ -159,7 +159,7 @@ export default function Sidebar({
                 </div>
               ) : notes.length === 0 ? (
                 <div
-                  className={`px-2 py-2 text-sm text-gray-400 transition-opacity duration-300 ${
+                  className={`px-2 py-2 text-sm text-text-400 transition-opacity duration-300 ${
                     isCollapsed ? "opacity-0 h-0 hidden" : "opacity-100"
                   }`}
                 >
@@ -172,7 +172,7 @@ export default function Sidebar({
                     href={`/notes/${item.id}`}
                     className={`flex items-center ${
                       isCollapsed ? "justify-center" : "justify-start"
-                    } py-2 px-2 text-sm rounded-lg hover:bg-gray-700 group`}
+                    } py-2 px-2 text-sm rounded-lg hover:bg-bg-700 group`}
                     onClick={() => setIsMobileOpen(false)}
                   >
                     <div className="flex items-center justify-center min-w-0">
@@ -203,7 +203,7 @@ export default function Sidebar({
           {/* Sidebar Footer */}
           <div className="p-2" ref={accountMenuRef}>
             <button
-              className={`w-full p-2 flex items-center hover:bg-gray-700 rounded-lg ${
+              className={`w-full p-2 flex items-center hover:bg-bg-700 rounded-lg ${
                 isCollapsed ? "justify-center" : "space-x-3"
               }`}
               onClick={() => setAccountMenuOpen(!accountMenuOpen)}
@@ -223,10 +223,10 @@ export default function Sidebar({
                   isCollapsed ? "hidden" : "block"
                 }`}
               >
-                <h3 className="text-sm text-gray-100 font-medium truncate">
+                <h3 className="text-sm text-text-100 font-medium truncate">
                   {user.firstName} {user.lastName}
                 </h3>
-                <p className="text-xs text-gray-300 truncate">
+                <p className="text-xs text-text-300 truncate">
                   {notes.length === 1
                     ? notes.length + " note"
                     : notes.length + " notes"}

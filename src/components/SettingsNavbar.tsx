@@ -22,8 +22,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
   const activeTab = getActiveTab();
 
   return (
-    <section className="px-4 md:px-6 pt-16 text-gray-200">
-      <h1 className="px-2 text-2xl text-gray-300 font-semibold mb-6 md:mb-8">
+    <section className="px-4 md:px-6 pt-16 text-text-200">
+      <h1 className="px-2 text-2xl text-text-300 font-semibold mb-6 md:mb-8">
         Settings
       </h1>
 
@@ -35,7 +35,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
               activeTab === "general"
                 ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-gray-700"
+                : "bg-gray-800 hover:bg-bg-700"
             }`}
           >
             General
@@ -46,7 +46,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
               activeTab === "account"
                 ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-gray-700"
+                : "bg-gray-800 hover:bg-bg-700"
             }`}
           >
             Account
@@ -57,7 +57,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
               activeTab === "privacy"
                 ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-gray-700"
+                : "bg-text-800 hover:bg-bg-700"
             }`}
           >
             Privacy
@@ -68,7 +68,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
               activeTab === "billing"
                 ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-gray-700"
+                : "bg-gray-800 hover:bg-bg-700"
             }`}
           >
             Billing
@@ -81,7 +81,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
         <nav className="hidden md:block w-56 space-y-1 sticky top-4 self-start shrink-0 text-lg">
           <div
             className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "general" ? "bg-primary/70" : "hover:bg-gray-700"
+              activeTab === "general" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             <Link href="/settings/general" className="flex">
@@ -91,7 +91,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <div
             className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "account" ? "bg-primary/70" : "hover:bg-gray-700"
+              activeTab === "account" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             <Link href="/settings/account" className="flex">
@@ -101,7 +101,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <div
             className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "privacy" ? "bg-primary/70" : "hover:bg-gray-700"
+              activeTab === "privacy" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             <Link href="/settings/privacy" className="flex">
@@ -111,7 +111,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <div
             className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "billing" ? "bg-primary/70" : "hover:bg-gray-700"
+              activeTab === "billing" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             <Link href="/settings/billing" className="flex">

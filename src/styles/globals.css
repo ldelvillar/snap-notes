@@ -2,6 +2,33 @@
 
 @theme {
   --color-primary: #681083;
+  --color-text-100: #101828;
+  --color-text-200: #1e2939;
+  --color-text-300: #364153;
+  --color-text-400: #4a5565;
+  --color-bg-primary: #faf9f5;
+  --color-bg-sidebar: #f5f4ed;
+  --color-bg-menu: #faf9f5;
+  --color-bg-600: #99a1af;
+  --color-bg-700: #d1d5dc;
+  --color-bg-800: #e5e7eb;
+  --color-bg-900: #f3f4f6;
+  --color-border: #1f1e1d26;
+}
+
+.dark {
+  --color-text-100: #f3f4f6;
+  --color-text-200: #e5e7eb;
+  --color-text-300: #d1d5dc;
+  --color-text-400: #99a1af;
+  --color-bg-primary: #242424;
+  --color-bg-sidebar: #1f1e1d;
+  --color-bg-menu: #353535;
+  --color-bg-600: #4a5565;
+  --color-bg-700: #364153;
+  --color-bg-800: #1e2939;
+  --color-bg-900: #101828;
+  --color-border: #4d4d4d;
 }
 
 html {

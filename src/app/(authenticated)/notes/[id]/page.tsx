@@ -136,7 +136,7 @@ export default function NotePage() {
   }
 
   return (
-    <article className="relative mt-12 mx-10 md:mx-20 text-gray-50 rounded-lg p-6">
+    <article className="relative mt-12 mx-10 md:mx-20 text-text-100 rounded-lg p-6">
       <div className="absolute top-2 right-2">
         <button
           onClick={(e) => handleNoteDeletion(e, note.id)}
@@ -145,7 +145,7 @@ export default function NotePage() {
           aria-label="Delete note"
         >
           {isDeleting === note.id ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900" />
+            <div className="size- rounded-full border-b-2 border-gray-900 animate-spin" />
           ) : (
             <TrashIcon className="group-hover:text-red-600 transition-colors" />
           )}
@@ -159,7 +159,7 @@ export default function NotePage() {
           aria-label={isEditing ? "Save note" : "Edit note"}
         >
           {isSaving ? (
-            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900" />
+            <div className="size-5 rounded-full border-b-2 border-gray-900 animate-spin" />
           ) : (
             <PencilIcon
               className={`${
@@ -177,14 +177,14 @@ export default function NotePage() {
             onChange={(e) =>
               setEditedNote({ ...editedNote, title: e.target.value })
             }
-            className="text-3xl font-bold mb-6 w-full text-gray-50 border rounded px-2 py-1"
+            className="px-2 py-1 mb-6 w-full text-3xl text-text-100 font-bold border-b border-border focus:outline-none focus:border-primary transition-colors"
           />
           <textarea
             value={editedNote.text}
             onChange={(e) =>
               setEditedNote({ ...editedNote, text: e.target.value })
             }
-            className="text-lg w-full min-h-[200px] text-gray-50 border rounded px-2 py-1"
+            className="px-2 py-1 w-full min-h-[200px] text-lg text-text-100 border border-border rounded focus:outline-none focus:border-primary transition-colors"
           />
           <div className="mt-4 flex gap-2">
             <button
@@ -197,7 +197,7 @@ export default function NotePage() {
             <button
               onClick={handleCancel}
               disabled={isSaving}
-              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
@@ -206,7 +206,7 @@ export default function NotePage() {
       ) : (
         <>
           <h1 className="text-3xl font-bold mb-6">{note.title}</h1>
-          <div className="flex items-center gap-4 mb-6 text-sm text-gray-400">
+          <div className="flex items-center gap-4 mb-6 text-sm text-text-400">
             <span className="flex items-center gap-1">
               <CalendarIcon className="size-4" />
               {note.updatedAt.toLocaleDateString("en-GB", {

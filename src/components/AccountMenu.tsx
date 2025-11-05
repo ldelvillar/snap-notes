@@ -20,26 +20,26 @@ export default function AccountMenu({ user }: AccountMenuProps) {
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
-    <nav className="p-2 w-64 absolute bottom-16 left-2 z-50 text-sm text-gray-200 bg-[#353535] rounded-lg border border-[#585858] shadow-lg">
-      <p className="px-2 pb-2 pt-1 text-gray-400">{user.email}</p>
+    <nav className="p-2 w-64 absolute bottom-16 left-2 z-50 text-sm text-text-300 bg-bg-menu rounded-lg border border-border shadow-lg">
+      <p className="px-2 pb-2 pt-1 text-text-400">{user.email}</p>
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
+      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
         <Link href="/settings" className="flex items-center gap-2">
           <SettingsIcon className="size-4" />
           Settings
         </Link>
       </div>
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
+      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
         <Link href="/help" className="flex items-center gap-2">
           <HelpIcon className="size-4" />
           Get help
         </Link>
       </div>
 
-      <hr className="my-1 border-gray-600" />
+      <hr className="my-1 border-bg-600" />
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
+      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
         <Link href="/upgrade" className="flex items-center gap-2">
           <RoundedArrow className="size-4" />
           Upgrade plan
@@ -47,7 +47,7 @@ export default function AccountMenu({ user }: AccountMenuProps) {
       </div>
 
       <div
-        className="p-2 relative rounded-lg cursor-pointer hover:bg-gray-700"
+        className="p-2 relative rounded-lg cursor-pointer hover:bg-bg-700"
         onMouseEnter={() => setLearnMoreOpen(true)}
         onMouseLeave={() => setLearnMoreOpen(false)}
       >
@@ -60,8 +60,8 @@ export default function AccountMenu({ user }: AccountMenuProps) {
         {/* Submenu */}
         {learnMoreOpen && (
           <div className="absolute left-full top-0 -ml-2 pl-3 w-48">
-            <div className="p-2 text-sm text-gray-200 bg-[#353535] rounded-lg border border-[#585858] shadow-lg">
-              <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
+            <div className="p-2 text-sm text-text-200 bg-bg-menu rounded-lg border border-border shadow-lg">
+              <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
                 <Link
                   href="/privacy-policy"
                   className="flex items-center gap-2"
@@ -71,7 +71,7 @@ export default function AccountMenu({ user }: AccountMenuProps) {
                 </Link>
               </div>
 
-              <div className="p-2 rounded-lg cursor-pointer hover:bg-gray-700">
+              <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
                 <Link
                   href="/terms-of-service"
                   className="flex items-center gap-2"
@@ -85,9 +85,9 @@ export default function AccountMenu({ user }: AccountMenuProps) {
         )}
       </div>
 
-      <hr className="my-1 border-gray-600" />
+      <hr className="my-1 border-bg-600" />
 
-      <div className="p-2 cursor-pointer rounded-lg hover:bg-gray-700">
+      <div className="p-2 cursor-pointer rounded-lg hover:bg-bg-700">
         <button
           onClick={() => setLogoutOpen(true)}
           className="w-full flex items-center gap-2"

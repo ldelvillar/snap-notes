@@ -121,7 +121,7 @@ export default function CreateNotePage() {
   return (
     <section id="create" className="mt-12 mx-10 md:mx-20">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl text-gray-200 font-bold">Create New Note</h1>
+        <h1 className="text-3xl text-text-200 font-bold">Create new note</h1>
 
         {error && (
           <div className="mt-12 md:mx-20">
@@ -137,9 +137,9 @@ export default function CreateNotePage() {
               placeholder="Title"
               value={formData.title}
               onChange={handleChange}
-              className={`w-full text-gray-100 border-b border-gray-200 p-2 placeholder:text-gray-100 focus:outline-none focus:border-primary transition-colors
-                                ${errors.title ? "border-red-500" : ""}`}
               disabled={isSubmitting}
+              className={`p-2 w-full text-text-100 border-b border-border focus:outline-none focus:border-primary transition-colors
+                                ${errors.title ? "border-red-500" : ""}`}
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title}</p>
@@ -155,9 +155,9 @@ export default function CreateNotePage() {
               onChange={handleChange}
               required
               rows={6}
-              className={`w-full text-gray-100 border border-gray-200 rounded-lg p-3 placeholder:text-gray-100 focus:outline-none focus:border-primary transition-colors
-                                ${errors.text ? "border-red-500" : ""}`}
               disabled={isSubmitting}
+              className={`p-3 w-full text-text-100 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors
+                                ${errors.text ? "border-red-500" : ""}`}
             />
             {errors.text && (
               <p className="text-red-500 text-sm">{errors.text}</p>

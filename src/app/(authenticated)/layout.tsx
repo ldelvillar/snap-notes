@@ -9,12 +9,42 @@ import { Note } from "@/types";
 import Sidebar from "@/components/Sidebar";
 import ContentSkeleton from "@/components/ContentSkeleton";
 
+type Theme = "light" | "dark" | "system";
+
 function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const { registerRefetch } = useNotes();
   const router = useRouter();
   const [notes, setNotes] = useState<Note[]>([]);
   const [notesLoading, setNotesLoading] = useState(true);
+
+  // Apply theme on mount and listen for system theme changes
+  useEffect(() => {
+    const applyTheme = (theme: Theme) => {
+      let resolvedTheme = theme;
+      if (theme === "system") {
+        resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+      }
+      document.documentElement.classList.remove("light", "dark");
+      document.documentElement.classList.add(resolvedTheme);
+    };
+
+    const theme = (localStorage.getItem("theme") as Theme) || "system";
+    applyTheme(theme);
+
+    // Listen for system theme changes when theme is set to "system"
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleSystemThemeChange = () => applyTheme("system");
+
+      mediaQuery.addEventListener("change", handleSystemThemeChange);
+      return () =>
+        mediaQuery.removeEventListener("change", handleSystemThemeChange);
+    }
+  }, []);
 
   const fetchNotes = useCallback(async () => {
     if (!user) return;
@@ -54,7 +84,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="bg-[#242424]">
+    <div className="bg-bg-primary">
       <Sidebar
         notes={notes}
         notesLoading={notesLoading}

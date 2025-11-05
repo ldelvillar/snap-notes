@@ -82,14 +82,14 @@ export default function BillingPage() {
 
       <div className="mx-2 max-w-4xl space-y-6">
         {/* Current Plan */}
-        <section className="rounded-lg border border-[#4d4d4d]">
+        <section className="rounded-lg border border-border">
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-text-100 mb-4">
               Current Plan
             </h3>
             <div className="flex items-start justify-between">
               <div>
-                <h4 className="text-2xl font-bold text-gray-100 mb-2">
+                <h4 className="text-2xl font-bold text-text-100 mb-2">
                   {planInfo.name}
                 </h4>
                 <p className="text-xl text-primary mb-4">{planInfo.price}</p>
@@ -97,10 +97,10 @@ export default function BillingPage() {
                   {planInfo.features.map((feature, index) => (
                     <li
                       key={index}
-                      className="flex items-center gap-2 text-sm text-gray-300"
+                      className="flex items-center gap-2 text-sm text-text-300"
                     >
                       <svg
-                        className="w-5 h-5 text-green-500 shrink-0"
+                        className="size-5 text-green-500 shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -135,7 +135,7 @@ export default function BillingPage() {
               </div>
             </div>
             {currentPlan !== "free" && (
-              <div className="mt-4 pt-4 border-t border-[#4d4d4d]">
+              <div className="mt-4 pt-4 border-t border-border">
                 <p className="text-sm text-gray-400">
                   Next billing date:{" "}
                   <span className="text-gray-200">November 1, 2025</span>

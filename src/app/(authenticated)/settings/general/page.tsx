@@ -10,7 +10,14 @@ import { useAuth } from "@/context/useGlobalContext";
 type Theme = "light" | "dark" | "system";
 type FontSize = "small" | "medium" | "large";
 
-export default function GeneralPage() {
+export default function GeneralSettingsPage() {
+  useEffect(() => {
+    document.title = "General Settings | SnapNotes";
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute("content", "Manage your general settings on SnapNotes");
+  }, []);
+
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -29,40 +36,52 @@ export default function GeneralPage() {
     return "medium";
   });
 
-  const [hasChanges, setHasChanges] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+  const resolveTheme = (theme: Theme) => {
+    let resolvedTheme = theme;
+    if (theme === "system") {
+      resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(resolvedTheme);
+  };
+
   useEffect(() => {
-    document.title = "General Settings | SnapNotes";
-    document
-      .querySelector('meta[name="description"]')
-      ?.setAttribute("content", "Manage your general settings on SnapNotes");
-  }, []);
+    // Apply theme on mount
+    resolveTheme(theme);
+
+    // Set up listener for system theme changes (only when theme is "system")
+    if (theme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const handleSystemThemeChange = () => {
+        resolveTheme("system");
+      };
+
+      // Modern browsers
+      mediaQuery.addEventListener("change", handleSystemThemeChange);
+
+      // Cleanup
+      return () => {
+        mediaQuery.removeEventListener("change", handleSystemThemeChange);
+      };
+    }
+  }, [theme]);
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
-    setHasChanges(true);
+    localStorage.setItem("theme", newTheme);
+    resolveTheme(newTheme);
+    setShowToast(true);
   };
 
   const handleFontSizeChange = (newSize: FontSize) => {
     setFontSize(newSize);
-    setHasChanges(true);
-  };
-
-  const handleSave = () => {
-    // Save preferences to localStorage
-    localStorage.setItem("theme", theme);
-    localStorage.setItem("fontSize", fontSize);
-    setHasChanges(false);
-
-    // Show success toast
+    localStorage.setItem("fontSize", newSize);
     setShowToast(true);
-  };
-
-  const handleReset = () => {
-    setTheme("system");
-    setFontSize("medium");
-    setHasChanges(true);
   };
 
   if (loading) {
@@ -89,26 +108,22 @@ export default function GeneralPage() {
         />
       )}
 
-      <section className="mx-2 max-w-4xl rounded-lg border border-[#4d4d4d]">
+      <section className="mx-2 max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           {/* Theme Preference */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-gray-100">
-                Appearance
+              <h3 className="text-lg font-semibold text-text-100">
+                Color mode
               </h3>
               <div className="flex flex-col gap-2">
-                <h4 className="text-gray-100">Theme</h4>
-                <p className="text-sm text-gray-400">
-                  Select your preferred color scheme
-                </p>
                 <div className="flex gap-3 mt-2">
                   <button
                     onClick={() => handleThemeChange("light")}
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       theme === "light"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     Light
@@ -118,7 +133,7 @@ export default function GeneralPage() {
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       theme === "dark"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     Dark
@@ -128,7 +143,7 @@ export default function GeneralPage() {
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       theme === "system"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     System
@@ -138,22 +153,18 @@ export default function GeneralPage() {
             </div>
 
             {/* Font Size Preference */}
-            <div className="space-y-3 pt-4 border-t border-[#4d4d4d]">
-              <h3 className="text-lg font-semibold text-gray-100">
+            <div className="space-y-3 pt-4 border-t border-border">
+              <h3 className="text-lg font-semibold text-text-100">
                 Typography
               </h3>
               <div className="flex flex-col gap-2">
-                <h4 className="text-gray-100">Font Size</h4>
-                <p className="text-sm text-gray-400">
-                  Choose your preferred reading size
-                </p>
                 <div className="flex gap-3 mt-2">
                   <button
                     onClick={() => handleFontSizeChange("small")}
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       fontSize === "small"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     <span className="text-sm">Small</span>
@@ -163,7 +174,7 @@ export default function GeneralPage() {
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       fontSize === "medium"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     <span className="text-base">Medium</span>
@@ -173,31 +184,13 @@ export default function GeneralPage() {
                     className={`px-4 py-2 rounded-lg border transition-all ${
                       fontSize === "large"
                         ? "bg-primary/70 border-primary text-white"
-                        : "border-[#4d4d4d] hover:border-gray-500"
+                        : "border-border hover:border-gray-500"
                     }`}
                   >
                     <span className="text-lg">Large</span>
                   </button>
                 </div>
               </div>
-            </div>
-
-            {/* Actions */}
-            <div className="pt-4 w-full flex flex-col md:flex-row items-center justify-between gap-3 border-t border-[#4d4d4d]">
-              <button
-                onClick={handleReset}
-                disabled={!hasChanges}
-                className="px-4 py-2 text-gray-300 border border-[#4d4d4d] rounded-lg hover:border-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[#4d4d4d] disabled:active:scale-100"
-              >
-                Reset to defaults
-              </button>
-              <button
-                onClick={handleSave}
-                disabled={!hasChanges}
-                className="px-4 py-2 text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"
-              >
-                Save changes
-              </button>
             </div>
           </div>
         </div>

@@ -54,11 +54,11 @@ export default function AccountPage() {
       )}
 
       {/* Main Content */}
-      <section className="mx-2 max-w-4xl rounded-lg border border-[#4d4d4d]">
+      <section className="mx-2 max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           {/* Profile Information */}
           <div className="w-full space-y-4 rounded-lg">
-            <div className="p-2 rounded-lg border border-[#4d4d4d] inline-block">
+            <div className="p-2 rounded-lg border border-border inline-block">
               <Image
                 src={user?.photo || "/images/nopicture.webp"}
                 alt="Profile Picture"
@@ -69,8 +69,8 @@ export default function AccountPage() {
             </div>
             {profileFields.map(({ label, value }) => (
               <div key={label} className="flex flex-col gap-1">
-                <h4 className="text-gray-100">{label}</h4>
-                <p className="text-sm">{value}</p>
+                <h4 className="text-text-100">{label}</h4>
+                <p className="text-text-200 text-sm">{value}</p>
               </div>
             ))}
           </div>

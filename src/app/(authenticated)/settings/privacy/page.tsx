@@ -107,15 +107,15 @@ export default function PrivacyPage() {
         />
       )}
 
-      <section className="mx-2 max-w-4xl rounded-lg border border-[#4d4d4d]">
+      <section className="mx-2 max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           <div className="space-y-6">
             {/* Privacy Policy Link */}
-            <div className="p-4 bg-gray-800/50 rounded-lg border border-[#4d4d4d]">
-              <h3 className="text-lg font-semibold text-gray-100 mb-2">
+            <div className="p-4 bg-gray-800/50 rounded-lg border border-border">
+              <h3 className="text-lg font-semibold text-text-100 mb-2">
                 Privacy Policy
               </h3>
-              <p className="text-sm text-gray-400 mb-3">
+              <p className="text-sm text-text-400 mb-3">
                 Learn about how we collect, use, and protect your data
               </p>
               <Link
@@ -140,16 +140,16 @@ export default function PrivacyPage() {
             </div>
 
             {/* Data Collection */}
-            <div className="space-y-3 pt-4 border-t border-[#4d4d4d]">
-              <h3 className="text-lg font-semibold text-gray-100">
+            <div className="space-y-3 pt-4 border-t border-border">
+              <h3 className="text-lg font-semibold text-text-100">
                 Data Collection
               </h3>
 
               {/* Analytics */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-gray-100 mb-1">Share Analytics Data</h4>
-                  <p className="text-sm text-gray-400">
+                  <h4 className="text-text-100 mb-1">Share Analytics Data</h4>
+                  <p className="text-sm text-text-400">
                     Help us improve SnapNotes by sharing anonymous usage data
                   </p>
                 </div>
@@ -169,8 +169,8 @@ export default function PrivacyPage() {
               {/* Marketing Emails */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-gray-100 mb-1">Marketing Emails</h4>
-                  <p className="text-sm text-gray-400">
+                  <h4 className="text-text-100 mb-1">Marketing Emails</h4>
+                  <p className="text-sm text-text-400">
                     Receive updates about new features and special offers
                   </p>
                 </div>
@@ -189,18 +189,18 @@ export default function PrivacyPage() {
             </div>
 
             {/* Data Sharing */}
-            <div className="space-y-3 pt-4 border-t border-[#4d4d4d]">
-              <h3 className="text-lg font-semibold text-gray-100">
+            <div className="space-y-3 pt-4 border-t border-border">
+              <h3 className="text-lg font-semibold text-text-100">
                 Data Sharing
               </h3>
 
               {/* Share with Partners */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-gray-100 mb-1">
+                  <h4 className="text-text-100 mb-1">
                     Share Data with Partners
                   </h4>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-text-400">
                     Allow trusted partners to access anonymized usage data for
                     analytics
                   </p>
@@ -218,11 +218,11 @@ export default function PrivacyPage() {
             </div>
 
             {/* Actions */}
-            <div className="pt-4 w-full flex flex-col md:flex-row items-center justify-between gap-3 border-t border-[#4d4d4d]">
+            <div className="pt-4 w-full flex flex-col md:flex-row items-center justify-between gap-3 border-t border-border">
               <button
                 onClick={handleResetToDefault}
                 disabled={!hasChanges}
-                className="px-4 py-2 text-gray-300 border border-[#4d4d4d] rounded-lg hover:border-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-[#4d4d4d] disabled:active:scale-100"
+                className="px-4 py-2 text-text-300 border border-border rounded-lg hover:border-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border disabled:active:scale-100"
               >
                 Do not share any data
               </button>
