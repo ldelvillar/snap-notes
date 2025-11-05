@@ -157,7 +157,7 @@ export default function NotePage() {
           aria-label="Delete note"
         >
           {isDeleting === note.id ? (
-            <div className="size- rounded-full border-b-2 border-gray-900 animate-spin" />
+            <div className="size-5 rounded-full border-b-2 border-gray-900 animate-spin" />
           ) : (
             <TrashIcon className="group-hover:text-red-600 transition-colors" />
           )}
