@@ -40,6 +40,10 @@ export default function NotePage() {
   const router = useRouter();
 
   useEffect(() => {
+    document.title = note.title + " - SnapNotes";
+  }, [note.title]);
+
+  useEffect(() => {
     if (authLoading) return;
 
     if (!user) {
