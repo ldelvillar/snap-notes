@@ -98,7 +98,11 @@ export default function CreateNotePage() {
       refetchNotes(); // Refetch notes to update sidebar
       router.replace("/notes");
     } catch (err) {
-      setError("Failed to create note. Please try again later.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to create note. Please try again later.");
+      }
       console.error("Error creating note:", err);
     } finally {
       setIsSubmitting(false);

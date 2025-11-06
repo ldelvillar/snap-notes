@@ -49,12 +49,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await auth.signOut();
       window.location.href = "/login";
       console.log("User logged out successfully!");
-    } catch (error) {
-      // Type guard for error
-      if (error instanceof Error) {
-        console.error("Error logging out:", error.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error("Error logging out:", err.message);
       } else {
-        console.error("Unknown error during logout");
+        console.error("Failed to logout. Please try again.");
       }
     }
   };

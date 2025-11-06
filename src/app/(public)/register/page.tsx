@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -25,6 +26,14 @@ const INITIAL_FORM_STATE: SignupForm = {
   email: "",
   password: "",
   repeatPassword: "",
+};
+
+const ERROR_MESSAGES: { [key: string]: string } = {
+  "auth/email-already-in-use": "This email is already registered.",
+  "auth/invalid-email": "Please enter a valid email address.",
+  "auth/operation-not-allowed": "Email/password accounts are not enabled.",
+  "auth/weak-password": "Password is too weak. Please use a stronger password.",
+  "auth/too-many-requests": "Too many attempts. Please try again later.",
 };
 
 export default function RegisterPage() {
@@ -103,11 +112,14 @@ export default function RegisterPage() {
         });
       }
       router.push("/notes");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
+    } catch (err) {
+      if (err instanceof FirebaseError) {
+        const errorCode = err.code as string;
+        setError(
+          ERROR_MESSAGES[errorCode] || "Failed to register. Please try again."
+        );
       } else {
-        setError("An unknown error occurred");
+        setError("An unexpected error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);

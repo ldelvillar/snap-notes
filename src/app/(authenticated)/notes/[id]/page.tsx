@@ -68,13 +68,13 @@ export default function NotePage() {
         }
 
         setLoadingState({ isLoading: false, error: null });
-      } catch (error) {
+      } catch (err) {
         setLoadingState({
           isLoading: false,
           error:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred",
+            err instanceof Error
+              ? err.message
+              : "Failed to load note. Please try again.",
         });
       }
     };
@@ -107,11 +107,13 @@ export default function NotePage() {
       setNote(editedNote);
       setIsEditing(false);
       refetchNotes();
-    } catch (error) {
+    } catch (err) {
       setLoadingState({
         isLoading: false,
         error:
-          error instanceof Error ? error.message : "Failed to save changes",
+          err instanceof Error
+            ? err.message
+            : "Failed to save changes. Please try again.",
       });
     } finally {
       setIsSaving(false);
