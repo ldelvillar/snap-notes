@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
@@ -14,13 +14,6 @@ export default function Home() {
   const { notes, refetchNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Sort notes by date (most recent first)
-  const sortedNotes = useMemo(() => {
-    return [...notes].sort((a, b) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
-  }, [notes]);
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
@@ -54,10 +47,10 @@ export default function Home() {
             Your notes
           </h1>
           <p className="text-text-400">
-            {sortedNotes.length === 0
+            {notes.length === 0
               ? "Start creating your first note"
-              : `${sortedNotes.length} ${
-                  sortedNotes.length === 1 ? "note" : "notes"
+              : `${notes.length} ${
+                  notes.length === 1 ? "note" : "notes"
                 } total`}
           </p>
         </div>
@@ -71,7 +64,7 @@ export default function Home() {
       </div>
 
       {/* Notes Grid */}
-      {sortedNotes.length === 0 ? (
+      {notes.length === 0 ? (
         <div className="py-20 flex flex-col items-center justify-center text-center">
           <div className="mb-6 size-24 flex items-center justify-center bg-bg-800 rounded-full">
             <DocumentIcon className="size-12 text-gray-500" />
@@ -93,7 +86,7 @@ export default function Home() {
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {sortedNotes.map((note) => (
+          {notes.map((note) => (
             <div
               key={note.id}
               className="group relative bg-linear-to-br from-bg-800 to-bg-900 border border-border hover:border-primary/50 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"

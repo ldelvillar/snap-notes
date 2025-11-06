@@ -58,7 +58,9 @@ export const getNotes = async (user: User): Promise<Note[]> => {
       };
     }) as Note[];
 
-    return dataArr;
+    return dataArr.sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error("An unknown error occurred");
