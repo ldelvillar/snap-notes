@@ -157,7 +157,11 @@ export default function NotePage() {
           aria-label="Delete note"
         >
           {isDeleting === note.id ? (
-            <div className="size-5 rounded-full border-b-2 border-gray-900 animate-spin" />
+            <div
+              className="size-5 rounded-full border-b-2 border-gray-900 animate-spin"
+              role="status"
+              aria-label="Deleting note"
+            />
           ) : (
             <TrashIcon className="group-hover:text-red-600 transition-colors" />
           )}
@@ -171,7 +175,11 @@ export default function NotePage() {
           aria-label={isEditing ? "Save note" : "Edit note"}
         >
           {isSaving ? (
-            <div className="size-5 rounded-full border-b-2 border-gray-900 animate-spin" />
+            <div
+              className="size-5 rounded-full border-b-2 border-gray-900 animate-spin"
+              role="status"
+              aria-label="Saving note"
+            />
           ) : (
             <PencilIcon
               className={`${

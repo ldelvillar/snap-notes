@@ -282,7 +282,11 @@ export default function Sidebar({
                           >
                             {isDeleting === item.id ? (
                               <div className="px-2 py-1 w-full flex items-center gap-2">
-                                <div className="size-4 rounded-full border-b-2 border-red-500 animate-spin" />
+                                <div
+                                  className="size-4 rounded-full border-b-2 border-red-500 animate-spin"
+                                  role="status"
+                                  aria-label="Deleting note"
+                                />
                                 Deleting...
                               </div>
                             ) : (
@@ -314,7 +318,7 @@ export default function Sidebar({
                   src={user.photo || "/images/nopicture.webp"}
                   width={36}
                   height={36}
-                  alt="profile picture"
+                  alt={`${user.firstName} ${user.lastName}'s profile picture`}
                   className="size-8 rounded-full object-cover"
                 />
               </div>

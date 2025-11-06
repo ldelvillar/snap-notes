@@ -61,7 +61,7 @@ export default function AccountPage() {
             <div className="p-2 rounded-lg border border-border inline-block">
               <Image
                 src={user?.photo || "/images/nopicture.webp"}
-                alt="Profile Picture"
+                alt={`${user.firstName} ${user.lastName}'s profile picture`}
                 width={100}
                 height={100}
                 className="size-10 rounded-full"
@@ -69,7 +69,7 @@ export default function AccountPage() {
             </div>
             {profileFields.map(({ label, value }) => (
               <div key={label} className="flex flex-col gap-1">
-                <h4 className="text-text-100">{label}</h4>
+                <p className="text-text-100 font-medium">{label}</p>
                 <p className="text-text-200 text-sm">{value}</p>
               </div>
             ))}

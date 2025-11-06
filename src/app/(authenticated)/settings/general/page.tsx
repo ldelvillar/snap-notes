@@ -113,9 +113,9 @@ export default function GeneralSettingsPage() {
           {/* Theme Preference */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-lg font-semibold text-text-100">
+              <h2 className="text-lg font-semibold text-text-100">
                 Color mode
-              </h3>
+              </h2>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-3 mt-2">
                   <button
@@ -154,9 +154,9 @@ export default function GeneralSettingsPage() {
 
             {/* Font Size Preference */}
             <div className="space-y-3 pt-4 border-t border-border">
-              <h3 className="text-lg font-semibold text-text-100">
+              <h2 className="text-lg font-semibold text-text-100">
                 Typography
-              </h3>
+              </h2>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-3 mt-2">
                   <button

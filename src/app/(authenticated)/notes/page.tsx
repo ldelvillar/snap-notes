@@ -122,9 +122,9 @@ export default function Home() {
           <div className="mb-6 size-24 flex items-center justify-center bg-bg-800 rounded-full">
             <DocumentIcon className="size-12 text-gray-500" />
           </div>
-          <h3 className="mb-2 text-xl text-text-300 font-semibold">
+          <h2 className="mb-2 text-xl text-text-300 font-semibold">
             No notes yet
-          </h3>
+          </h2>
           <p className="mb-6 max-w-md text-gray-500">
             Get started by creating your first note. Organize your thoughts,
             ideas, and tasks all in one place.
@@ -146,9 +146,9 @@ export default function Home() {
             >
               <Link href={`/notes/${note.id}`} className="p-5 block">
                 <div className="mb-3 flex items-start justify-between gap-3">
-                  <h3 className="flex-1 text-lg font-semibold text-text-100 line-clamp-2">
+                  <h2 className="flex-1 text-lg font-semibold text-text-100 line-clamp-2">
                     {note.title || "Untitled Note"}
-                  </h3>
+                  </h2>
                 </div>
                 <p className="mb-4 text-sm text-text-400 line-clamp-3">
                   {note.text}
@@ -172,7 +172,11 @@ export default function Home() {
                 aria-label="Delete note"
               >
                 {isDeleting === note.id ? (
-                  <div className="size-5 rounded-full border-b-2 border-white animate-spin" />
+                  <div
+                    className="size-5 rounded-full border-b-2 border-white animate-spin"
+                    role="status"
+                    aria-label="Deleting note"
+                  />
                 ) : (
                   <TrashIcon className="size-5 transition-colors" />
                 )}

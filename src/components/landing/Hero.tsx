@@ -29,17 +29,32 @@ export default function Hero() {
       <div className="mt-22 w-full bg-primary/10 clip-custom-hero">
         <div className="py-8 flex flex-row justify-center items-start md:items-center gap-12 md:gap-24">
           <div className="text-center md:px-24 relative border-r border-gray-500">
-            <h3 className="text-3xl md:text-5xl font-semibold">15k+</h3>
+            <p
+              className="text-3xl md:text-5xl font-semibold"
+              aria-label="15,000 plus active users"
+            >
+              15k+
+            </p>
             <p className="text-sm text-gray-500 mt-1">Active Users</p>
           </div>
 
           <div className="text-center md:pr-24 relative border-r border-gray-500">
-            <h3 className="text-3xl md:text-5xl font-semibold">30k+</h3>
+            <p
+              className="text-3xl md:text-5xl font-semibold"
+              aria-label="30,000 plus total downloads"
+            >
+              30k+
+            </p>
             <p className="text-sm text-gray-500 mt-1">Total Downloads</p>
           </div>
 
           <div className="text-center">
-            <h3 className="text-3xl md:text-5xl font-semibold">10k+</h3>
+            <p
+              className="text-3xl md:text-5xl font-semibold"
+              aria-label="10,000 plus customers"
+            >
+              10k+
+            </p>
             <p className="text-sm text-gray-500 mt-1">Customers</p>
           </div>
         </div>

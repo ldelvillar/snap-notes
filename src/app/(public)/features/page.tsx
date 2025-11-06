@@ -91,9 +91,9 @@ export default function FeaturesPage() {
                 className="group bg-[#241c26] border border-[#4d3d54] rounded-lg p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-[#e0e0e0] group-hover:text-primary transition-colors">
+                <h2 className="text-xl font-bold mb-3 text-[#e0e0e0] group-hover:text-primary transition-colors">
                   {feature.title}
-                </h3>
+                </h2>
                 <p className="text-[#b09eb8] leading-relaxed">
                   {feature.description}
                 </p>
@@ -133,7 +133,7 @@ export default function FeaturesPage() {
               <div className="md:basis-1/2">
                 <Image
                   src={highlight.imgSrc}
-                  alt="Feature Highlight"
+                  alt={`Illustration of ${highlight.title}`}
                   className="w-full h-auto rounded-lg"
                   width={500}
                   height={300}

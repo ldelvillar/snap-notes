@@ -108,7 +108,11 @@ export default function CreateNotePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+        <div
+          className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"
+          role="status"
+          aria-label="Loading"
+        />
       </div>
     );
   }
@@ -131,7 +135,11 @@ export default function CreateNotePage() {
 
         <form onSubmit={handleCreateNote} className="flex flex-col gap-6 mt-8">
           <div className="space-y-2">
+            <label htmlFor="title" className="sr-only">
+              Title
+            </label>
             <input
+              id="title"
               type="text"
               name="title"
               placeholder="Title"
@@ -142,13 +150,23 @@ export default function CreateNotePage() {
                                 ${errors.title ? "border-red-500" : ""}`}
             />
             {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title}</p>
+              <p
+                className="text-red-500 text-sm"
+                role="alert"
+                aria-live="polite"
+              >
+                {errors.title}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
+            <label htmlFor="text" className="sr-only">
+              Text
+            </label>
             <textarea
               ref={textareaRef}
+              id="text"
               name="text"
               placeholder="Start typing..."
               value={formData.text}
@@ -160,7 +178,13 @@ export default function CreateNotePage() {
                                 ${errors.text ? "border-red-500" : ""}`}
             />
             {errors.text && (
-              <p className="text-red-500 text-sm">{errors.text}</p>
+              <p
+                role="alert"
+                aria-live="polite"
+                className="text-red-500 text-sm"
+              >
+                {errors.text}
+              </p>
             )}
           </div>
 
@@ -171,7 +195,11 @@ export default function CreateNotePage() {
           >
             <div className="flex flex-row items-center justify-center gap-2">
               {isSubmitting ? (
-                <div className="animate-spin size-5 border-b-2 border-white rounded-full" />
+                <div
+                  className="animate-spin size-5 border-b-2 border-white rounded-full"
+                  role="status"
+                  aria-label="Creating note"
+                />
               ) : (
                 <>
                   <PlusIcon /> Create Note

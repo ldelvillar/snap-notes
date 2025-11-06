@@ -1,14 +1,17 @@
 type ErrorMessageProps = {
-    message: string;
-    className?: string;
+  message: string;
 };
 
-export default function ErrorMessage({ message, className = "" }: ErrorMessageProps) {
-    return (
-        <div className={`p-4 rounded bg-red-50 border border-red-200 ${className}`}>
-            <p className="text-red-800">
-                Error: {message}
-            </p>
-        </div>
-    );
+export default function ErrorMessage({ message }: ErrorMessageProps) {
+  return (
+    <div
+      className="p-4 rounded bg-red-50 border border-red-200"
+      role="alert"
+      aria-live="assertive"
+    >
+      <p className="text-red-800">
+        <span className="sr-only">Error:</span> {message}
+      </p>
+    </div>
+  );
 }

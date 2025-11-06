@@ -112,9 +112,9 @@ export default function PrivacyPage() {
           <div className="space-y-6">
             {/* Privacy Policy Link */}
             <div className="p-4 bg-gray-800/50 rounded-lg border border-border">
-              <h3 className="text-lg font-semibold text-text-100 mb-2">
+              <h2 className="text-lg font-semibold text-text-100 mb-2">
                 Privacy Policy
-              </h3>
+              </h2>
               <p className="text-sm text-text-400 mb-3">
                 Learn about how we collect, use, and protect your data
               </p>
@@ -141,14 +141,14 @@ export default function PrivacyPage() {
 
             {/* Data Collection */}
             <div className="space-y-3 pt-4 border-t border-border">
-              <h3 className="text-lg font-semibold text-text-100">
+              <h2 className="text-lg font-semibold text-text-100">
                 Data Collection
-              </h3>
+              </h2>
 
               {/* Analytics */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-text-100 mb-1">Share Analytics Data</h4>
+                  <h3 className="text-text-100 mb-1">Share Analytics Data</h3>
                   <p className="text-sm text-text-400">
                     Help us improve SnapNotes by sharing anonymous usage data
                   </p>
@@ -169,7 +169,7 @@ export default function PrivacyPage() {
               {/* Marketing Emails */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-text-100 mb-1">Marketing Emails</h4>
+                  <h3 className="text-text-100 mb-1">Marketing Emails</h3>
                   <p className="text-sm text-text-400">
                     Receive updates about new features and special offers
                   </p>
@@ -190,16 +190,16 @@ export default function PrivacyPage() {
 
             {/* Data Sharing */}
             <div className="space-y-3 pt-4 border-t border-border">
-              <h3 className="text-lg font-semibold text-text-100">
+              <h2 className="text-lg font-semibold text-text-100">
                 Data Sharing
-              </h3>
+              </h2>
 
               {/* Share with Partners */}
               <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
                 <div className="flex-1">
-                  <h4 className="text-text-100 mb-1">
+                  <h3 className="text-text-100 mb-1">
                     Share Data with Partners
-                  </h4>
+                  </h3>
                   <p className="text-sm text-text-400">
                     Allow trusted partners to access anonymized usage data for
                     analytics
