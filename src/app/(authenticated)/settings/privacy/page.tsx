@@ -107,7 +107,7 @@ export default function PrivacyPage() {
         />
       )}
 
-      <section className="mx-2 max-w-4xl rounded-lg border border-border">
+      <section className="max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           <div className="space-y-6">
             {/* Privacy Policy Link */}

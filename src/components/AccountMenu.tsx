@@ -13,9 +13,15 @@ import { User } from "@/types";
 
 interface AccountMenuProps {
   user: User;
+  setAccountMenuOpen: (open: boolean) => void;
+  setIsMobileOpen: (open: boolean) => void;
 }
 
-export default function AccountMenu({ user }: AccountMenuProps) {
+export default function AccountMenu({
+  user,
+  setAccountMenuOpen,
+  setIsMobileOpen,
+}: AccountMenuProps) {
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -24,14 +30,28 @@ export default function AccountMenu({ user }: AccountMenuProps) {
       <p className="px-2 pb-2 pt-1 text-text-400">{user.email}</p>
 
       <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
-        <Link href="/settings" className="flex items-center gap-2">
+        <Link
+          href="/settings"
+          className="flex items-center gap-2"
+          onClick={() => {
+            setAccountMenuOpen(false);
+            setIsMobileOpen(false);
+          }}
+        >
           <SettingsIcon className="size-4" />
           Settings
         </Link>
       </div>
 
       <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
-        <Link href="/help" className="flex items-center gap-2">
+        <Link
+          href="/help"
+          className="flex items-center gap-2"
+          onClick={() => {
+            setAccountMenuOpen(false);
+            setIsMobileOpen(false);
+          }}
+        >
           <HelpIcon className="size-4" />
           Get help
         </Link>
@@ -40,7 +60,14 @@ export default function AccountMenu({ user }: AccountMenuProps) {
       <hr className="my-1 border-bg-600" />
 
       <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
-        <Link href="/upgrade" className="flex items-center gap-2">
+        <Link
+          href="/upgrade"
+          className="flex items-center gap-2"
+          onClick={() => {
+            setAccountMenuOpen(false);
+            setIsMobileOpen(false);
+          }}
+        >
           <RoundedArrow className="size-4" />
           Upgrade plan
         </Link>

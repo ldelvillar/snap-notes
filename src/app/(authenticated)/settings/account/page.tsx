@@ -54,7 +54,7 @@ export default function AccountPage() {
       )}
 
       {/* Main Content */}
-      <section className="mx-2 max-w-4xl rounded-lg border border-border">
+      <section className="max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           {/* Profile Information */}
           <div className="w-full space-y-4 rounded-lg">

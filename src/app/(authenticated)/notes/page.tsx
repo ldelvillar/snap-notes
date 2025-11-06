@@ -92,7 +92,7 @@ export default function Home() {
   }
 
   return (
-    <section id="notes" className="py-8 md:py-12 px-4 md:px-20 min-h-screen">
+    <section id="notes" className="py-16 px-4 md:px-20 min-h-screen">
       {/* Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -138,7 +138,7 @@ export default function Home() {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {notes.map((note) => (
             <div
               key={note.id}

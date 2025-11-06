@@ -80,7 +80,7 @@ export default function BillingPage() {
         />
       )}
 
-      <div className="mx-2 max-w-4xl space-y-6">
+      <div className="max-w-4xl space-y-6">
         {/* Current Plan */}
         <section className="rounded-lg border border-border">
           <div className="p-6">

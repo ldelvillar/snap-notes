@@ -233,7 +233,11 @@ export default function Sidebar({
                       } py-2 px-2 text-sm rounded-lg hover:bg-bg-700 group`}
                       onClick={() => setIsMobileOpen(false)}
                     >
-                      <div className="min-w-0 flex items-center gap-3 flex-1">
+                      <div
+                        className={`min-w-0 flex items-center gap-3 flex-1 ${
+                          isCollapsed ? "justify-center" : ""
+                        }`}
+                      >
                         <span className="shrink-0">
                           <DocumentIcon className="size-5" />
                         </span>
@@ -340,7 +344,13 @@ export default function Sidebar({
             </button>
 
             {/* Account Menu */}
-            {accountMenuOpen && <AccountMenu user={user} />}
+            {accountMenuOpen && (
+              <AccountMenu
+                user={user}
+                setAccountMenuOpen={setAccountMenuOpen}
+                setIsMobileOpen={setIsMobileOpen}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -350,7 +360,7 @@ export default function Sidebar({
         onClick={() => setIsMobileOpen(true)}
         className={`${
           isMobileOpen ? "hidden" : "block"
-        } fixed left-4 top-4 z-40 rounded-lg p-2 bg-white shadow-md hover:bg-gray-100 md:hidden`}
+        } p-2 fixed left-2 top-4 z-40 text-text-100 md:hidden`}
         aria-label="Open sidebar"
       >
         <MenuIcon />

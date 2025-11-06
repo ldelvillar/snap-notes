@@ -123,7 +123,7 @@ export default function CreateNotePage() {
   }
 
   return (
-    <section id="create" className="mt-12 mx-10 md:mx-20">
+    <section id="create" className="py-16 px-4 md:px-20">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl text-text-200 font-bold">Create new note</h1>
 

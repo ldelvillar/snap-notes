@@ -108,7 +108,7 @@ export default function GeneralSettingsPage() {
         />
       )}
 
-      <section className="mx-2 max-w-4xl rounded-lg border border-border">
+      <section className="max-w-4xl rounded-lg border border-border">
         <div className="p-6">
           {/* Theme Preference */}
           <div className="space-y-6">

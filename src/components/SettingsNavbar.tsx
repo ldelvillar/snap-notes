@@ -22,20 +22,18 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
   const activeTab = getActiveTab();
 
   return (
-    <section className="px-4 md:px-6 pt-16 text-text-200">
-      <h1 className="px-2 text-2xl text-text-300 font-semibold mb-6 md:mb-8">
+    <section className="py-16 px-4 md:px-8 text-text-200">
+      <h1 className="mb-6 md:mb-8 text-2xl text-text-300 font-semibold">
         Settings
       </h1>
 
       {/* Mobile Horizontal Navigation */}
-      <nav className="md:hidden mb-6 overflow-x-auto">
-        <div className="flex gap-2 min-w-max px-2">
+      <nav className="mb-6 md:hidden overflow-x-auto">
+        <div className="flex gap-2 min-w-max">
           <Link
             href="/settings/general"
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "general"
-                ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-bg-700"
+              activeTab === "general" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             General
@@ -44,9 +42,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           <Link
             href="/settings/account"
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "account"
-                ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-bg-700"
+              activeTab === "account" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             Account
@@ -55,9 +51,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           <Link
             href="/settings/privacy"
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "privacy"
-                ? "bg-primary/70"
-                : "bg-text-800 hover:bg-bg-700"
+              activeTab === "privacy" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             Privacy
@@ -66,9 +60,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           <Link
             href="/settings/billing"
             className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "billing"
-                ? "bg-primary/70"
-                : "bg-gray-800 hover:bg-bg-700"
+              activeTab === "billing" ? "bg-bg-700" : "hover:bg-bg-800"
             }`}
           >
             Billing
