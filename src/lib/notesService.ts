@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -19,10 +20,8 @@ export const createNote = async (
   text: string
 ): Promise<void> => {
   e.preventDefault();
-  if (!user) {
-    console.error("User is not defined or missing uid");
-    return;
-  }
+  if (!user) throw new Error("User is not defined");
+
   try {
     const newNote: Note = {
       id: nanoid(),
@@ -33,19 +32,14 @@ export const createNote = async (
     };
     await setDoc(doc(collection(db, "Notes")), newNote);
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.error("An unknown error ocurred");
-    }
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
   }
 };
 
 export const getNotes = async (user: User): Promise<Note[]> => {
-  if (!user) {
-    console.error("User is not defined or missing uid");
-    return [];
-  }
+  if (!user) throw new Error("User is not defined");
+
   try {
     const q = query(
       collection(db, "Notes"),
@@ -66,40 +60,46 @@ export const getNotes = async (user: User): Promise<Note[]> => {
 
     return dataArr;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.error("An unknown error ocurred");
-    }
-    return [];
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
   }
 };
 
 export const getNoteById = async (
   user: User,
   noteId: string
-): Promise<Note | undefined> => {
-  const userNotes = await getNotes(user);
+): Promise<Note> => {
+  if (!user) throw new Error("User is not defined");
 
-  const selectedNote = userNotes.find((note) => note.id === noteId);
-  if (!selectedNote) {
-    console.error("Note not found");
-    return;
+  try {
+    const noteRef = doc(db, "Notes", noteId);
+    const noteSnap = await getDoc(noteRef);
+    if (!noteSnap.exists()) throw new Error("Note not found");
+
+    const data = noteSnap.data();
+
+    // Verify the note belongs to the user
+    if (data.creator !== user.email) throw new Error("Note not found");
+
+    return {
+      ...data,
+      id: noteSnap.id,
+      updatedAt: data.updatedAt?.toDate
+        ? data.updatedAt.toDate()
+        : new Date(data.updatedAt),
+    } as Note;
+  } catch (error) {
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
   }
-
-  return selectedNote;
 };
 
 export const deleteNote = async (noteId: string): Promise<void> => {
   try {
     await deleteDoc(doc(db, "Notes", noteId));
-    console.log(`Note with id ${noteId} deleted successfully.`);
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.error("An unknown error ocurred");
-    }
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
   }
 };
 
@@ -125,10 +125,8 @@ export const handleDeleteNote = async (
 };
 
 export const updateNote = async (user: User, note: Note): Promise<void> => {
-  if (!user) {
-    console.error("User is not defined or missing uid");
-    return;
-  }
+  if (!user) throw new Error("User is not defined");
+
   try {
     const noteRef = doc(db, "Notes", note.id);
     await setDoc(
@@ -141,16 +139,8 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
       { merge: true }
     );
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      throw error;
-    } else {
-      const error = new Error(
-        "An unknown error occurred while updating the note"
-      );
-      console.error(error);
-      throw error;
-    }
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
   }
 };
 
@@ -160,6 +150,8 @@ export const handleUpdateNote = async (
   setIsSaving: React.Dispatch<React.SetStateAction<boolean>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>
 ): Promise<void> => {
+  if (!user) throw new Error("User is not defined");
+
   try {
     setIsSaving(true);
     await updateNote(user, note);
