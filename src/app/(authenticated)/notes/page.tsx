@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
@@ -16,9 +16,11 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   // Sort notes by date (most recent first)
-  const sortedNotes = [...notes].sort((a, b) => {
-    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-  });
+  const sortedNotes = useMemo(() => {
+    return [...notes].sort((a, b) => {
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
+  }, [notes]);
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
