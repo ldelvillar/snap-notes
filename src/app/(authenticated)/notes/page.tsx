@@ -1,43 +1,24 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
-import { useAuth } from "@/context/useGlobalContext";
 import { useNotes } from "@/context/NotesContext";
-import { getNotes, handleDeleteNote } from "@/lib/notesService";
-import { Note } from "@/types/index";
+import { handleDeleteNote } from "@/lib/notesService";
 import PlusIcon from "@/assets/Plus";
 import TrashIcon from "@/assets/Trash";
 import DocumentIcon from "@/assets/Document";
 
 export default function Home() {
-  const { user } = useAuth();
-  const { registerRefetch, refetchNotes } = useNotes();
-  const [notes, setNotes] = useState<Note[]>([]);
+  const { notes, refetchNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchNotes = useCallback(async () => {
-    if (!user) return;
-    try {
-      const data = await getNotes(user);
-      // Ordenar las notas de más reciente a más antigua
-      const sortedData = data.sort((a, b) => {
-        return (
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        );
-      });
-      setNotes(sortedData);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Failed to fetch notes, please try again later");
-      }
-    }
-  }, [user]);
+  // Sort notes by date (most recent first)
+  const sortedNotes = [...notes].sort((a, b) => {
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
@@ -45,35 +26,6 @@ export default function Home() {
       .querySelector('meta[name="description"]')
       ?.setAttribute("content", "Manage your notes with SnapNotes");
   }, []);
-
-  useEffect(() => {
-    const loadNotes = async () => {
-      if (!user) return;
-      try {
-        const data = await getNotes(user);
-        // Ordenar las notas de más reciente a más antigua
-        const sortedData = data.sort((a, b) => {
-          return (
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-          );
-        });
-        setNotes(sortedData);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Failed to fetch notes, please try again later");
-        }
-      }
-    };
-
-    loadNotes();
-  }, [user]);
-
-  // Register this component's fetchNotes with the context
-  useEffect(() => {
-    registerRefetch(fetchNotes);
-  }, [registerRefetch, fetchNotes]);
 
   const handleNoteDeletion = async (
     e: React.MouseEvent,
@@ -100,10 +52,10 @@ export default function Home() {
             Your notes
           </h1>
           <p className="text-text-400">
-            {notes.length === 0
+            {sortedNotes.length === 0
               ? "Start creating your first note"
-              : `${notes.length} ${
-                  notes.length === 1 ? "note" : "notes"
+              : `${sortedNotes.length} ${
+                  sortedNotes.length === 1 ? "note" : "notes"
                 } total`}
           </p>
         </div>
@@ -117,7 +69,7 @@ export default function Home() {
       </div>
 
       {/* Notes Grid */}
-      {notes.length === 0 ? (
+      {sortedNotes.length === 0 ? (
         <div className="py-20 flex flex-col items-center justify-center text-center">
           <div className="mb-6 size-24 flex items-center justify-center bg-bg-800 rounded-full">
             <DocumentIcon className="size-12 text-gray-500" />
@@ -139,7 +91,7 @@ export default function Home() {
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {notes.map((note) => (
+          {sortedNotes.map((note) => (
             <div
               key={note.id}
               className="group relative bg-linear-to-br from-bg-800 to-bg-900 border border-border hover:border-primary/50 rounded-xl transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1"

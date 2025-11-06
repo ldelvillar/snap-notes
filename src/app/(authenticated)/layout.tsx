@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/useGlobalContext";
 import { NotesProvider, useNotes } from "@/context/NotesContext";
 import { getNotes } from "@/lib/notesService";
-import { Note } from "@/types";
 import Sidebar from "@/components/Sidebar";
 import ContentSkeleton from "@/components/ContentSkeleton";
 
@@ -13,10 +12,9 @@ type Theme = "light" | "dark" | "system";
 
 function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  const { registerRefetch } = useNotes();
+  const { notes, notesLoading, setNotes, setNotesLoading, registerRefetch } =
+    useNotes();
   const router = useRouter();
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [notesLoading, setNotesLoading] = useState(true);
 
   // Apply theme on mount and listen for system theme changes
   useEffect(() => {
@@ -57,7 +55,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     } finally {
       setNotesLoading(false);
     }
-  }, [user]);
+  }, [user, setNotes, setNotesLoading]);
 
   useEffect(() => {
     if (!loading && !user) {

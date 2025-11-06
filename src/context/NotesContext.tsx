@@ -1,8 +1,19 @@
 "use client";
 
-import React, { createContext, useContext, useCallback, useRef } from "react";
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useRef,
+  useState,
+} from "react";
+import { Note } from "@/types";
 
 interface NotesContextType {
+  notes: Note[];
+  notesLoading: boolean;
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  setNotesLoading: React.Dispatch<React.SetStateAction<boolean>>;
   refetchNotes: () => void;
   registerRefetch: (callback: () => Promise<void>) => () => void;
 }
@@ -12,6 +23,8 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined);
 export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [notesLoading, setNotesLoading] = useState(true);
   const refetchCallbacks = useRef<Set<() => Promise<void>>>(new Set());
 
   const registerRefetch = useCallback((callback: () => Promise<void>) => {
@@ -30,7 +43,16 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <NotesContext.Provider value={{ refetchNotes, registerRefetch }}>
+    <NotesContext.Provider
+      value={{
+        notes,
+        notesLoading,
+        setNotes,
+        setNotesLoading,
+        refetchNotes,
+        registerRefetch,
+      }}
+    >
       {children}
     </NotesContext.Provider>
   );
