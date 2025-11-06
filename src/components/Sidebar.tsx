@@ -43,42 +43,31 @@ export default function Sidebar({
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const noteMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close mobile sidebar when clicking outside
+  // Check if there is a click-outside for all menus
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // Close mobile sidebar
       const sidebar = document.getElementById("sidebar");
-      if (isMobileOpen && sidebar && !sidebar.contains(event.target as Node)) {
+      if (isMobileOpen && sidebar && !sidebar.contains(target)) {
         setIsMobileOpen(false);
       }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMobileOpen]);
-
-  // Close account menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+      // Close account menu
       if (
         accountMenuOpen &&
         accountMenuRef.current &&
-        !accountMenuRef.current.contains(event.target as Node)
+        !accountMenuRef.current.contains(target)
       ) {
         setAccountMenuOpen(false);
       }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [accountMenuOpen]);
-
-  // Close note menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+      // Close note menu
       if (
         openNoteMenuId &&
         noteMenuRef.current &&
-        !noteMenuRef.current.contains(event.target as Node)
+        !noteMenuRef.current.contains(target)
       ) {
         setOpenNoteMenuId(null);
       }
@@ -86,7 +75,7 @@ export default function Sidebar({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [openNoteMenuId]);
+  }, [isMobileOpen, accountMenuOpen, openNoteMenuId]);
 
   // Handle note deletion
   const handleNoteDeletion = async (
