@@ -117,7 +117,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Lucas del Villar**
 
-- GitHub: [@yourusername](https://github.com/ldelvillar)
+- GitHub: [@ldelvillar](https://github.com/ldelvillar)
 
 ## 🙏 Acknowledgments
 
