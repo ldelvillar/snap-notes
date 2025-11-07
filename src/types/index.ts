@@ -4,7 +4,7 @@ export interface User {
   lastName: string;
   phone: string;
   photo?: string;
-  uid: number;
+  uid: string;
 }
 
 export interface Note {
