@@ -1,4 +1,4 @@
-import React from "react";
+import type { MouseEvent, Dispatch, SetStateAction } from "react";
 import {
   collection,
   deleteDoc,
@@ -15,11 +15,9 @@ import { User, Note } from "@/types/index";
 
 export const createNote = async (
   user: User,
-  e: React.FormEvent,
   title: string,
   text: string
 ): Promise<void> => {
-  e.preventDefault();
   if (!user) throw new Error("User is not defined");
 
   try {
@@ -106,10 +104,10 @@ export const deleteNote = async (noteId: string): Promise<void> => {
 };
 
 export const handleDeleteNote = async (
-  e: React.MouseEvent,
+  e: MouseEvent,
   noteId: string,
-  setIsDeleting: React.Dispatch<React.SetStateAction<string | null>>,
-  setError: React.Dispatch<React.SetStateAction<string | null>>
+  setIsDeleting: Dispatch<SetStateAction<string | null>>,
+  setError: Dispatch<SetStateAction<string | null>>
 ): Promise<void> => {
   e.preventDefault();
   try {
@@ -149,8 +147,8 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
 export const handleUpdateNote = async (
   note: Note,
   user: User,
-  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>,
-  setError: React.Dispatch<React.SetStateAction<string | null>>
+  setIsSaving: Dispatch<SetStateAction<boolean>>,
+  setError: Dispatch<SetStateAction<string | null>>
 ): Promise<void> => {
   if (!user) throw new Error("User is not defined");
 

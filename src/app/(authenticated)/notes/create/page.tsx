@@ -94,7 +94,7 @@ export default function CreateNotePage() {
     setError(null);
 
     try {
-      await createNote(user, e, formData.title, formData.text);
+      await createNote(user, formData.title, formData.text);
       refetchNotes(); // Refetch notes to update sidebar
       router.replace("/notes");
     } catch (err) {
