@@ -8,6 +8,7 @@ import {
   query,
   setDoc,
   where,
+  orderBy,
 } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import { db } from "@/config/firebase";
@@ -41,7 +42,8 @@ export const getNotes = async (user: User): Promise<Note[]> => {
   try {
     const q = query(
       collection(db, "Notes"),
-      where("creator", "==", user.email)
+      where("creator", "==", user.email),
+      orderBy("updatedAt", "desc")
     );
     const querySnapshot = await getDocs(q);
     const dataArr = querySnapshot.docs.map((doc) => {
@@ -56,9 +58,7 @@ export const getNotes = async (user: User): Promise<Note[]> => {
       };
     }) as Note[];
 
-    return dataArr.sort((a, b) => {
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
+    return dataArr;
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error("An unknown error occurred");
