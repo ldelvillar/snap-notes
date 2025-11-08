@@ -84,7 +84,8 @@ export default function Sidebar({
   ): Promise<void> => {
     e.preventDefault();
     e.stopPropagation();
-    await handleDeleteNote(e, noteId, setIsDeleting, setDeletionError);
+    if (!user) return;
+    await handleDeleteNote(e, user, noteId, setIsDeleting, setDeletionError);
     refetchNotes();
     setOpenNoteMenuId(null);
   };

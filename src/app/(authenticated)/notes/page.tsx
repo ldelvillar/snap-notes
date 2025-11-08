@@ -13,7 +13,7 @@ import TrashIcon from "@/assets/Trash";
 import DocumentIcon from "@/assets/Document";
 
 export default function Home() {
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
   const { notes, refetchNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,8 @@ export default function Home() {
     e: React.MouseEvent,
     noteId: string
   ): Promise<void> => {
-    await handleDeleteNote(e, noteId, setIsDeleting, setError);
+    if (!user) return;
+    await handleDeleteNote(e, user, noteId, setIsDeleting, setError);
     refetchNotes();
   };
 

@@ -94,9 +94,21 @@ export const getNoteById = async (
   }
 };
 
-export const deleteNote = async (noteId: string): Promise<void> => {
+export const deleteNote = async (user: User, noteId: string): Promise<void> => {
+  if (!user) throw new Error("User is not defined");
+
   try {
-    await deleteDoc(doc(db, "Notes", noteId));
+    const noteRef = doc(db, "Notes", noteId);
+    const noteSnap = await getDoc(noteRef);
+    if (!noteSnap.exists()) throw new Error("Note not found");
+
+    const data = noteSnap.data();
+
+    // Verify the note belongs to the user
+    if (data.creator !== user.email) throw new Error("Note not found");
+
+    // Delete the note
+    await deleteDoc(noteRef);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error("An unknown error occurred");
@@ -105,6 +117,7 @@ export const deleteNote = async (noteId: string): Promise<void> => {
 
 export const handleDeleteNote = async (
   e: MouseEvent,
+  user: User,
   noteId: string,
   setIsDeleting: Dispatch<SetStateAction<string | null>>,
   setError: Dispatch<SetStateAction<string | null>>
@@ -112,7 +125,7 @@ export const handleDeleteNote = async (
   e.preventDefault();
   try {
     setIsDeleting(noteId);
-    await deleteNote(noteId);
+    await deleteNote(user, noteId);
   } catch (err) {
     if (err instanceof Error) {
       setError(err.message);

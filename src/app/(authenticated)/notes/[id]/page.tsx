@@ -86,7 +86,8 @@ export default function NotePage() {
     e: React.MouseEvent,
     noteId: string
   ): Promise<void> => {
-    await handleDeleteNote(e, noteId, setIsDeleting, setDeletionError);
+    if (!user) return;
+    await handleDeleteNote(e, user, noteId, setIsDeleting, setDeletionError);
     refetchNotes();
     router.push("/notes");
   };
