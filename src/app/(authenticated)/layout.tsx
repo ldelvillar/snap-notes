@@ -73,13 +73,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     registerRefetch(fetchNotes);
   }, [registerRefetch, fetchNotes]);
 
-  if (loading || !user) {
-    return (
-      <div className="mt-12 md:mx-20">
-        <ContentSkeleton lines={6} />
-      </div>
-    );
-  }
+  if (loading || !user) return <ContentSkeleton lines={6} />;
 
   return (
     <div className="bg-bg-primary">

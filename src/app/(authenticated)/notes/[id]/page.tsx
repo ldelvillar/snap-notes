@@ -125,13 +125,8 @@ export default function NotePage() {
     setEditedNote(note);
   };
 
-  if (loadingState.isLoading || authLoading) {
-    return (
-      <div className="mt-12 md:mx-20">
-        <ContentSkeleton lines={6} />
-      </div>
-    );
-  }
+  if (loadingState.isLoading || authLoading)
+    return <ContentSkeleton lines={6} />;
 
   if (loadingState.error) {
     return (

@@ -54,13 +54,7 @@ export default function BillingPage() {
     };
   };
 
-  if (loading) {
-    return (
-      <div className="mt-12 mx-10 md:mx-20">
-        <ContentSkeleton lines={3} />
-      </div>
-    );
-  }
+  if (loading) return <ContentSkeleton lines={3} />;
 
   if (!user) {
     router.push("/login");

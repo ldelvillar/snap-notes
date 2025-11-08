@@ -9,6 +9,8 @@ import { doc, setDoc } from "firebase/firestore";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import { auth, db } from "@/config/firebase";
+import { useAuth } from "@/context/useGlobalContext";
+import ContentSkeleton from "@/components/ContentSkeleton";
 
 interface SignupForm {
   fname: string;
@@ -38,6 +40,7 @@ const ERROR_MESSAGES: { [key: string]: string } = {
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
   const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +54,11 @@ export default function RegisterPage() {
         "Create a new account on Snap Notes to start taking and organizing your notes."
       );
   }, []);
+
+  // Redirect after render to avoid updating Router during render
+  useEffect(() => {
+    if (user) router.push("/notes");
+  }, [user, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -125,6 +133,10 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   };
+
+  if (loading) return <ContentSkeleton lines={3} />;
+
+  if (user) return null;
 
   return (
     <section id="login" className="pt-20 pb-8 px-4 min-h-screen text-white">

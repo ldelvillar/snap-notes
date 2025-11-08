@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
+import ContentSkeleton from "@/components/ContentSkeleton";
+import { useAuth } from "@/context/useGlobalContext";
 import { useNotes } from "@/context/NotesContext";
 import { handleDeleteNote } from "@/lib/notesService";
 import PlusIcon from "@/assets/Plus";
@@ -11,6 +13,7 @@ import TrashIcon from "@/assets/Trash";
 import DocumentIcon from "@/assets/Document";
 
 export default function Home() {
+  const { loading } = useAuth();
   const { notes, refetchNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +32,8 @@ export default function Home() {
     await handleDeleteNote(e, noteId, setIsDeleting, setError);
     refetchNotes();
   };
+
+  if (loading) return <ContentSkeleton lines={6} />;
 
   if (error) {
     return (

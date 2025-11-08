@@ -32,8 +32,16 @@ const ERROR_MESSAGES: { [key: string]: string } = {
 };
 
 export default function LoginPage() {
-  const { user, loading } = useAuth();
   const router = useRouter();
+  const { user, loading } = useAuth();
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState<LoginForm>({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     document.title = "Login | SnapNotes";
@@ -47,18 +55,8 @@ export default function LoginPage() {
 
   // Redirect after render to avoid updating Router during render
   useEffect(() => {
-    if (user) {
-      router.push("/notes");
-    }
+    if (user) router.push("/notes");
   }, [user, router]);
-  const [formData, setFormData] = useState<LoginForm>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -129,13 +127,7 @@ export default function LoginPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="mt-12 mx-10 md:mx-20">
-        <ContentSkeleton lines={3} />
-      </div>
-    );
-  }
+  if (loading) return <ContentSkeleton lines={3} />;
 
   if (user) return null;
 
