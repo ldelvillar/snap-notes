@@ -146,7 +146,7 @@ export default function NotePage() {
   }
 
   return (
-    <article className="py-16 px-4 md:px-20 relative text-text-100 rounded-lg">
+    <article className="my-16 px-4 md:px-20 max-w-7xl mx-auto relative text-text-100 rounded-lg">
       <div className="absolute top-2 right-2">
         <button
           onClick={(e) => handleNoteDeletion(e, note.id)}

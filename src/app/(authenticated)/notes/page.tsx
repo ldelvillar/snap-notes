@@ -45,7 +45,10 @@ export default function Home() {
   }
 
   return (
-    <section id="notes" className="py-16 px-4 md:px-20 min-h-screen">
+    <section
+      id="notes"
+      className="py-16 px-4 md:px-20 max-w-[1800px] mx-auto min-h-screen"
+    >
       {/* Header */}
       <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>

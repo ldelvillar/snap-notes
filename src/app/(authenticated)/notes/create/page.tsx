@@ -81,9 +81,7 @@ export default function CreateNotePage() {
   const handleCreateNote = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     if (!user) {
       router.push("/login");
@@ -95,7 +93,7 @@ export default function CreateNotePage() {
 
     try {
       await createNote(user, formData.title, formData.text);
-      refetchNotes(); // Refetch notes to update sidebar
+      refetchNotes();
       router.replace("/notes");
     } catch (err) {
       if (err instanceof Error) {
@@ -150,8 +148,9 @@ export default function CreateNotePage() {
               value={formData.title}
               onChange={handleChange}
               disabled={isSubmitting}
-              className={`p-2 w-full text-text-100 border-b border-border focus:outline-none focus:border-primary transition-colors
-                                ${errors.title ? "border-red-500" : ""}`}
+              className={`p-2 w-full text-text-100 border-b border-border focus:outline-none focus:border-primary transition-colors ${
+                errors.title ? "border-red-500" : ""
+              }`}
             />
             {errors.title && (
               <p
@@ -178,8 +177,9 @@ export default function CreateNotePage() {
               required
               rows={6}
               disabled={isSubmitting}
-              className={`p-3 w-full text-text-100 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors
-                                ${errors.text ? "border-red-500" : ""}`}
+              className={`p-3 w-full text-text-100 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors ${
+                errors.text ? "border-red-500" : ""
+              }`}
             />
             {errors.text && (
               <p

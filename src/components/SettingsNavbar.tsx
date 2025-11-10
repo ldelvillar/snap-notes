@@ -22,7 +22,7 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
   const activeTab = getActiveTab();
 
   return (
-    <section className="py-16 px-4 md:px-8 text-text-200">
+    <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto text-text-200">
       <h1 className="mb-6 md:mb-8 text-2xl text-text-300 font-semibold">
         Settings
       </h1>
