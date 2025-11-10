@@ -41,7 +41,23 @@ pnpm install
 npm install
 ```
 
-3. Start the development server:
+3. Set up environment variables:
+
+Create a `.env.local` file in the root directory with the following Firebase configuration variables:
+
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key_here
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain_here
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id_here
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket_here
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id_here
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id_here
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id_here
+```
+
+> **Note:** These variables are prefixed with `NEXT_PUBLIC_` because they are exposed to the browser. To obtain these values, create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com) and retrieve the configuration from your project settings.
+
+4. Start the development server:
 
 ```bash
 pnpm dev
@@ -49,7 +65,7 @@ pnpm dev
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+5. Open your browser and navigate to `http://localhost:3000`
 
 ## 🛠️ Built With
 
@@ -79,10 +95,7 @@ snap-notes/
 │   ├── data/           # Data models and mock data
 │   ├── lib/            # Utility functions and helpers
 │   ├── styles/         # Global styles
-│   ├── types/          # TypeScript type definitions and interfaces
-│   ├── App.tsx         # Main application component
-│   ├── main.tsx        # Application entry point
-│   └── index.css       # Global styles
+│   └── types/          # TypeScript type definitions and interfaces
 ├── package.json        # Project dependencies
 ├── tsconfig.json       # TypeScript configuration
 ├── README.md           # This file
