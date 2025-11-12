@@ -9,12 +9,14 @@ import { useAuth } from "@/context/useGlobalContext";
 import { Note } from "@/types";
 import { handleDeleteNote } from "@/lib/notesService";
 import AccountMenu from "@/components/AccountMenu";
+import SearchResults from "@/components/SearchResults";
 import Toast from "@/components/Toast";
 import MenuIcon from "@/assets/Menu";
 import CrossIcon from "@/assets/Cross";
 import SidebarArrow from "@/assets/SidebarArrow";
 import DocumentIcon from "@/assets/Document";
 import EditIcon from "@/assets/Edit";
+import Magnifier from "@/assets/Magnifier";
 import ThreeDotsIcon from "@/assets/ThreeDots";
 import PencilIcon from "@/assets/Pencil";
 import TrashIcon from "@/assets/Trash";
@@ -35,6 +37,7 @@ export default function Sidebar({
   const { user } = useAuth();
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
@@ -75,7 +78,7 @@ export default function Sidebar({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMobileOpen, accountMenuOpen, openNoteMenuId]);
+  }, [isMobileOpen, accountMenuOpen, openNoteMenuId, searchOpen]);
 
   // Handle note deletion
   const handleNoteDeletion = async (
@@ -164,10 +167,11 @@ export default function Sidebar({
 
         {/* Sidebar Content */}
         <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
-          <div className="space-y-4 px-2 py-4 overflow-y-auto">
+          <div className="px-2 py-4 overflow-y-auto">
             <Link
               href="/notes/create"
-              className={`mb-2 p-2 flex items-center font-medium text-text-200 rounded-lg transition-all duration-300 hover:bg-bg-700 ${
+              onClick={() => setIsMobileOpen(false)}
+              className={`p-2 flex items-center text-text-200 rounded-lg transition-all duration-300 hover:bg-bg-700 ${
                 isCollapsed ? "justify-center" : ""
               }`}
             >
@@ -182,9 +186,30 @@ export default function Sidebar({
                 New note
               </span>
             </Link>
+
+            <button
+              onClick={() => {
+                setSearchOpen(true);
+                setIsMobileOpen(false);
+              }}
+              className={`mb-2 p-2 w-full flex items-center text-text-200 rounded-lg transition-all duration-300 hover:bg-bg-700 ${
+                isCollapsed ? "justify-center" : ""
+              }`}
+            >
+              <Magnifier
+                className={`inline size-4 ${isCollapsed ? "" : "mr-2"}`}
+              />
+              <span
+                className={`transition-opacity duration-300 ${
+                  isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
+                }`}
+              >
+                Search notes
+              </span>
+            </button>
           </div>
 
-          <div className="flex-1 space-y-4 px-2 py-4 overflow-y-auto">
+          <div className="px-2 py-4 space-y-4 flex-1 overflow-y-auto">
             <h2
               className={`mb-2 px-2 text-sm font-medium text-text-400 transition-opacity duration-300 ${
                 isCollapsed ? "opacity-0 h-0" : "opacity-100"
@@ -210,14 +235,14 @@ export default function Sidebar({
                   No notes yet
                 </div>
               ) : (
-                notes.map((item) => (
+                notes.map((note) => (
                   <div
-                    key={item.id}
+                    key={note.id}
                     className="relative"
-                    ref={openNoteMenuId === item.id ? noteMenuRef : null}
+                    ref={openNoteMenuId === note.id ? noteMenuRef : null}
                   >
                     <Link
-                      href={`/notes/${item.id}`}
+                      href={`/notes/${note.id}`}
                       className={`flex items-center ${
                         isCollapsed ? "justify-center" : "justify-between"
                       } py-2 px-2 text-sm rounded-lg hover:bg-bg-700 group`}
@@ -236,15 +261,15 @@ export default function Sidebar({
                             isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
                           }`}
                         >
-                          {item.title}
+                          {note.title}
                         </span>
                       </div>
                       {!isCollapsed && (
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={(e) => toggleNoteMenu(e, item.id)}
+                            onClick={(e) => toggleNoteMenu(e, note.id)}
                             className={`p-1 rounded opacity-0 hover:bg-bg-600 group-hover:opacity-100 transition-opacity ${
-                              openNoteMenuId === item.id
+                              openNoteMenuId === note.id
                                 ? "opacity-100 bg-bg-600"
                                 : ""
                             }`}
@@ -257,11 +282,11 @@ export default function Sidebar({
                     </Link>
 
                     {/* Dropdown Menu */}
-                    {openNoteMenuId === item.id && !isCollapsed && (
+                    {openNoteMenuId === note.id && !isCollapsed && (
                       <div className="mt-1 w-32 absolute right-0 top-full z-50 bg-bg-sidebar border border-border rounded-lg shadow-lg">
                         <div className="py-2">
                           <button
-                            onClick={(e) => handleEditNote(e, item.id)}
+                            onClick={(e) => handleEditNote(e, note.id)}
                             className="w-full px-2"
                           >
                             <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-800 rounded-lg">
@@ -270,11 +295,11 @@ export default function Sidebar({
                             </div>
                           </button>
                           <button
-                            onClick={(e) => handleNoteDeletion(e, item.id)}
-                            disabled={isDeleting === item.id}
+                            onClick={(e) => handleNoteDeletion(e, note.id)}
+                            disabled={isDeleting === note.id}
                             className="w-full px-2 text-text-danger"
                           >
-                            {isDeleting === item.id ? (
+                            {isDeleting === note.id ? (
                               <div className="px-2 py-1 w-full flex items-center gap-2">
                                 <div
                                   className="size-4 rounded-full border-b-2 border-red-500 animate-spin"
@@ -299,7 +324,7 @@ export default function Sidebar({
             </nav>
           </div>
 
-          {/* Sidebar Footer */}
+          {/* Footer */}
           <div className="p-2" ref={accountMenuRef}>
             <button
               className={`w-full p-2 flex items-center hover:bg-bg-700 rounded-lg ${
@@ -360,6 +385,8 @@ export default function Sidebar({
       <main className="flex-1 w-full h-screen overflow-y-auto transition-all duration-300 ease-in-out">
         {children}
       </main>
+
+      {searchOpen && <SearchResults setSearchOpen={setSearchOpen} />}
 
       {/* Toast for deletion errors */}
       {deletionError && (
