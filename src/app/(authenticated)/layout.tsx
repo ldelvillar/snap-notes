@@ -2,11 +2,13 @@
 
 import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+
+import Sidebar from '@/components/Sidebar';
+import ContentSkeleton from '@/components/ContentSkeleton';
 import { useAuth } from '@/context/useGlobalContext';
 import { NotesProvider, useNotes } from '@/context/NotesContext';
 import { getNotes } from '@/lib/notesService';
-import Sidebar from '@/components/Sidebar';
-import ContentSkeleton from '@/components/ContentSkeleton';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -15,6 +17,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   const { notes, notesLoading, setNotes, setNotesLoading, registerRefetch } =
     useNotes();
   const router = useRouter();
+  useKeyboardShortcuts();
 
   // Apply theme on mount and listen for system theme changes
   useEffect(() => {
@@ -64,9 +67,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (user) {
-      fetchNotes();
-    }
+    if (user) fetchNotes();
   }, [user, fetchNotes]);
 
   useEffect(() => {

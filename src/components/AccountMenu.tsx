@@ -9,20 +9,23 @@ import InfoIcon from '@/assets/Info';
 import HalfArrow from '@/assets/HalfArrow';
 import LogoutIcon from '@/assets/Logout';
 import DocumentIcon from '@/assets/Document';
+import KeyboardIcon from '@/assets/Keyboard';
 import { User } from '@/types';
-
 interface AccountMenuProps {
   user: User;
   setAccountMenuOpen: (open: boolean) => void;
   setIsMobileOpen: (open: boolean) => void;
+  setShortcutsOpen: (open: boolean) => void;
 }
 
 export default function AccountMenu({
   user,
   setAccountMenuOpen,
   setIsMobileOpen,
+  setShortcutsOpen,
 }: AccountMenuProps) {
   const [learnMoreOpen, setLearnMoreOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
@@ -43,18 +46,40 @@ export default function AccountMenu({
         </Link>
       </div>
 
-      <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
-        <Link
-          href="/help"
-          className="flex items-center gap-2"
-          onClick={() => {
-            setAccountMenuOpen(false);
-            setIsMobileOpen(false);
-          }}
-        >
+      <div
+        className="relative cursor-pointer rounded-lg p-2 hover:bg-bg-700"
+        onMouseEnter={() => setHelpOpen(true)}
+        onMouseLeave={() => setHelpOpen(false)}
+      >
+        <div className="flex items-center gap-2">
           <HelpIcon className="size-4" />
-          Get help
-        </Link>
+          Help
+          <HalfArrow className="ml-auto size-4" />
+        </div>
+
+        {/* Submenu */}
+        {helpOpen && (
+          <div className="absolute top-0 left-full -ml-2 w-56 pl-3">
+            <div className="rounded-lg border border-border bg-bg-menu p-2 text-sm text-text-200 shadow-lg">
+              <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
+                <button
+                  onClick={() => setShortcutsOpen(true)}
+                  className="flex items-center gap-2"
+                >
+                  <KeyboardIcon className="size-4" />
+                  Keyboard shortcuts
+                </button>
+              </div>
+
+              <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
+                <Link href="/help" className="flex items-center gap-2">
+                  <HelpIcon className="size-4" />
+                  Help center
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <hr className="my-1 border-bg-600" />
@@ -94,7 +119,7 @@ export default function AccountMenu({
                   className="flex items-center gap-2"
                 >
                   <DocumentIcon className="size-4" />
-                  Privacy Policy
+                  Privacy policy
                 </Link>
               </div>
 
@@ -104,7 +129,7 @@ export default function AccountMenu({
                   className="flex items-center gap-2"
                 >
                   <DocumentIcon className="size-4" />
-                  Terms of Service
+                  Terms of service
                 </Link>
               </div>
             </div>

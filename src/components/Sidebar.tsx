@@ -8,6 +8,7 @@ import { useAuth } from '@/context/useGlobalContext';
 import { Note } from '@/types';
 import AccountMenu from '@/components/AccountMenu';
 import SearchResults from '@/components/SearchResults';
+import KeyboardShortcuts from '@/components/KeyboardShortcuts';
 import Toast from '@/components/Toast';
 import MenuIcon from '@/assets/Menu';
 import CrossIcon from '@/assets/Cross';
@@ -34,6 +35,7 @@ export default function Sidebar({
   const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
@@ -74,6 +76,15 @@ export default function Sidebar({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobileOpen, accountMenuOpen, openNoteMenuId, searchOpen]);
+
+  // Listen for global open-search event
+  useEffect(() => {
+    const handleOpenSearch = (event: Event) => {
+      setSearchOpen(prev => !prev);
+    };
+    window.addEventListener('toggle-search', handleOpenSearch);
+    return () => window.removeEventListener('toggle-search', handleOpenSearch);
+  }, []);
 
   // Toggle note menu
   const toggleNoteMenu = (e: React.MouseEvent, noteId: string) => {
@@ -141,7 +152,7 @@ export default function Sidebar({
             <Link
               href="/notes/create"
               onClick={() => setIsMobileOpen(false)}
-              className={`flex items-center rounded-lg p-2 text-text-200 transition-all duration-300 hover:bg-bg-700 ${
+              className={`group flex items-center rounded-lg p-2 text-text-200 transition-all duration-300 hover:bg-bg-700 ${
                 isCollapsed ? 'justify-center' : ''
               }`}
             >
@@ -155,6 +166,9 @@ export default function Sidebar({
               >
                 New note
               </span>
+              <span className="ml-auto hidden text-sm text-text-400 group-hover:inline">
+                Ctrl + Alt + N
+              </span>
             </Link>
 
             <button
@@ -162,7 +176,7 @@ export default function Sidebar({
                 setSearchOpen(true);
                 setIsMobileOpen(false);
               }}
-              className={`mb-2 flex w-full items-center rounded-lg p-2 text-text-200 transition-all duration-300 hover:bg-bg-700 ${
+              className={`group mb-2 flex w-full items-center rounded-lg p-2 text-text-200 transition-all duration-300 hover:bg-bg-700 ${
                 isCollapsed ? 'justify-center' : ''
               }`}
             >
@@ -175,6 +189,9 @@ export default function Sidebar({
                 }`}
               >
                 Search notes
+              </span>
+              <span className="ml-auto hidden text-sm text-text-400 group-hover:inline">
+                Ctrl + K
               </span>
             </button>
           </div>
@@ -315,6 +332,7 @@ export default function Sidebar({
                 user={user}
                 setAccountMenuOpen={setAccountMenuOpen}
                 setIsMobileOpen={setIsMobileOpen}
+                setShortcutsOpen={setShortcutsOpen}
               />
             )}
           </div>
@@ -338,6 +356,9 @@ export default function Sidebar({
       </main>
 
       {searchOpen && <SearchResults setSearchOpen={setSearchOpen} />}
+      {shortcutsOpen && (
+        <KeyboardShortcuts setShortcutsOpen={setShortcutsOpen} />
+      )}
 
       {/* Toast for deletion errors */}
       {deletionError && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { useAuth } from '@/context/useGlobalContext';
@@ -95,7 +95,7 @@ export default function NotePage() {
     setEditedNote(note);
   };
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (!user) {
       router.push('/login');
       return;
@@ -117,7 +117,18 @@ export default function NotePage() {
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [user, editedNote, router, refetchNotes]);
+
+  // Listen for Ctrl+S save event
+  useEffect(() => {
+    const handleSaveEvent = () => {
+      if (isEditing) {
+        handleSave();
+      }
+    };
+    window.addEventListener('save-note', handleSaveEvent);
+    return () => window.removeEventListener('save-note', handleSaveEvent);
+  }, [isEditing, handleSave]);
 
   const handleCancel = () => {
     setIsEditing(false);
