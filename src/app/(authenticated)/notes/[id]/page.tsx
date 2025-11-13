@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-import { useAuth } from "@/context/useGlobalContext";
-import { useNotes } from "@/context/NotesContext";
-import { getNoteById, handleDeleteNote, updateNote } from "@/lib/notesService";
-import { Note } from "@/types";
-import ContentSkeleton from "@/components/ContentSkeleton";
-import ErrorMessage from "@/components/ErrorMessage";
-import TrashIcon from "@/assets/Trash";
-import PencilIcon from "@/assets/Pencil";
-import DocumentIcon from "@/assets/Document";
-import CalendarIcon from "@/assets/Calendar";
+import { useAuth } from '@/context/useGlobalContext';
+import { useNotes } from '@/context/NotesContext';
+import { getNoteById, handleDeleteNote, updateNote } from '@/lib/notesService';
+import { Note } from '@/types';
+import ContentSkeleton from '@/components/ContentSkeleton';
+import ErrorMessage from '@/components/ErrorMessage';
+import TrashIcon from '@/assets/Trash';
+import PencilIcon from '@/assets/Pencil';
+import DocumentIcon from '@/assets/Document';
+import CalendarIcon from '@/assets/Calendar';
 
 const INITIAL_NOTE: Note = {
-  title: "",
-  text: "",
-  creator: "",
-  id: "",
+  title: '',
+  text: '',
+  creator: '',
+  id: '',
   updatedAt: new Date(0),
   pinnedAt: null,
 };
@@ -41,14 +41,14 @@ export default function NotePage() {
   const router = useRouter();
 
   useEffect(() => {
-    document.title = note.title + " - SnapNotes";
+    document.title = note.title + ' - SnapNotes';
   }, [note.title]);
 
   useEffect(() => {
     if (authLoading) return;
 
     if (!user) {
-      router.push("/login");
+      router.push('/login');
       return;
     }
 
@@ -56,15 +56,15 @@ export default function NotePage() {
       try {
         const noteData = await getNoteById(user, id);
         if (!noteData) {
-          setLoadingState({ isLoading: false, error: "Note not found" });
+          setLoadingState({ isLoading: false, error: 'Note not found' });
           return;
         }
         setNote(noteData);
         setEditedNote(noteData);
 
         // Check if edit mode should be enabled from URL
-        const editParam = searchParams.get("edit");
-        if (editParam === "true") setIsEditing(true);
+        const editParam = searchParams.get('edit');
+        if (editParam === 'true') setIsEditing(true);
         setLoadingState({ isLoading: false, error: null });
       } catch (err) {
         setLoadingState({
@@ -72,7 +72,7 @@ export default function NotePage() {
           error:
             err instanceof Error
               ? err.message
-              : "Failed to load note. Please try again.",
+              : 'Failed to load note. Please try again.',
         });
       }
     };
@@ -87,7 +87,7 @@ export default function NotePage() {
     if (!user) return;
     await handleDeleteNote(e, user, noteId, setIsDeleting, setDeletionError);
     refetchNotes();
-    router.push("/notes");
+    router.push('/notes');
   };
 
   const handleEdit = () => {
@@ -97,7 +97,7 @@ export default function NotePage() {
 
   const handleSave = async () => {
     if (!user) {
-      router.push("/login");
+      router.push('/login');
       return;
     }
     try {
@@ -112,7 +112,7 @@ export default function NotePage() {
         error:
           err instanceof Error
             ? err.message
-            : "Failed to save changes. Please try again.",
+            : 'Failed to save changes. Please try again.',
       });
     } finally {
       setIsSaving(false);
@@ -144,22 +144,22 @@ export default function NotePage() {
   }
 
   return (
-    <article className="my-16 px-4 md:px-20 max-w-7xl mx-auto relative text-text-100 rounded-lg">
+    <article className="relative mx-auto my-16 max-w-7xl rounded-lg px-4 text-text-100 md:px-20">
       <div className="absolute top-2 right-2">
         <button
-          onClick={(e) => handleNoteDeletion(e, note.id)}
-          className="group p-2 hover:bg-gray-500 z-20 rounded-full transition-colors"
+          onClick={e => handleNoteDeletion(e, note.id)}
+          className="group z-20 rounded-full p-2 transition-colors hover:bg-gray-500"
           disabled={isDeleting === note.id || isEditing}
           aria-label="Delete note"
         >
           {isDeleting === note.id ? (
             <div
-              className="size-5 rounded-full border-b-2 border-gray-900 animate-spin"
+              className="size-5 animate-spin rounded-full border-b-2 border-gray-900"
               role="status"
               aria-label="Deleting note"
             />
           ) : (
-            <TrashIcon className="size-5 group-hover:text-red-600 transition-colors" />
+            <TrashIcon className="size-5 transition-colors group-hover:text-red-600" />
           )}
         </button>
       </div>
@@ -167,20 +167,20 @@ export default function NotePage() {
       <div className="absolute top-2 right-12">
         <button
           onClick={isEditing ? handleSave : handleEdit}
-          className="group p-2 hover:bg-gray-500 z-20 rounded-full transition-colors"
+          className="group z-20 rounded-full p-2 transition-colors hover:bg-gray-500"
           disabled={isDeleting === note.id || isSaving}
-          aria-label={isEditing ? "Save note" : "Edit note"}
+          aria-label={isEditing ? 'Save note' : 'Edit note'}
         >
           {isSaving ? (
             <div
-              className="size-5 rounded-full border-b-2 border-gray-900 animate-spin"
+              className="size-5 animate-spin rounded-full border-b-2 border-gray-900"
               role="status"
               aria-label="Saving note"
             />
           ) : (
             <PencilIcon
               className={`size-5 ${
-                isEditing ? "text-primary" : "group-hover:text-primary"
+                isEditing ? 'text-primary' : 'group-hover:text-primary'
               } transition-colors`}
             />
           )}
@@ -193,30 +193,30 @@ export default function NotePage() {
           <input
             type="text"
             value={editedNote.title}
-            onChange={(e) =>
+            onChange={e =>
               setEditedNote({ ...editedNote, title: e.target.value })
             }
-            className="px-2 py-1 mb-6 w-full text-3xl text-text-100 font-bold border-b border-border focus:outline-none focus:border-primary transition-colors"
+            className="mb-6 w-full border-b border-border px-2 py-1 text-3xl font-bold text-text-100 transition-colors focus:border-primary focus:outline-none"
           />
           <textarea
             value={editedNote.text}
-            onChange={(e) =>
+            onChange={e =>
               setEditedNote({ ...editedNote, text: e.target.value })
             }
-            className="px-2 py-1 w-full min-h-[200px] text-lg text-text-100 border border-border rounded focus:outline-none focus:border-primary transition-colors"
+            className="min-h-[200px] w-full rounded border border-border px-2 py-1 text-lg text-text-100 transition-colors focus:border-primary focus:outline-none"
           />
           <div className="mt-4 flex gap-2">
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+              className="rounded bg-primary px-4 py-2 text-white transition-colors hover:bg-primary/90"
             >
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? 'Saving...' : 'Save'}
             </button>
             <button
               onClick={handleCancel}
               disabled={isSaving}
-              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+              className="rounded bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700"
             >
               Cancel
             </button>
@@ -225,22 +225,22 @@ export default function NotePage() {
       ) : (
         /* View mode */
         <>
-          <h1 className="text-3xl font-bold mb-6">{note.title}</h1>
-          <div className="flex items-center gap-4 mb-6 text-sm text-text-400">
+          <h1 className="mb-6 text-3xl font-bold">{note.title}</h1>
+          <div className="mb-6 flex items-center gap-4 text-sm text-text-400">
             <span className="flex items-center gap-1">
               <CalendarIcon className="size-4" />
-              {note.updatedAt.toLocaleDateString("en-GB", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
+              {note.updatedAt.toLocaleDateString('en-GB', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
               })}
             </span>
             <span className="flex items-center gap-1">
-              <DocumentIcon className="size-4" /> {note.text.length}{" "}
-              {note.text.length === 1 ? "character" : "characters"}
+              <DocumentIcon className="size-4" /> {note.text.length}{' '}
+              {note.text.length === 1 ? 'character' : 'characters'}
             </span>
           </div>
-          <div className="text-lg whitespace-pre-wrap leading-relaxed">
+          <div className="text-lg leading-relaxed whitespace-pre-wrap">
             {note.text}
           </div>
         </>

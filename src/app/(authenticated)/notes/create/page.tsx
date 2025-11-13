@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import ErrorMessage from "@/components/ErrorMessage";
-import PlusIcon from "@/assets/Plus";
-import { useAuth } from "@/context/useGlobalContext";
-import { useNotes } from "@/context/NotesContext";
-import { createNote } from "@/lib/notesService";
+import ErrorMessage from '@/components/ErrorMessage';
+import PlusIcon from '@/assets/Plus';
+import { useAuth } from '@/context/useGlobalContext';
+import { useNotes } from '@/context/NotesContext';
+import { createNote } from '@/lib/notesService';
 
 interface NoteFormData {
   title: string;
@@ -25,18 +25,18 @@ export default function CreateNotePage() {
   const { refetchNotes } = useNotes();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [formData, setFormData] = useState<NoteFormData>({
-    title: "",
-    text: "",
+    title: '',
+    text: '',
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = "Create New Note | SnapNotes";
+    document.title = 'Create New Note | SnapNotes';
     document
       .querySelector('meta[name="description"]')
-      ?.setAttribute("content", "Create a new note with SnapNotes");
+      ?.setAttribute('content', 'Create a new note with SnapNotes');
 
     // Auto-focus the textarea when component mounts
     if (textareaRef.current) {
@@ -48,13 +48,13 @@ export default function CreateNotePage() {
     const newErrors: FormErrors = {};
 
     if (formData.title.length > 100) {
-      newErrors.title = "Title must be less than 100 characters";
+      newErrors.title = 'Title must be less than 100 characters';
     }
 
     if (!formData.text.trim()) {
-      newErrors.text = "Text is required";
+      newErrors.text = 'Text is required';
     } else if (formData.text.length > 3000) {
-      newErrors.text = "Text must be less than 3000 characters";
+      newErrors.text = 'Text must be less than 3000 characters';
     }
 
     setErrors(newErrors);
@@ -65,13 +65,13 @@ export default function CreateNotePage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
+      setErrors(prev => ({
         ...prev,
         [name]: undefined,
       }));
@@ -84,7 +84,7 @@ export default function CreateNotePage() {
     if (!validateForm()) return;
 
     if (!user) {
-      router.push("/login");
+      router.push('/login');
       return;
     }
 
@@ -94,14 +94,14 @@ export default function CreateNotePage() {
     try {
       await createNote(user, formData.title, formData.text);
       refetchNotes();
-      router.replace("/notes");
+      router.replace('/notes');
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Failed to create note. Please try again later.");
+        setError('Failed to create note. Please try again later.');
       }
-      console.error("Error creating note:", err);
+      console.error('Error creating note:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -109,9 +109,9 @@ export default function CreateNotePage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[200px]">
+      <div className="flex min-h-[200px] items-center justify-center">
         <div
-          className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"
+          className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"
           role="status"
           aria-label="Loading"
         />
@@ -120,14 +120,14 @@ export default function CreateNotePage() {
   }
 
   if (!user) {
-    router.push("/login");
+    router.push('/login');
     return null;
   }
 
   return (
-    <section id="create" className="py-16 px-4 md:px-20">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl text-text-200 font-bold">Create new note</h1>
+    <section id="create" className="px-4 py-16 md:px-20">
+      <div className="mx-auto max-w-2xl">
+        <h1 className="text-3xl font-bold text-text-200">Create new note</h1>
 
         {error && (
           <div className="mt-12 md:mx-20">
@@ -135,7 +135,7 @@ export default function CreateNotePage() {
           </div>
         )}
 
-        <form onSubmit={handleCreateNote} className="flex flex-col gap-6 mt-8">
+        <form onSubmit={handleCreateNote} className="mt-8 flex flex-col gap-6">
           <div className="space-y-2">
             <label htmlFor="title" className="sr-only">
               Title
@@ -148,13 +148,13 @@ export default function CreateNotePage() {
               value={formData.title}
               onChange={handleChange}
               disabled={isSubmitting}
-              className={`p-2 w-full text-text-100 border-b border-border focus:outline-none focus:border-primary transition-colors ${
-                errors.title ? "border-red-500" : ""
+              className={`w-full border-b border-border p-2 text-text-100 transition-colors focus:border-primary focus:outline-none ${
+                errors.title ? 'border-red-500' : ''
               }`}
             />
             {errors.title && (
               <p
-                className="text-red-500 text-sm"
+                className="text-sm text-red-500"
                 role="alert"
                 aria-live="polite"
               >
@@ -177,15 +177,15 @@ export default function CreateNotePage() {
               required
               rows={6}
               disabled={isSubmitting}
-              className={`p-3 w-full text-text-100 border border-border rounded-lg focus:outline-none focus:border-primary transition-colors ${
-                errors.text ? "border-red-500" : ""
+              className={`w-full rounded-lg border border-border p-3 text-text-100 transition-colors focus:border-primary focus:outline-none ${
+                errors.text ? 'border-red-500' : ''
               }`}
             />
             {errors.text && (
               <p
                 role="alert"
                 aria-live="polite"
-                className="text-red-500 text-sm"
+                className="text-sm text-red-500"
               >
                 {errors.text}
               </p>
@@ -194,13 +194,13 @@ export default function CreateNotePage() {
 
           <button
             type="submit"
-            className="w-full md:w-auto px-10 py-4 mt-6 text-white text-lg font-medium bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full rounded-lg bg-primary px-10 py-4 text-lg font-medium text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 md:w-auto"
             disabled={isSubmitting}
           >
             <div className="flex flex-row items-center justify-center gap-2">
               {isSubmitting ? (
                 <div
-                  className="animate-spin size-5 border-b-2 border-white rounded-full"
+                  className="size-5 animate-spin rounded-full border-b-2 border-white"
                   role="status"
                   aria-label="Creating note"
                 />

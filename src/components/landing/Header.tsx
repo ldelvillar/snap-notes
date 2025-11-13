@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import Menu from "@/assets/Menu";
-import Logo from "@/assets/Logo";
+import Link from 'next/link';
+import { useState } from 'react';
+import Menu from '@/assets/Menu';
+import Logo from '@/assets/Logo';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="w-full fixed top-0 text-white z-40 transition-all duration-300 backdrop-blur-lg">
-        <div className="container mx-auto p-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center font-bold text-lg">
-            <Logo className="size-8 mr-2 text-primary" />
+      <header className="fixed top-0 z-40 w-full text-white backdrop-blur-lg transition-all duration-300">
+        <div className="container mx-auto flex items-center justify-between p-3">
+          <Link href="/" className="flex items-center text-lg font-bold">
+            <Logo className="mr-2 size-8 text-primary" />
             SnapNotes
           </Link>
 
-          <nav className="hidden lg:flex lg:items-center space-x-8 text-base">
+          <nav className="hidden space-x-8 text-base lg:flex lg:items-center">
             <Link href="/features" className="hover:text-primary">
               Features
             </Link>
@@ -32,7 +32,7 @@ export default function Header() {
             </Link>
             <Link
               href="/notes"
-              className="px-4 py-2 bg-primary font-bold text-white rounded-xl hover:bg-primary/90 transition duration-300"
+              className="rounded-xl bg-primary px-4 py-2 font-bold text-white transition duration-300 hover:bg-primary/90"
             >
               Go to SnapNotes
             </Link>
@@ -40,8 +40,8 @@ export default function Header() {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Close Menu" : "Open Menu"}
-            className="lg:hidden focus:outline-none"
+            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            className="focus:outline-none lg:hidden"
           >
             <Menu className="size-6" />
           </button>
@@ -49,8 +49,8 @@ export default function Header() {
 
         <nav
           className={`${
-            mobileMenuOpen ? "block" : "hidden"
-          } p-4 space-y-4 h-screen backdrop-blur-lg lg:hidden`}
+            mobileMenuOpen ? 'block' : 'hidden'
+          } h-screen space-y-4 p-4 backdrop-blur-lg lg:hidden`}
         >
           <Link href="/features" className="block hover:text-gray-900">
             Features
@@ -66,7 +66,7 @@ export default function Header() {
           </Link>
           <Link
             href="/notes"
-            className="px-4 py-2 bg-primary font-bold text-white rounded-xl hover:bg-primary/90 transition duration-300"
+            className="rounded-xl bg-primary px-4 py-2 font-bold text-white transition duration-300 hover:bg-primary/90"
           >
             Go to SnapNotes
           </Link>

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 interface ToastProps {
   message: string;
-  type?: "success" | "error" | "info";
+  type?: 'success' | 'error' | 'info';
   onClose: () => void;
   duration?: number;
 }
 
 export default function Toast({
   message,
-  type = "success",
+  type = 'success',
   onClose,
   duration = 3000,
 }: ToastProps) {
@@ -24,27 +24,27 @@ export default function Toast({
   }, [duration, onClose]);
 
   const bgColor = {
-    success: "bg-green-600",
-    error: "bg-red-600",
-    info: "bg-blue-600",
+    success: 'bg-green-600',
+    error: 'bg-red-600',
+    info: 'bg-blue-600',
   }[type];
 
   const icon = {
-    success: "✓",
-    error: "✕",
-    info: "ℹ",
+    success: '✓',
+    error: '✕',
+    info: 'ℹ',
   }[type];
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 animate-slide-up">
+    <div className="animate-slide-up fixed right-6 bottom-6 z-50">
       <div
-        className={`${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 min-w-[300px] max-w-md`}
+        className={`${bgColor} flex max-w-md min-w-[300px] items-center gap-3 rounded-lg px-6 py-4 text-white shadow-lg`}
       >
         <span className="text-xl font-bold">{icon}</span>
         <p className="flex-1">{message}</p>
         <button
           onClick={onClose}
-          className="text-white/80 hover:text-white transition-colors ml-2"
+          className="ml-2 text-white/80 transition-colors hover:text-white"
           aria-label="Close"
         >
           ✕

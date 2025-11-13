@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import Cta from "@/components/landing/Cta";
-import { PLANS } from "@/data/plans";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Cta from '@/components/landing/Cta';
+import { PLANS } from '@/data/plans';
 
 interface FAQ {
   question: string;
@@ -12,18 +12,18 @@ interface FAQ {
 
 const faqs: FAQ[] = [
   {
-    question: "What is Snap Notes?",
+    question: 'What is Snap Notes?',
     answer:
-      "Snap Notes is a note-taking application designed to help you capture and organize your thoughts, ideas, and information efficiently. It offers a range of features to enhance your productivity and creativity.",
+      'Snap Notes is a note-taking application designed to help you capture and organize your thoughts, ideas, and information efficiently. It offers a range of features to enhance your productivity and creativity.',
   },
   {
-    question: "Can I access my notes offline?",
+    question: 'Can I access my notes offline?',
     answer:
-      "Yes, Snap Notes offers offline access to your notes, allowing you to view and edit them without an internet connection.",
+      'Yes, Snap Notes offers offline access to your notes, allowing you to view and edit them without an internet connection.',
   },
   {
-    question: "What payment methods do you accept?",
-    answer: "We accept all major credit cards, as well as PayPal.",
+    question: 'What payment methods do you accept?',
+    answer: 'We accept all major credit cards, as well as PayPal.',
   },
 ];
 
@@ -31,21 +31,21 @@ export default function PricingPage() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
   useEffect(() => {
-    document.title = "Pricing Plans | SnapNotes";
+    document.title = 'Pricing Plans | SnapNotes';
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute(
-        "content",
-        "Explore Snap Notes pricing plans and choose the one that fits your needs. From free to premium options, find the perfect plan for you."
+        'content',
+        'Explore Snap Notes pricing plans and choose the one that fits your needs. From free to premium options, find the perfect plan for you.'
       );
   }, []);
 
   return (
     <div className="min-h-screen text-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+      <section className="px-4 pt-32 pb-20">
+        <div className="mx-auto max-w-4xl space-y-4 text-center">
+          <h1 className="text-4xl leading-tight font-bold md:text-5xl">
             Choose the plan that&apos;s right for you
           </h1>
           <p className="text-lg text-[#b09eb8]">
@@ -55,20 +55,20 @@ export default function PricingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="max-w-6xl mx-auto mt-16 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-3">
           {PLANS.map((plan, idx) => (
             <div
               key={idx}
-              className={`relative rounded-lg overflow-hidden transition-all duration-300 ${
+              className={`relative overflow-hidden rounded-lg transition-all duration-300 ${
                 plan.popular
-                  ? "md:scale-105 border-2 border-primary shadow-2xl shadow-primary/30"
-                  : "border border-[#4d3d54] hover:border-primary/50"
+                  ? 'border-2 border-primary shadow-2xl shadow-primary/30 md:scale-105'
+                  : 'border border-[#4d3d54] hover:border-primary/50'
               } bg-[#241c26]`}
             >
               {/* Popular Badge */}
               {plan.popular && (
-                <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <span className="bg-primary text-white text-sm font-bold px-4 py-1 rounded-full">
+                <div className="absolute top-8 left-1/2 -translate-x-1/2 -translate-y-1/2 transform">
+                  <span className="rounded-full bg-primary px-4 py-1 text-sm font-bold text-white">
                     Most Popular
                   </span>
                 </div>
@@ -76,10 +76,10 @@ export default function PricingPage() {
 
               <div className="p-8">
                 {/* Plan Name */}
-                <h3 className="text-2xl font-bold text-white mb-2">
+                <h3 className="mb-2 text-2xl font-bold text-white">
                   {plan.name}
                 </h3>
-                <p className="text-[#b09eb8] text-sm mb-6">
+                <p className="mb-6 text-sm text-[#b09eb8]">
                   {plan.description}
                 </p>
 
@@ -88,16 +88,16 @@ export default function PricingPage() {
                   <span className="text-4xl font-black text-white">
                     {plan.price}
                   </span>
-                  <span className="text-[#b09eb8] ml-2">/month</span>
+                  <span className="ml-2 text-[#b09eb8]">/month</span>
                 </div>
 
                 {/* CTA Button */}
                 <Link
                   href="/register"
-                  className={`block w-full py-3 rounded-lg font-bold text-center transition-all duration-300 mb-8 ${
+                  className={`mb-8 block w-full rounded-lg py-3 text-center font-bold transition-all duration-300 ${
                     plan.popular
-                      ? "bg-primary hover:bg-primary/90 text-white"
-                      : "bg-[#332938] hover:bg-[#3a303d] text-white border border-primary/20"
+                      ? 'bg-primary text-white hover:bg-primary/90'
+                      : 'border border-primary/20 bg-[#332938] text-white hover:bg-[#3a303d]'
                   }`}
                 >
                   {plan.cta}
@@ -108,10 +108,10 @@ export default function PricingPage() {
                   {plan.features.map((feature, fIdx) => (
                     <li
                       key={fIdx}
-                      className="flex items-center gap-3 text-[#b09eb8] text-sm"
+                      className="flex items-center gap-3 text-sm text-[#b09eb8]"
                     >
                       <svg
-                        className="w-5 h-5 text-primary shrink-0"
+                        className="h-5 w-5 shrink-0 text-primary"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -131,11 +131,11 @@ export default function PricingPage() {
         </div>
 
         <div className="mt-10 text-center">
-          <p className="text-[#b09eb8] mb-4">
-            Not sure which plan to pick?{" "}
+          <p className="mb-4 text-[#b09eb8]">
+            Not sure which plan to pick?{' '}
             <Link
               href="/contact"
-              className="text-primary hover:underline font-bold"
+              className="font-bold text-primary hover:underline"
             >
               Talk to us
             </Link>
@@ -144,9 +144,9 @@ export default function PricingPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12">
+      <section className="px-4 py-20">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-12 text-3xl font-bold">
             Frequently Asked Questions
           </h2>
 
@@ -154,18 +154,18 @@ export default function PricingPage() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-[#332938] rounded-lg overflow-hidden"
+                className="overflow-hidden rounded-lg bg-[#332938]"
               >
                 <button
                   onClick={() =>
                     setExpandedFaq(expandedFaq === index ? null : index)
                   }
-                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#3a303d] transition-colors"
+                  className="flex w-full items-center justify-between px-6 py-4 transition-colors hover:bg-[#3a303d]"
                 >
-                  <span className="font-medium text-left">{faq.question}</span>
+                  <span className="text-left font-medium">{faq.question}</span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${
-                      expandedFaq === index ? "rotate-180" : ""
+                    className={`h-5 w-5 transition-transform ${
+                      expandedFaq === index ? 'rotate-180' : ''
                     }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -179,7 +179,7 @@ export default function PricingPage() {
                 </button>
 
                 {expandedFaq === index && faq.answer && (
-                  <div className="px-6 py-4 border-t border-[#4d3d54] text-[#b09eb8]">
+                  <div className="border-t border-[#4d3d54] px-6 py-4 text-[#b09eb8]">
                     {faq.answer}
                   </div>
                 )}

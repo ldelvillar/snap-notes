@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, {
   createContext,
@@ -6,8 +6,8 @@ import React, {
   useCallback,
   useRef,
   useState,
-} from "react";
-import { Note } from "@/types";
+} from 'react';
+import { Note } from '@/types';
 
 interface NotesContextType {
   notes: Note[];
@@ -37,7 +37,7 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const refetchNotes = useCallback(() => {
-    refetchCallbacks.current.forEach((callback) => {
+    refetchCallbacks.current.forEach(callback => {
       callback();
     });
   }, []);
@@ -61,7 +61,7 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useNotes = () => {
   const context = useContext(NotesContext);
   if (!context) {
-    throw new Error("useNotes must be used within NotesProvider");
+    throw new Error('useNotes must be used within NotesProvider');
   }
   return context;
 };

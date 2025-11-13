@@ -1,4 +1,4 @@
-import SettingsNavbar from "@/components/SettingsNavbar";
+import SettingsNavbar from '@/components/SettingsNavbar';
 
 export default function SettingsLayout({
   children,

@@ -1,15 +1,15 @@
-import { useState } from "react";
-import Link from "next/link";
+import { useState } from 'react';
+import Link from 'next/link';
 
-import LogoutConfirmation from "@/components/LogoutConfirmation";
-import SettingsIcon from "@/assets/Settings";
-import HelpIcon from "@/assets/Help";
-import RoundedArrow from "@/assets/RoundedArrow";
-import InfoIcon from "@/assets/Info";
-import HalfArrow from "@/assets/HalfArrow";
-import LogoutIcon from "@/assets/Logout";
-import DocumentIcon from "@/assets/Document";
-import { User } from "@/types";
+import LogoutConfirmation from '@/components/LogoutConfirmation';
+import SettingsIcon from '@/assets/Settings';
+import HelpIcon from '@/assets/Help';
+import RoundedArrow from '@/assets/RoundedArrow';
+import InfoIcon from '@/assets/Info';
+import HalfArrow from '@/assets/HalfArrow';
+import LogoutIcon from '@/assets/Logout';
+import DocumentIcon from '@/assets/Document';
+import { User } from '@/types';
 
 interface AccountMenuProps {
   user: User;
@@ -26,10 +26,10 @@ export default function AccountMenu({
   const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
-    <nav className="p-2 w-64 absolute bottom-16 left-2 z-50 text-sm text-text-300 bg-bg-menu rounded-lg border border-border shadow-lg">
-      <p className="px-2 pb-2 pt-1 text-text-400">{user.email}</p>
+    <nav className="absolute bottom-16 left-2 z-50 w-64 rounded-lg border border-border bg-bg-menu p-2 text-sm text-text-300 shadow-lg">
+      <p className="px-2 pt-1 pb-2 text-text-400">{user.email}</p>
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
+      <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
         <Link
           href="/settings"
           className="flex items-center gap-2"
@@ -43,7 +43,7 @@ export default function AccountMenu({
         </Link>
       </div>
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
+      <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
         <Link
           href="/help"
           className="flex items-center gap-2"
@@ -59,7 +59,7 @@ export default function AccountMenu({
 
       <hr className="my-1 border-bg-600" />
 
-      <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
+      <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
         <Link
           href="/upgrade"
           className="flex items-center gap-2"
@@ -74,7 +74,7 @@ export default function AccountMenu({
       </div>
 
       <div
-        className="p-2 relative rounded-lg cursor-pointer hover:bg-bg-700"
+        className="relative cursor-pointer rounded-lg p-2 hover:bg-bg-700"
         onMouseEnter={() => setLearnMoreOpen(true)}
         onMouseLeave={() => setLearnMoreOpen(false)}
       >
@@ -86,9 +86,9 @@ export default function AccountMenu({
 
         {/* Submenu */}
         {learnMoreOpen && (
-          <div className="absolute left-full top-0 -ml-2 pl-3 w-48">
-            <div className="p-2 text-sm text-text-200 bg-bg-menu rounded-lg border border-border shadow-lg">
-              <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
+          <div className="absolute top-0 left-full -ml-2 w-48 pl-3">
+            <div className="rounded-lg border border-border bg-bg-menu p-2 text-sm text-text-200 shadow-lg">
+              <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
                 <Link
                   href="/privacy-policy"
                   className="flex items-center gap-2"
@@ -98,7 +98,7 @@ export default function AccountMenu({
                 </Link>
               </div>
 
-              <div className="p-2 rounded-lg cursor-pointer hover:bg-bg-700">
+              <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
                 <Link
                   href="/terms-of-service"
                   className="flex items-center gap-2"
@@ -114,10 +114,10 @@ export default function AccountMenu({
 
       <hr className="my-1 border-bg-600" />
 
-      <div className="p-2 cursor-pointer rounded-lg hover:bg-bg-700">
+      <div className="cursor-pointer rounded-lg p-2 hover:bg-bg-700">
         <button
           onClick={() => setLogoutOpen(true)}
-          className="w-full flex items-center gap-2"
+          className="flex w-full items-center gap-2"
         >
           <LogoutIcon className="size-4" />
           Log out

@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react';
 
 export default function EyeClosedIcon(props: SVGProps<SVGSVGElement>) {
   return (

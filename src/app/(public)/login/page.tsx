@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FirebaseError } from 'firebase/app';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-import ContentSkeleton from "@/components/ContentSkeleton";
-import ErrorMessage from "@/components/ErrorMessage";
-import EyeIcon from "@/assets/Eye";
-import EyedClosedIcon from "@/assets/EyeClosed";
-import { auth } from "@/config/firebase";
-import { useAuth } from "@/context/useGlobalContext";
+import ContentSkeleton from '@/components/ContentSkeleton';
+import ErrorMessage from '@/components/ErrorMessage';
+import EyeIcon from '@/assets/Eye';
+import EyedClosedIcon from '@/assets/EyeClosed';
+import { auth } from '@/config/firebase';
+import { useAuth } from '@/context/useGlobalContext';
 
 interface LoginForm {
   email: string;
@@ -24,11 +24,11 @@ interface FormErrors {
 }
 
 const ERROR_MESSAGES: { [key: string]: string } = {
-  "auth/invalid-email": "Please enter a valid email address.",
-  "auth/user-disabled": "This account has been disabled.",
-  "auth/user-not-found": "No account found with this email.",
-  "auth/wrong-password": "Invalid email or password.",
-  "auth/too-many-requests": "Too many attempts. Please try again later.",
+  'auth/invalid-email': 'Please enter a valid email address.',
+  'auth/user-disabled': 'This account has been disabled.',
+  'auth/user-not-found': 'No account found with this email.',
+  'auth/wrong-password': 'Invalid email or password.',
+  'auth/too-many-requests': 'Too many attempts. Please try again later.',
 };
 
 export default function LoginPage() {
@@ -39,23 +39,23 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<LoginForm>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   useEffect(() => {
-    document.title = "Login | SnapNotes";
+    document.title = 'Login | SnapNotes';
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute(
-        "content",
-        "Log in to your Snap Notes account to access your notes."
+        'content',
+        'Log in to your Snap Notes account to access your notes.'
       );
   }, []);
 
   // Redirect after render to avoid updating Router during render
   useEffect(() => {
-    if (user) router.push("/notes");
+    if (user) router.push('/notes');
   }, [user, router]);
 
   const validateForm = (): boolean => {
@@ -63,15 +63,15 @@ export default function LoginPage() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!formData.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -80,13 +80,13 @@ export default function LoginPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
     // Clear error when user starts typing
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
+      setErrors(prev => ({
         ...prev,
         [name]: undefined,
       }));
@@ -106,21 +106,21 @@ export default function LoginPage() {
 
     try {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      router.push("/notes");
+      router.push('/notes');
     } catch (err) {
       if (err instanceof FirebaseError) {
         const errorCode = err?.code as string;
         setError(
-          ERROR_MESSAGES[errorCode] || "Failed to login. Please try again."
+          ERROR_MESSAGES[errorCode] || 'Failed to login. Please try again.'
         );
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError('An unexpected error occurred. Please try again.');
       }
 
       // Clear password on error for security
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        password: "",
+        password: '',
       }));
     } finally {
       setIsSubmitting(false);
@@ -132,12 +132,12 @@ export default function LoginPage() {
   if (user) return null;
 
   return (
-    <section className="pt-20 pb-8 px-4 min-h-screen text-white">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl text-gray-100 text-center font-bold">
+    <section className="min-h-screen px-4 pt-20 pb-8 text-white">
+      <div className="mb-8 text-center">
+        <h1 className="text-center text-4xl font-bold text-gray-100">
           Welcome back!
         </h1>
-        <p className="pt-1 text-sm text-gray-200 text-center">
+        <p className="pt-1 text-center text-sm text-gray-200">
           Log in to access your account
         </p>
       </div>
@@ -156,24 +156,24 @@ export default function LoginPage() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="py-2 border-b border-primary focus:outline-none"
+            className="border-b border-primary py-2 focus:outline-none"
             placeholder="your@email.com"
             disabled={isSubmitting}
             autoComplete="email"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email}</p>
+            <p className="text-sm text-red-500">{errors.email}</p>
           )}
         </div>
 
-        <div className="mb-3 relative flex flex-col">
+        <div className="relative mb-3 flex flex-col">
           <label htmlFor="password">Password</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="py-2 border-b border-primary focus:outline-none"
+            className="border-b border-primary py-2 focus:outline-none"
             placeholder="Enter your password"
             disabled={isSubmitting}
             autoComplete="current-password"
@@ -181,7 +181,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 bottom-0 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+            className="absolute right-3 bottom-0 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700"
             tabIndex={-1}
           >
             {showPassword ? (
@@ -191,34 +191,34 @@ export default function LoginPage() {
             )}
           </button>
           {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password}</p>
+            <p className="text-sm text-red-500">{errors.password}</p>
           )}
         </div>
 
         <button
           type="submit"
-          className="mt-4 w-full px-6 py-3 rounded-lg bg-primary hover:bg-primary/90 text-white text-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-4 w-full rounded-lg bg-primary px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isSubmitting}
         >
           {isSubmitting ? (
             <div className="flex items-center justify-center">
               <div
-                className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"
+                className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
                 role="status"
                 aria-label="Submitting form"
               />
             </div>
           ) : (
-            "Login"
+            'Login'
           )}
         </button>
 
-        <div className="text-center space-y-4">
+        <div className="space-y-4 text-center">
           <p>
-            New user?{" "}
+            New user?{' '}
             <Link
               href="/register"
-              className="text-primary hover:text-primary/90 transition-colors"
+              className="text-primary transition-colors hover:text-primary/90"
             >
               Register here
             </Link>

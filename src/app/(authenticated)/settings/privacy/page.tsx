@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-import ContentSkeleton from "@/components/ContentSkeleton";
-import Toast from "@/components/Toast";
-import { useAuth } from "@/context/useGlobalContext";
+import ContentSkeleton from '@/components/ContentSkeleton';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/context/useGlobalContext';
 
 export default function PrivacyPage() {
   const { user, loading } = useAuth();
@@ -14,22 +14,22 @@ export default function PrivacyPage() {
 
   // Initialize state with localStorage values
   const [shareAnalytics, setShareAnalytics] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("shareAnalytics") === "true";
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('shareAnalytics') === 'true';
     }
     return false;
   });
 
   const [marketingEmails, setMarketingEmails] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("marketingEmails") === "true";
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('marketingEmails') === 'true';
     }
     return false;
   });
 
   const [shareDataWithPartners, setShareDataWithPartners] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("shareDataWithPartners") === "true";
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('shareDataWithPartners') === 'true';
     }
     return false;
   });
@@ -38,12 +38,12 @@ export default function PrivacyPage() {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    document.title = "Privacy Settings | SnapNotes";
+    document.title = 'Privacy Settings | SnapNotes';
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute(
-        "content",
-        "Manage your privacy and data settings on SnapNotes"
+        'content',
+        'Manage your privacy and data settings on SnapNotes'
       );
   }, []);
 
@@ -64,10 +64,10 @@ export default function PrivacyPage() {
 
   const handleSave = () => {
     // Save preferences to localStorage
-    localStorage.setItem("shareAnalytics", String(shareAnalytics));
-    localStorage.setItem("marketingEmails", String(marketingEmails));
+    localStorage.setItem('shareAnalytics', String(shareAnalytics));
+    localStorage.setItem('marketingEmails', String(marketingEmails));
     localStorage.setItem(
-      "shareDataWithPartners",
+      'shareDataWithPartners',
       String(shareDataWithPartners)
     );
     setHasChanges(false);
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
   if (loading) return <ContentSkeleton lines={3} />;
 
   if (!user) {
-    router.push("/login");
+    router.push('/login');
     return null;
   }
 
@@ -105,20 +105,20 @@ export default function PrivacyPage() {
         <div className="p-6">
           <div className="space-y-6">
             {/* Privacy Policy Link */}
-            <div className="p-4 bg-gray-800/50 rounded-lg border border-border">
-              <h2 className="text-lg font-semibold text-text-100 mb-2">
+            <div className="rounded-lg border border-border bg-gray-800/50 p-4">
+              <h2 className="mb-2 text-lg font-semibold text-text-100">
                 Privacy Policy
               </h2>
-              <p className="text-sm text-text-400 mb-3">
+              <p className="mb-3 text-sm text-text-400">
                 Learn about how we collect, use, and protect your data
               </p>
               <Link
                 href="/privacy-policy"
-                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors underline"
+                className="inline-flex items-center gap-2 text-primary underline transition-colors hover:text-primary/80"
               >
                 Read our Privacy Policy
                 <svg
-                  className="w-4 h-4"
+                  className="h-4 w-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -134,64 +134,62 @@ export default function PrivacyPage() {
             </div>
 
             {/* Data Collection */}
-            <div className="space-y-3 pt-4 border-t border-border">
+            <div className="space-y-3 border-t border-border pt-4">
               <h2 className="text-lg font-semibold text-text-100">
                 Data Collection
               </h2>
 
               {/* Analytics */}
-              <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
+              <div className="flex items-start justify-between gap-4 rounded-lg p-4 transition-colors hover:bg-gray-800/30">
                 <div className="flex-1">
-                  <h3 className="text-text-100 mb-1">Share Analytics Data</h3>
+                  <h3 className="mb-1 text-text-100">Share Analytics Data</h3>
                   <p className="text-sm text-text-400">
                     Help us improve SnapNotes by sharing anonymous usage data
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="relative inline-flex cursor-pointer items-center">
                   <input
                     type="checkbox"
                     checked={shareAnalytics}
-                    onChange={(e) =>
-                      handleShareAnalyticsChange(e.target.checked)
-                    }
-                    className="sr-only peer"
+                    onChange={e => handleShareAnalyticsChange(e.target.checked)}
+                    className="peer sr-only"
                   />
-                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-gray-700 peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:outline-none after:absolute after:start-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
               </div>
 
               {/* Marketing Emails */}
-              <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
+              <div className="flex items-start justify-between gap-4 rounded-lg p-4 transition-colors hover:bg-gray-800/30">
                 <div className="flex-1">
-                  <h3 className="text-text-100 mb-1">Marketing Emails</h3>
+                  <h3 className="mb-1 text-text-100">Marketing Emails</h3>
                   <p className="text-sm text-text-400">
                     Receive updates about new features and special offers
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="relative inline-flex cursor-pointer items-center">
                   <input
                     type="checkbox"
                     checked={marketingEmails}
-                    onChange={(e) =>
+                    onChange={e =>
                       handleMarketingEmailsChange(e.target.checked)
                     }
-                    className="sr-only peer"
+                    className="peer sr-only"
                   />
-                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-gray-700 peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:outline-none after:absolute after:start-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
               </div>
             </div>
 
             {/* Data Sharing */}
-            <div className="space-y-3 pt-4 border-t border-border">
+            <div className="space-y-3 border-t border-border pt-4">
               <h2 className="text-lg font-semibold text-text-100">
                 Data Sharing
               </h2>
 
               {/* Share with Partners */}
-              <div className="flex items-start justify-between gap-4 p-4 rounded-lg hover:bg-gray-800/30 transition-colors">
+              <div className="flex items-start justify-between gap-4 rounded-lg p-4 transition-colors hover:bg-gray-800/30">
                 <div className="flex-1">
-                  <h3 className="text-text-100 mb-1">
+                  <h3 className="mb-1 text-text-100">
                     Share Data with Partners
                   </h3>
                   <p className="text-sm text-text-400">
@@ -199,31 +197,31 @@ export default function PrivacyPage() {
                     analytics
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="relative inline-flex cursor-pointer items-center">
                   <input
                     type="checkbox"
                     checked={shareDataWithPartners}
-                    onChange={(e) => handleShareDataChange(e.target.checked)}
-                    className="sr-only peer"
+                    onChange={e => handleShareDataChange(e.target.checked)}
+                    className="peer sr-only"
                   />
-                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="peer h-6 w-11 rounded-full bg-gray-700 peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50 peer-focus:outline-none after:absolute after:start-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
                 </label>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="pt-4 w-full flex flex-col md:flex-row items-center justify-between gap-3 border-t border-border">
+            <div className="flex w-full flex-col items-center justify-between gap-3 border-t border-border pt-4 md:flex-row">
               <button
                 onClick={handleResetToDefault}
                 disabled={!hasChanges}
-                className="px-4 py-2 text-text-300 border border-border rounded-lg hover:border-gray-500 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border disabled:active:scale-100"
+                className="transform rounded-lg border border-border px-4 py-2 text-text-300 transition-colors hover:border-gray-500 focus:ring-2 focus:ring-gray-500/50 focus:outline-none active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-border disabled:active:scale-100"
               >
                 Do not share any data
               </button>
               <button
                 onClick={handleSave}
                 disabled={!hasChanges}
-                className="px-4 py-2 text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 active:scale-95 transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"
+                className="transform rounded-lg bg-primary px-4 py-2 text-white transition-colors hover:bg-primary/90 focus:ring-2 focus:ring-primary/50 focus:outline-none active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary disabled:active:scale-100"
               >
                 Save changes
               </button>

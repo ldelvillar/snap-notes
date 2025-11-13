@@ -1,33 +1,33 @@
-import Link from "next/link";
-import { SITE_CONFIG } from "@/config/site";
+import Link from 'next/link';
+import { SITE_CONFIG } from '@/config/site';
 
 export const metadata = {
-  title: "Privacy Policy | SnapNotes",
-  description: "Read the Privacy Policy for using Snap Notes.",
+  title: 'Privacy Policy | SnapNotes',
+  description: 'Read the Privacy Policy for using Snap Notes.',
 };
 
 export default function PrivacyPolicyPage() {
   return (
-    <section className="pt-32 pb-16 px-4 mx-auto max-w-4xl text-white animate-fade-in">
-      <h1 className="text-5xl font-bold mb-6">Privacy Policy</h1>
-      <p className="text-lg text-[#b09eb8] mb-8">
+    <section className="animate-fade-in mx-auto max-w-4xl px-4 pt-32 pb-16 text-white">
+      <h1 className="mb-6 text-5xl font-bold">Privacy Policy</h1>
+      <p className="mb-8 text-lg text-[#b09eb8]">
         At Snap Notes, we are committed to protecting the privacy of our users
         and customers. Below, we explain how we collect, use, and protect your
         personal data when you access our application, create notes, store data,
         or subscribe to our services.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         1. Data Controller and Responsibility
       </h2>
       <p className="mb-4 text-[#b09eb8]">
-        The data controller is Snap Notes, located at{" "}
+        The data controller is Snap Notes, located at{' '}
         {SITE_CONFIG.company.address}. For any inquiries related to data
         protection and privacy, you can contact us at:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <Link
             href={`mailto:${SITE_CONFIG.company.email}`}
             className="text-primary hover:underline"
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
           </Link>
         </li>
         <li>
-          <strong>Phone:</strong>{" "}
+          <strong>Phone:</strong>{' '}
           <Link
             href={`tel:${SITE_CONFIG.company.phone}`}
             className="text-primary hover:underline"
@@ -45,15 +45,15 @@ export default function PrivacyPolicyPage() {
           </Link>
         </li>
         <li>
-          <strong>Contact Form:</strong>{" "}
+          <strong>Contact Form:</strong>{' '}
           <Link href="/contact" className="text-primary hover:underline">
             Contact us
           </Link>
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">2. Data We Collect</h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">2. Data We Collect</h2>
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Identification data:</strong> Full name, email address, phone
           number, password hash, profile information.
@@ -81,10 +81,10 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         3. Purpose of Data Processing
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Service Delivery:</strong> Create and manage your account,
           store and sync your notes across devices, provide cloud storage and
@@ -118,13 +118,13 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         4. Legal Basis for Processing
       </h2>
       <p className="mb-4 text-[#b09eb8]">
         We process your data based on the following legal grounds:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Consent:</strong> For marketing communications, optional
           analytics, and feature subscriptions.
@@ -143,14 +143,14 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         5. Data Retention Periods
       </h2>
       <p className="mb-4 text-[#b09eb8]">
         We retain your data for different periods depending on the type and
         purpose:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Active Account Data:</strong> While your account is active and
           for 30 days after deletion (grace period for recovery).
@@ -177,14 +177,14 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         6. Data Recipients and Sharing
       </h2>
       <p className="mb-4 text-[#b09eb8]">
         We may share your data with third parties in the following
         circumstances:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Payment Processors:</strong> Stripe, PayPal, and other payment
           providers (only payment information necessary for billing).
@@ -219,14 +219,14 @@ export default function PrivacyPolicyPage() {
         and use data only for specified purposes.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         7. International Data Transfers
       </h2>
       <p className="mb-4 text-[#b09eb8]">
         Your data may be transferred to and stored in countries outside your
         location, including the European Economic Area (EEA):
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Cloud Storage:</strong> Data may be stored on servers in
           multiple countries for redundancy and availability.
@@ -246,8 +246,8 @@ export default function PrivacyPolicyPage() {
         regulations.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">8. Your Rights</h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">8. Your Rights</h2>
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Right of Access:</strong> Request a copy of your personal data
           we hold.
@@ -280,9 +280,9 @@ export default function PrivacyPolicyPage() {
       <p className="mb-4 text-[#b09eb8]">
         To exercise these rights, please contact us:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <Link
             href={`mailto:${SITE_CONFIG.company.email}`}
             className="text-primary hover:underline"
@@ -291,19 +291,19 @@ export default function PrivacyPolicyPage() {
           </Link>
         </li>
         <li>
-          <strong>Support Form:</strong>{" "}
+          <strong>Support Form:</strong>{' '}
           <Link href="/contact" className="text-primary hover:underline">
             Contact us
           </Link>
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">9. Data Security</h2>
+      <h2 className="mt-12 mb-4 text-3xl font-bold">9. Data Security</h2>
       <p className="mb-4 text-[#b09eb8]">
         We implement industry-leading technical and organizational measures to
         protect your personal data:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Encryption in Transit:</strong> All data transmitted uses
           TLS/SSL encryption (256-bit or higher).
@@ -334,7 +334,7 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">10. Policy Updates</h2>
+      <h2 className="mt-12 mb-4 text-3xl font-bold">10. Policy Updates</h2>
       <p className="mb-4 text-[#b09eb8]">
         We reserve the right to modify this privacy policy to adapt to
         legislative changes, new features, or security improvements. Any
@@ -343,7 +343,7 @@ export default function PrivacyPolicyPage() {
         of updated terms.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         11. Cookies and Tracking Technology
       </h2>
       <p className="mb-4 text-[#b09eb8]">
@@ -352,17 +352,17 @@ export default function PrivacyPolicyPage() {
         personalized features.
       </p>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">What are Cookies?</h3>
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">What are Cookies?</h3>
       <p className="mb-4 text-[#b09eb8]">
         Cookies are small text files stored on your device when you access our
         application. They help us remember your preferences, authentication
         status, and usage patterns to enhance your experience.
       </p>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">
         Types of Cookies We Use
       </h3>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Essential Cookies:</strong> Required for basic functionality
           (authentication, security, session management).
@@ -385,12 +385,12 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">Managing Cookies</h3>
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">Managing Cookies</h3>
       <p className="mb-4 text-[#b09eb8]">
         You can control cookies through your browser settings. Most browsers
         allow you to:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>Accept or reject all cookies</li>
         <li>Accept only certain types of cookies</li>
         <li>Delete existing cookies</li>
@@ -402,10 +402,10 @@ export default function PrivacyPolicyPage() {
         or access your notes.
       </p>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">
         Third-Party Services Using Cookies
       </h3>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Google Analytics:</strong> Tracking website and app usage
           patterns
@@ -425,14 +425,14 @@ export default function PrivacyPolicyPage() {
         usage and data practices.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">12. Contact and Support</h2>
+      <h2 className="mt-12 mb-4 text-3xl font-bold">12. Contact and Support</h2>
       <p className="mb-4 text-[#b09eb8]">
         If you have questions about this privacy policy, concerns about your
         data, or wish to exercise your rights, please contact us:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <Link
             href={`mailto:${SITE_CONFIG.company.email}`}
             className="text-primary hover:underline"
@@ -441,7 +441,7 @@ export default function PrivacyPolicyPage() {
           </Link>
         </li>
         <li>
-          <strong>Contact Form:</strong>{" "}
+          <strong>Contact Form:</strong>{' '}
           <Link href="/contact" className="text-primary hover:underline">
             Submit a request
           </Link>
@@ -452,7 +452,7 @@ export default function PrivacyPolicyPage() {
         </li>
       </ul>
 
-      <div className="mt-16 pt-8 border-t border-[#4d3d54]">
+      <div className="mt-16 border-t border-[#4d3d54] pt-8">
         <p className="text-sm text-[#b09eb8]/60">
           Last updated: October 23, 2025. We recommend reviewing this policy
           periodically for updates. Your continued use of Snap Notes constitutes

@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import ContentSkeleton from "@/components/ContentSkeleton";
-import Toast from "@/components/Toast";
-import { useAuth } from "@/context/useGlobalContext";
+import ContentSkeleton from '@/components/ContentSkeleton';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/context/useGlobalContext';
 
-type Theme = "light" | "dark" | "system";
-type FontSize = "small" | "medium" | "large";
+type Theme = 'light' | 'dark' | 'system';
+type FontSize = 'small' | 'medium' | 'large';
 
 export default function GeneralSettingsPage() {
   useEffect(() => {
-    document.title = "General Settings | SnapNotes";
+    document.title = 'General Settings | SnapNotes';
     document
       .querySelector('meta[name="description"]')
-      ?.setAttribute("content", "Manage your general settings on SnapNotes");
+      ?.setAttribute('content', 'Manage your general settings on SnapNotes');
   }, []);
 
   const { user, loading } = useAuth();
@@ -23,29 +23,29 @@ export default function GeneralSettingsPage() {
 
   // Initialize state with localStorage values
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "system";
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('theme') as Theme) || 'system';
     }
-    return "system";
+    return 'system';
   });
 
   const [fontSize, setFontSize] = useState<FontSize>(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("fontSize") as FontSize) || "medium";
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('fontSize') as FontSize) || 'medium';
     }
-    return "medium";
+    return 'medium';
   });
 
   const [showToast, setShowToast] = useState(false);
 
   const resolveTheme = (theme: Theme) => {
     let resolvedTheme = theme;
-    if (theme === "system") {
-      resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+    if (theme === 'system') {
+      resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
     }
-    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(resolvedTheme);
   };
 
@@ -54,40 +54,40 @@ export default function GeneralSettingsPage() {
     resolveTheme(theme);
 
     // Set up listener for system theme changes (only when theme is "system")
-    if (theme === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
       const handleSystemThemeChange = () => {
-        resolveTheme("system");
+        resolveTheme('system');
       };
 
       // Modern browsers
-      mediaQuery.addEventListener("change", handleSystemThemeChange);
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
 
       // Cleanup
       return () => {
-        mediaQuery.removeEventListener("change", handleSystemThemeChange);
+        mediaQuery.removeEventListener('change', handleSystemThemeChange);
       };
     }
   }, [theme]);
 
   const handleThemeChange = (newTheme: Theme) => {
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
+    localStorage.setItem('theme', newTheme);
     resolveTheme(newTheme);
     setShowToast(true);
   };
 
   const handleFontSizeChange = (newSize: FontSize) => {
     setFontSize(newSize);
-    localStorage.setItem("fontSize", newSize);
+    localStorage.setItem('fontSize', newSize);
     setShowToast(true);
   };
 
   if (loading) return <ContentSkeleton lines={3} />;
 
   if (!user) {
-    router.push("/login");
+    router.push('/login');
     return null;
   }
 
@@ -111,33 +111,33 @@ export default function GeneralSettingsPage() {
                 Color mode
               </h2>
               <div className="flex flex-col gap-2">
-                <div className="flex gap-3 mt-2">
+                <div className="mt-2 flex gap-3">
                   <button
-                    onClick={() => handleThemeChange("light")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      theme === "light"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleThemeChange('light')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      theme === 'light'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     Light
                   </button>
                   <button
-                    onClick={() => handleThemeChange("dark")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      theme === "dark"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleThemeChange('dark')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      theme === 'dark'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     Dark
                   </button>
                   <button
-                    onClick={() => handleThemeChange("system")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      theme === "system"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleThemeChange('system')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      theme === 'system'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     System
@@ -147,38 +147,38 @@ export default function GeneralSettingsPage() {
             </div>
 
             {/* Font Size Preference */}
-            <div className="space-y-3 pt-4 border-t border-border">
+            <div className="space-y-3 border-t border-border pt-4">
               <h2 className="text-lg font-semibold text-text-100">
                 Typography
               </h2>
               <div className="flex flex-col gap-2">
-                <div className="flex gap-3 mt-2">
+                <div className="mt-2 flex gap-3">
                   <button
-                    onClick={() => handleFontSizeChange("small")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      fontSize === "small"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleFontSizeChange('small')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      fontSize === 'small'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     <span className="text-sm">Small</span>
                   </button>
                   <button
-                    onClick={() => handleFontSizeChange("medium")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      fontSize === "medium"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleFontSizeChange('medium')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      fontSize === 'medium'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     <span className="text-base">Medium</span>
                   </button>
                   <button
-                    onClick={() => handleFontSizeChange("large")}
-                    className={`px-4 py-2 rounded-lg border transition-all ${
-                      fontSize === "large"
-                        ? "bg-primary/70 border-primary text-white"
-                        : "border-border hover:border-gray-500"
+                    onClick={() => handleFontSizeChange('large')}
+                    className={`rounded-lg border px-4 py-2 transition-all ${
+                      fontSize === 'large'
+                        ? 'border-primary bg-primary/70 text-white'
+                        : 'border-border hover:border-gray-500'
                     }`}
                   >
                     <span className="text-lg">Large</span>

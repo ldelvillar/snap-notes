@@ -1,27 +1,27 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Cta() {
   return (
-    <section className="py-20 px-4 text-white">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-primary/10 rounded-lg p-12 text-center border border-primary/20">
-          <h2 className="text-3xl font-bold mb-4">
+    <section className="px-4 py-20 text-white">
+      <div className="mx-auto max-w-3xl">
+        <div className="rounded-lg border border-primary/20 bg-primary/10 p-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold">
             Ready to take better notes?
           </h2>
-          <p className="text-[#b09eb8] text-lg mb-8">
+          <p className="mb-8 text-lg text-[#b09eb8]">
             Join thousands of users who trust Snap Notes for their most
             important thoughts.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               href="/pricing"
-              className="px-8 py-3 bg-primary font-bold rounded-lg hover:bg-primary/90 transition-all duration-300 transform hover:scale-105"
+              className="transform rounded-lg bg-primary px-8 py-3 font-bold transition-all duration-300 hover:scale-105 hover:bg-primary/90"
             >
               View Pricing
             </Link>
             <Link
               href="/faq"
-              className="px-8 py-3 bg-[#332938] font-bold rounded-lg hover:bg-[#3a303d] transition-all duration-300 border border-primary/30"
+              className="rounded-lg border border-primary/30 bg-[#332938] px-8 py-3 font-bold transition-all duration-300 hover:bg-[#3a303d]"
             >
               See FAQ
             </Link>

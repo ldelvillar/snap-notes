@@ -1,4 +1,4 @@
-import type { MouseEvent, Dispatch, SetStateAction } from "react";
+import type { MouseEvent, Dispatch, SetStateAction } from 'react';
 import {
   collection,
   deleteDoc,
@@ -9,45 +9,45 @@ import {
   setDoc,
   where,
   orderBy,
-} from "firebase/firestore";
-import { nanoid } from "nanoid";
-import { db } from "@/config/firebase";
-import { User, Note } from "@/types/index";
+} from 'firebase/firestore';
+import { nanoid } from 'nanoid';
+import { db } from '@/config/firebase';
+import { User, Note } from '@/types/index';
 
 export const createNote = async (
   user: User,
   title: string,
   text: string
 ): Promise<void> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
     const newNote: Note = {
       id: nanoid(),
-      title: title || "Untitled",
+      title: title || 'Untitled',
       text,
       creator: user.email,
       updatedAt: new Date(),
       pinnedAt: null,
     };
-    await setDoc(doc(collection(db, "Notes")), newNote);
+    await setDoc(doc(collection(db, 'Notes')), newNote);
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
 export const getNotes = async (user: User): Promise<Note[]> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
     const q = query(
-      collection(db, "Notes"),
-      where("creator", "==", user.email),
-      orderBy("updatedAt", "desc")
+      collection(db, 'Notes'),
+      where('creator', '==', user.email),
+      orderBy('updatedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    const dataArr = querySnapshot.docs.map((doc) => {
+    const dataArr = querySnapshot.docs.map(doc => {
       const data = doc.data();
       return {
         ...data,
@@ -63,8 +63,8 @@ export const getNotes = async (user: User): Promise<Note[]> => {
     }) as Note[];
 
     // Separate pinned and unpinned notes
-    const pinnedNotes = dataArr.filter((note) => note.pinnedAt !== null);
-    const unpinnedNotes = dataArr.filter((note) => note.pinnedAt === null);
+    const pinnedNotes = dataArr.filter(note => note.pinnedAt !== null);
+    const unpinnedNotes = dataArr.filter(note => note.pinnedAt === null);
 
     // Sort pinned notes by pinnedAt descending (most recently pinned first)
     pinnedNotes.sort((a, b) => {
@@ -77,7 +77,7 @@ export const getNotes = async (user: User): Promise<Note[]> => {
     return [...pinnedNotes, ...unpinnedNotes];
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
@@ -85,17 +85,17 @@ export const getNoteById = async (
   user: User,
   noteId: string
 ): Promise<Note> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, "Notes", noteId);
+    const noteRef = doc(db, 'Notes', noteId);
     const noteSnap = await getDoc(noteRef);
-    if (!noteSnap.exists()) throw new Error("Note not found");
+    if (!noteSnap.exists()) throw new Error('Note not found');
 
     const data = noteSnap.data();
 
     // Verify the note belongs to the user
-    if (data.creator !== user.email) throw new Error("Note not found");
+    if (data.creator !== user.email) throw new Error('Note not found');
 
     return {
       ...data,
@@ -107,28 +107,28 @@ export const getNoteById = async (
     } as Note;
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
 export const deleteNote = async (user: User, noteId: string): Promise<void> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, "Notes", noteId);
+    const noteRef = doc(db, 'Notes', noteId);
     const noteSnap = await getDoc(noteRef);
-    if (!noteSnap.exists()) throw new Error("Note not found");
+    if (!noteSnap.exists()) throw new Error('Note not found');
 
     const data = noteSnap.data();
 
     // Verify the note belongs to the user
-    if (data.creator !== user.email) throw new Error("Note not found");
+    if (data.creator !== user.email) throw new Error('Note not found');
 
     // Delete the note
     await deleteDoc(noteRef);
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
@@ -147,7 +147,7 @@ export const handleDeleteNote = async (
     if (err instanceof Error) {
       setError(err.message);
     } else {
-      setError("Failed to delete note. Please try again later.");
+      setError('Failed to delete note. Please try again later.');
     }
   } finally {
     setIsDeleting(null);
@@ -155,10 +155,10 @@ export const handleDeleteNote = async (
 };
 
 export const updateNote = async (user: User, note: Note): Promise<void> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, "Notes", note.id);
+    const noteRef = doc(db, 'Notes', note.id);
     await setDoc(
       noteRef,
       {
@@ -170,15 +170,15 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
     );
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
 export const pinNote = async (user: User, note: Note): Promise<void> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, "Notes", note.id);
+    const noteRef = doc(db, 'Notes', note.id);
     const updatedNote = {
       ...note,
       pinnedAt: note.pinnedAt ? null : new Date(),
@@ -186,7 +186,7 @@ export const pinNote = async (user: User, note: Note): Promise<void> => {
     await setDoc(noteRef, updatedNote, { merge: true });
   } catch (error) {
     if (error instanceof Error) throw error;
-    else throw new Error("An unknown error occurred");
+    else throw new Error('An unknown error occurred');
   }
 };
 
@@ -196,7 +196,7 @@ export const handleUpdateNote = async (
   setIsSaving: Dispatch<SetStateAction<boolean>>,
   setError: Dispatch<SetStateAction<string | null>>
 ): Promise<void> => {
-  if (!user) throw new Error("User is not defined");
+  if (!user) throw new Error('User is not defined');
 
   try {
     setIsSaving(true);
@@ -205,7 +205,7 @@ export const handleUpdateNote = async (
     if (err instanceof Error) {
       setError(err.message);
     } else {
-      setError("Failed to update note. Please try again later.");
+      setError('Failed to update note. Please try again later.');
     }
     throw err;
   } finally {

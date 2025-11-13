@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/useGlobalContext";
-import { NotesProvider, useNotes } from "@/context/NotesContext";
-import { getNotes } from "@/lib/notesService";
-import Sidebar from "@/components/Sidebar";
-import ContentSkeleton from "@/components/ContentSkeleton";
+import { useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/useGlobalContext';
+import { NotesProvider, useNotes } from '@/context/NotesContext';
+import { getNotes } from '@/lib/notesService';
+import Sidebar from '@/components/Sidebar';
+import ContentSkeleton from '@/components/ContentSkeleton';
 
-type Theme = "light" | "dark" | "system";
+type Theme = 'light' | 'dark' | 'system';
 
 function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -20,27 +20,27 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const applyTheme = (theme: Theme) => {
       let resolvedTheme = theme;
-      if (theme === "system") {
-        resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)")
+      if (theme === 'system') {
+        resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)')
           .matches
-          ? "dark"
-          : "light";
+          ? 'dark'
+          : 'light';
       }
-      document.documentElement.classList.remove("light", "dark");
+      document.documentElement.classList.remove('light', 'dark');
       document.documentElement.classList.add(resolvedTheme);
     };
 
-    const theme = (localStorage.getItem("theme") as Theme) || "system";
+    const theme = (localStorage.getItem('theme') as Theme) || 'system';
     applyTheme(theme);
 
     // Listen for system theme changes when theme is set to "system"
-    if (theme === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      const handleSystemThemeChange = () => applyTheme("system");
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleSystemThemeChange = () => applyTheme('system');
 
-      mediaQuery.addEventListener("change", handleSystemThemeChange);
+      mediaQuery.addEventListener('change', handleSystemThemeChange);
       return () =>
-        mediaQuery.removeEventListener("change", handleSystemThemeChange);
+        mediaQuery.removeEventListener('change', handleSystemThemeChange);
     }
   }, []);
 
@@ -51,7 +51,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
       const data = await getNotes(user);
       setNotes(data);
     } catch (err) {
-      console.error("Failed to fetch notes:", err);
+      console.error('Failed to fetch notes:', err);
     } finally {
       setNotesLoading(false);
     }
@@ -59,7 +59,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/login");
+      router.replace('/login');
     }
   }, [user, loading, router]);
 

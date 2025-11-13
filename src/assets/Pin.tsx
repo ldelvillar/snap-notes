@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react';
 
 export default function FluentPin12Regular(props: SVGProps<SVGSVGElement>) {
   return (

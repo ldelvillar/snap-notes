@@ -6,51 +6,51 @@ export interface Feature {
 
 export const FEATURES: Feature[] = [
   {
-    icon: "✨",
-    title: "Cloud Sync",
+    icon: '✨',
+    title: 'Cloud Sync',
     description:
-      "Your notes sync instantly across all your devices. Access them anywhere, anytime with real-time synchronization.",
+      'Your notes sync instantly across all your devices. Access them anywhere, anytime with real-time synchronization.',
   },
   {
-    icon: "🔐",
-    title: "End-to-End Encrypted",
+    icon: '🔐',
+    title: 'End-to-End Encrypted',
     description:
       "Your notes are encrypted with AES-256. Only you can read what you write. We can't access your content.",
   },
   {
-    icon: "🏷️",
-    title: "Smart Organization",
+    icon: '🏷️',
+    title: 'Smart Organization',
     description:
-      "Organize notes with tags, categories, and notebooks. Find exactly what you need in seconds.",
+      'Organize notes with tags, categories, and notebooks. Find exactly what you need in seconds.',
   },
   {
-    icon: "🤝",
-    title: "Team Collaboration",
+    icon: '🤝',
+    title: 'Team Collaboration',
     description:
-      "Share notebooks with team members. Collaborate in real-time with comments and version history.",
+      'Share notebooks with team members. Collaborate in real-time with comments and version history.',
   },
   {
-    icon: "📎",
-    title: "Rich Media Support",
+    icon: '📎',
+    title: 'Rich Media Support',
     description:
-      "Attach images, documents, audio files, and more to your notes. All your media in one place.",
+      'Attach images, documents, audio files, and more to your notes. All your media in one place.',
   },
   {
-    icon: "🔍",
-    title: "Powerful Search",
+    icon: '🔍',
+    title: 'Powerful Search',
     description:
-      "Search across thousands of notes instantly. Filter by date, tags, or content type.",
+      'Search across thousands of notes instantly. Filter by date, tags, or content type.',
   },
   {
-    icon: "📱",
-    title: "Offline Access",
+    icon: '📱',
+    title: 'Offline Access',
     description:
-      "Available on Pro plan. Work offline and your notes sync when you reconnect.",
+      'Available on Pro plan. Work offline and your notes sync when you reconnect.',
   },
   {
-    icon: "🌙",
-    title: "Dark Mode",
+    icon: '🌙',
+    title: 'Dark Mode',
     description:
-      "Easy on the eyes. Switch between light and dark themes for comfortable note-taking.",
+      'Easy on the eyes. Switch between light and dark themes for comfortable note-taking.',
   },
 ];

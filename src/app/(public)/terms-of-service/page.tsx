@@ -1,23 +1,23 @@
-import Link from "next/link";
-import { SITE_CONFIG } from "@/config/site";
+import Link from 'next/link';
+import { SITE_CONFIG } from '@/config/site';
 
 export const metadata = {
-  title: "Terms of Service | SnapNotes",
-  description: "Read the Terms of Service for using Snap Notes.",
+  title: 'Terms of Service | SnapNotes',
+  description: 'Read the Terms of Service for using Snap Notes.',
 };
 
 export default function TermsOfServicePage() {
   return (
-    <section className="pt-32 pb-16 px-4 mx-auto max-w-4xl text-white animate-fade-in">
-      <h1 className="text-5xl font-bold mb-6">Terms of Service</h1>
-      <p className="text-lg text-[#b09eb8] mb-8">
+    <section className="animate-fade-in mx-auto max-w-4xl px-4 pt-32 pb-16 text-white">
+      <h1 className="mb-6 text-5xl font-bold">Terms of Service</h1>
+      <p className="mb-8 text-lg text-[#b09eb8]">
         Welcome to Snap Notes. By accessing and using our application, creating
         notes, storing data, or subscribing to our services, you accept the
         following terms and conditions. We recommend reading them carefully
         before using our note-taking platform.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         1. Service Overview and Nature
       </h2>
       <p className="mb-4 text-[#b09eb8]">
@@ -33,10 +33,10 @@ export default function TermsOfServicePage() {
         of your data according to our privacy policy.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         2. User Responsibilities and Usage Guidelines
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           Users commit to using Snap Notes in compliance with all applicable
           laws and regulations.
@@ -63,7 +63,7 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         3. Intellectual Property Rights
       </h2>
       <p className="mb-4 text-[#b09eb8]">
@@ -83,10 +83,10 @@ export default function TermsOfServicePage() {
         without express written permission is prohibited.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         4. Account Creation and Service Activation
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Registration:</strong> Create an account providing accurate
           personal information (name, email, password).
@@ -114,14 +114,14 @@ export default function TermsOfServicePage() {
         plan.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         5. Limitation of Liability and Service Disclaimer
       </h2>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">
         5.1. Snap Notes Liability
       </h3>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           We are responsible for maintaining application availability, security
           measures, and professional service standards.
@@ -136,10 +136,10 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h3 className="text-2xl font-semibold mt-8 mb-3">
+      <h3 className="mt-8 mb-3 text-2xl font-semibold">
         5.2. Limitation of Liability
       </h3>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Service Availability:</strong> While we strive for 99.9%
           uptime, we do not guarantee uninterrupted service. Snap Notes is
@@ -166,10 +166,10 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         6. Cancellation and Modification Policy
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Account Cancellation:</strong> You can cancel your account at
           any time through account settings. Your notes will be deleted after a
@@ -193,14 +193,14 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         7. Privacy and Data Protection
       </h2>
       <p className="mb-4 text-[#b09eb8]">
-        Personal data and notes are processed according to our{" "}
+        Personal data and notes are processed according to our{' '}
         <Link href="/privacy-policy" className="text-primary hover:underline">
           Privacy Policy
-        </Link>{" "}
+        </Link>{' '}
         and applicable data protection regulations (GDPR, CCPA, etc.).
       </p>
       <p className="mb-4 text-[#b09eb8]">
@@ -209,10 +209,10 @@ export default function TermsOfServicePage() {
         We do not sell, share, or monetize your personal data or notes.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         8. Pricing and Payment Terms
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Plan Pricing:</strong> Free, Pro ($9.99/month), and Team
           ($19.99/month) plans with varying features and storage limits.
@@ -235,7 +235,7 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         9. Modifications to Terms
       </h2>
       <p className="mb-4 text-[#b09eb8]">
@@ -245,13 +245,13 @@ export default function TermsOfServicePage() {
         Notes constitutes acceptance of updated terms.
       </p>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         10. Dispute Resolution and Complaints
       </h2>
       <p className="mb-4 text-[#b09eb8]">
         In case of any issue, complaint, or dispute regarding our services:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Support Contact:</strong> Reach out to our support team first
           for amicable resolution.
@@ -271,10 +271,10 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">
+      <h2 className="mt-12 mb-4 text-3xl font-bold">
         11. Best Practices and Recommendations
       </h2>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
           <strong>Strong Passwords:</strong> Use unique, complex passwords and
           enable two-factor authentication for account security.
@@ -297,14 +297,14 @@ export default function TermsOfServicePage() {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold mt-12 mb-4">12. Contact and Support</h2>
+      <h2 className="mt-12 mb-4 text-3xl font-bold">12. Contact and Support</h2>
       <p className="mb-4 text-[#b09eb8]">
         For questions regarding these terms and conditions, complaints, or
         support, please contact us:
       </p>
-      <ul className="list-disc pl-6 text-[#b09eb8] mb-4 space-y-2">
+      <ul className="mb-4 list-disc space-y-2 pl-6 text-[#b09eb8]">
         <li>
-          <strong>Email:</strong>{" "}
+          <strong>Email:</strong>{' '}
           <Link
             href={`mailto:${SITE_CONFIG.company.email}`}
             className="text-primary hover:underline"
@@ -313,7 +313,7 @@ export default function TermsOfServicePage() {
           </Link>
         </li>
         <li>
-          <strong>Phone:</strong>{" "}
+          <strong>Phone:</strong>{' '}
           <Link
             href={`tel:${SITE_CONFIG.company.phone}`}
             className="text-primary hover:underline"
@@ -322,7 +322,7 @@ export default function TermsOfServicePage() {
           </Link>
         </li>
         <li>
-          <strong>Support Form:</strong>{" "}
+          <strong>Support Form:</strong>{' '}
           <Link href="/contact" className="text-primary hover:underline">
             Contact form
           </Link>
@@ -339,7 +339,7 @@ export default function TermsOfServicePage() {
         support procedures.
       </p>
 
-      <div className="mt-16 pt-8 border-t border-[#4d3d54]">
+      <div className="mt-16 border-t border-[#4d3d54] pt-8">
         <p className="text-sm text-[#b09eb8]/60">
           Last updated: October 23, 2025. These Terms of Service constitute the
           entire agreement between you and Snap Notes regarding the use of our

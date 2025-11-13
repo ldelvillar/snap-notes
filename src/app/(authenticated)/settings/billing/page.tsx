@@ -1,37 +1,37 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-import ContentSkeleton from "@/components/ContentSkeleton";
-import Toast from "@/components/Toast";
-import { useAuth } from "@/context/useGlobalContext";
-import { PLANS } from "@/data/plans";
+import ContentSkeleton from '@/components/ContentSkeleton';
+import Toast from '@/components/Toast';
+import { useAuth } from '@/context/useGlobalContext';
+import { PLANS } from '@/data/plans';
 
-type Plan = "free" | "pro" | "team";
+type Plan = 'free' | 'pro' | 'team';
 
 export default function BillingPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
   // Mock data
-  const [currentPlan] = useState<Plan>("free");
+  const [currentPlan] = useState<Plan>('free');
   const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
-    document.title = "Billing & Subscription | SnapNotes";
+    document.title = 'Billing & Subscription | SnapNotes';
     document
       .querySelector('meta[name="description"]')
       ?.setAttribute(
-        "content",
-        "Manage your subscription and billing settings on SnapNotes"
+        'content',
+        'Manage your subscription and billing settings on SnapNotes'
       );
   }, []);
 
   const handleCancelSubscription = () => {
-    setToastMessage("Subscription cancelled successfully");
+    setToastMessage('Subscription cancelled successfully');
     setShowToast(true);
   };
 
@@ -47,8 +47,8 @@ export default function BillingPage() {
     return {
       name: selectedPlan.name,
       price:
-        selectedPlan.price === "$0"
-          ? "$0/month"
+        selectedPlan.price === '$0'
+          ? '$0/month'
           : `${selectedPlan.price}/month`,
       features: selectedPlan.features,
     };
@@ -57,7 +57,7 @@ export default function BillingPage() {
   if (loading) return <ContentSkeleton lines={3} />;
 
   if (!user) {
-    router.push("/login");
+    router.push('/login');
     return null;
   }
 
@@ -78,15 +78,15 @@ export default function BillingPage() {
         {/* Current Plan */}
         <section className="rounded-lg border border-border">
           <div className="p-6">
-            <h2 className="text-lg font-semibold text-text-100 mb-4">
+            <h2 className="mb-4 text-lg font-semibold text-text-100">
               Current Plan
             </h2>
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-2xl font-bold text-text-100 mb-2">
+                <p className="mb-2 text-2xl font-bold text-text-100">
                   {planInfo.name}
                 </p>
-                <p className="text-xl text-primary mb-4">{planInfo.price}</p>
+                <p className="mb-4 text-xl text-primary">{planInfo.price}</p>
                 <ul className="space-y-2">
                   {planInfo.features.map((feature, index) => (
                     <li
@@ -94,7 +94,7 @@ export default function BillingPage() {
                       className="flex items-center gap-2 text-sm text-text-300"
                     >
                       <svg
-                        className="size-5 text-green-500 shrink-0"
+                        className="size-5 shrink-0 text-green-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -114,24 +114,24 @@ export default function BillingPage() {
               <div className="flex flex-col gap-2">
                 <Link
                   href="/upgrade"
-                  className="px-4 py-2 text-center text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="rounded-lg bg-primary px-4 py-2 text-center text-white transition-colors hover:bg-primary/90 focus:ring-2 focus:ring-primary/50 focus:outline-none"
                 >
-                  {currentPlan === "free" ? "Upgrade Plan" : "Change Plan"}
+                  {currentPlan === 'free' ? 'Upgrade Plan' : 'Change Plan'}
                 </Link>
-                {currentPlan !== "free" && (
+                {currentPlan !== 'free' && (
                   <button
                     onClick={handleCancelSubscription}
-                    className="px-4 py-2 text-red-400 border border-red-400/50 rounded-lg hover:bg-red-400/10 transition-colors focus:outline-none focus:ring-2 focus:ring-red-400/50"
+                    className="rounded-lg border border-red-400/50 px-4 py-2 text-red-400 transition-colors hover:bg-red-400/10 focus:ring-2 focus:ring-red-400/50 focus:outline-none"
                   >
                     Cancel Plan
                   </button>
                 )}
               </div>
             </div>
-            {currentPlan !== "free" && (
-              <div className="mt-4 pt-4 border-t border-border">
+            {currentPlan !== 'free' && (
+              <div className="mt-4 border-t border-border pt-4">
                 <p className="text-sm text-gray-400">
-                  Next billing date:{" "}
+                  Next billing date:{' '}
                   <span className="text-gray-200">November 1, 2025</span>
                 </p>
               </div>

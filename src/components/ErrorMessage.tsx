@@ -5,7 +5,7 @@ type ErrorMessageProps = {
 export default function ErrorMessage({ message }: ErrorMessageProps) {
   return (
     <div
-      className="p-4 rounded bg-red-50 border border-red-200"
+      className="rounded border border-red-200 bg-red-50 p-4"
       role="alert"
       aria-live="assertive"
     >

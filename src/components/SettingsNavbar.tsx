@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface SettingsNavbarProps {
   children: React.ReactNode;
 }
 
-type Tab = "general" | "account" | "privacy" | "billing";
+type Tab = 'general' | 'account' | 'privacy' | 'billing';
 
 export default function SettingsNavbar({ children }: SettingsNavbarProps) {
   const pathname = usePathname();
 
   const getActiveTab = (): Tab => {
-    if (pathname.includes("/settings/account")) return "account";
-    if (pathname.includes("/settings/privacy")) return "privacy";
-    if (pathname.includes("/settings/billing")) return "billing";
-    return "general";
+    if (pathname.includes('/settings/account')) return 'account';
+    if (pathname.includes('/settings/privacy')) return 'privacy';
+    if (pathname.includes('/settings/billing')) return 'billing';
+    return 'general';
   };
 
   const activeTab = getActiveTab();
 
   return (
-    <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto text-text-200">
-      <h1 className="mb-6 md:mb-8 text-2xl text-text-300 font-semibold">
+    <section className="mx-auto max-w-7xl px-4 py-16 text-text-200 md:px-8">
+      <h1 className="mb-6 text-2xl font-semibold text-text-300 md:mb-8">
         Settings
       </h1>
 
       {/* Mobile Horizontal Navigation */}
-      <nav className="mb-6 md:hidden overflow-x-auto">
-        <div className="flex gap-2 min-w-max">
+      <nav className="mb-6 overflow-x-auto md:hidden">
+        <div className="flex min-w-max gap-2">
           <Link
             href="/settings/general"
-            className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "general" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`rounded-lg px-4 py-2 whitespace-nowrap transition-colors ${
+              activeTab === 'general' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             General
@@ -41,8 +41,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <Link
             href="/settings/account"
-            className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "account" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`rounded-lg px-4 py-2 whitespace-nowrap transition-colors ${
+              activeTab === 'account' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             Account
@@ -50,8 +50,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <Link
             href="/settings/privacy"
-            className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "privacy" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`rounded-lg px-4 py-2 whitespace-nowrap transition-colors ${
+              activeTab === 'privacy' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             Privacy
@@ -59,8 +59,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
 
           <Link
             href="/settings/billing"
-            className={`px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
-              activeTab === "billing" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`rounded-lg px-4 py-2 whitespace-nowrap transition-colors ${
+              activeTab === 'billing' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             Billing
@@ -68,12 +68,12 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
         </div>
       </nav>
 
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+      <div className="flex flex-col gap-6 md:flex-row md:gap-8">
         {/* Desktop Sidebar Navigation */}
-        <nav className="hidden md:block w-56 space-y-1 sticky top-4 self-start shrink-0 text-lg">
+        <nav className="sticky top-4 hidden w-56 shrink-0 space-y-1 self-start text-lg md:block">
           <div
-            className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "general" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`cursor-pointer rounded-lg px-3 py-2 ${
+              activeTab === 'general' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             <Link href="/settings/general" className="flex">
@@ -82,8 +82,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           </div>
 
           <div
-            className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "account" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`cursor-pointer rounded-lg px-3 py-2 ${
+              activeTab === 'account' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             <Link href="/settings/account" className="flex">
@@ -92,8 +92,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           </div>
 
           <div
-            className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "privacy" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`cursor-pointer rounded-lg px-3 py-2 ${
+              activeTab === 'privacy' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             <Link href="/settings/privacy" className="flex">
@@ -102,8 +102,8 @@ export default function SettingsNavbar({ children }: SettingsNavbarProps) {
           </div>
 
           <div
-            className={`px-3 py-2 rounded-lg cursor-pointer ${
-              activeTab === "billing" ? "bg-bg-700" : "hover:bg-bg-800"
+            className={`cursor-pointer rounded-lg px-3 py-2 ${
+              activeTab === 'billing' ? 'bg-bg-700' : 'hover:bg-bg-800'
             }`}
           >
             <Link href="/settings/billing" className="flex">

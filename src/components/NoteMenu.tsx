@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState, Dispatch, SetStateAction } from "react";
-import { useRouter } from "next/navigation";
-import PencilIcon from "@/assets/Pencil";
-import TrashIcon from "@/assets/Trash";
-import PinIcon from "@/assets/Pin";
-import { useNotes } from "@/context/NotesContext";
-import { useAuth } from "@/context/useGlobalContext";
-import { handleDeleteNote, pinNote } from "@/lib/notesService";
-import { Note } from "@/types";
-import PinOff from "@/assets/PinOff";
+import { useState, Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/navigation';
+import PencilIcon from '@/assets/Pencil';
+import TrashIcon from '@/assets/Trash';
+import PinIcon from '@/assets/Pin';
+import { useNotes } from '@/context/NotesContext';
+import { useAuth } from '@/context/useGlobalContext';
+import { handleDeleteNote, pinNote } from '@/lib/notesService';
+import { Note } from '@/types';
+import PinOff from '@/assets/PinOff';
 
 interface NoteMenuProps {
   note: Note;
@@ -43,7 +43,7 @@ export default function NoteMenu({
       setError(
         err instanceof Error
           ? err.message
-          : "Failed to update note. Please try again."
+          : 'Failed to update note. Please try again.'
       );
     } finally {
       setIsPinning(false);
@@ -67,51 +67,51 @@ export default function NoteMenu({
   };
 
   return (
-    <div className="mt-1 w-32 absolute right-0 top-full z-50 text-text-100 bg-bg-sidebar border border-border rounded-lg shadow-lg">
+    <div className="absolute top-full right-0 z-50 mt-1 w-32 rounded-lg border border-border bg-bg-sidebar text-text-100 shadow-lg">
       <div className="py-2">
         <button
-          onClick={(e) => handlePin(e, note)}
+          onClick={e => handlePin(e, note)}
           disabled={isPinning}
-          className="w-full px-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-800 rounded-lg">
+          <div className="flex w-full items-center gap-2 rounded-lg px-2 py-1 hover:bg-bg-800">
             {note.pinnedAt ? (
               <>
                 <PinOff className="size-4" />
-                <span>{isPinning ? "Unpinning..." : "Unpin"}</span>
+                <span>{isPinning ? 'Unpinning...' : 'Unpin'}</span>
               </>
             ) : (
               <>
                 <PinIcon className="size-4" />
-                <span>{isPinning ? "Pinning..." : "Pin"}</span>
+                <span>{isPinning ? 'Pinning...' : 'Pin'}</span>
               </>
             )}
           </div>
         </button>
 
-        <button onClick={(e) => handleEdit(e, note.id)} className="w-full px-2">
-          <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-800 rounded-lg">
+        <button onClick={e => handleEdit(e, note.id)} className="w-full px-2">
+          <div className="flex w-full items-center gap-2 rounded-lg px-2 py-1 hover:bg-bg-800">
             <PencilIcon className="size-4" />
             <span>Edit</span>
           </div>
         </button>
 
         <button
-          onClick={(e) => handleNoteDeletion(e, note.id)}
+          onClick={e => handleNoteDeletion(e, note.id)}
           disabled={isDeleting === note.id}
           className="w-full px-2 text-text-danger"
         >
           {isDeleting === note.id ? (
-            <div className="px-2 py-1 w-full flex items-center gap-2">
+            <div className="flex w-full items-center gap-2 px-2 py-1">
               <div
-                className="size-4 rounded-full border-b-2 border-red-500 animate-spin"
+                className="size-4 animate-spin rounded-full border-b-2 border-red-500"
                 role="status"
                 aria-label="Deleting note"
               />
               Deleting...
             </div>
           ) : (
-            <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-danger rounded-lg">
+            <div className="flex w-full items-center gap-2 rounded-lg px-2 py-1 hover:bg-bg-danger">
               <TrashIcon className="size-4" />
               <span>Delete</span>
             </div>

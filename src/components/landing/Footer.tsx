@@ -1,25 +1,25 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[#4d3d54] py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-24 mb-8">
+    <footer className="border-t border-[#4d3d54] px-4 py-12">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-8 flex flex-col justify-center gap-8 md:flex-row md:gap-24">
           <Link
             href="/terms-of-service"
-            className="text-[#b09eb8] hover:text-primary transition"
+            className="text-[#b09eb8] transition hover:text-primary"
           >
             Terms of Service
           </Link>
           <Link
             href="/privacy-policy"
-            className="text-[#b09eb8] hover:text-primary transition"
+            className="text-[#b09eb8] transition hover:text-primary"
           >
             Privacy Policy
           </Link>
           <Link
             href="/contact"
-            className="text-[#b09eb8] hover:text-primary transition"
+            className="text-[#b09eb8] transition hover:text-primary"
           >
             Contact Us
           </Link>
