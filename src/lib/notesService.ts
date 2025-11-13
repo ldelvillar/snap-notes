@@ -28,6 +28,7 @@ export const createNote = async (
       text,
       creator: user.email,
       updatedAt: new Date(),
+      pinnedAt: null,
     };
     await setDoc(doc(collection(db, "Notes")), newNote);
   } catch (error) {
@@ -55,10 +56,25 @@ export const getNotes = async (user: User): Promise<Note[]> => {
         updatedAt: data.updatedAt?.toDate
           ? data.updatedAt.toDate()
           : new Date(data.updatedAt),
+        pinnedAt: data.pinnedAt?.toDate
+          ? data.pinnedAt.toDate()
+          : data.pinnedAt,
       };
     }) as Note[];
 
-    return dataArr;
+    // Separate pinned and unpinned notes
+    const pinnedNotes = dataArr.filter((note) => note.pinnedAt !== null);
+    const unpinnedNotes = dataArr.filter((note) => note.pinnedAt === null);
+
+    // Sort pinned notes by pinnedAt descending (most recently pinned first)
+    pinnedNotes.sort((a, b) => {
+      const dateA = a.pinnedAt ? new Date(a.pinnedAt).getTime() : 0;
+      const dateB = b.pinnedAt ? new Date(b.pinnedAt).getTime() : 0;
+      return dateB - dateA;
+    });
+
+    // Return pinned notes first, then unpinned notes
+    return [...pinnedNotes, ...unpinnedNotes];
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error("An unknown error occurred");
@@ -87,6 +103,7 @@ export const getNoteById = async (
       updatedAt: data.updatedAt?.toDate
         ? data.updatedAt.toDate()
         : new Date(data.updatedAt),
+      pinnedAt: data.pinnedAt?.toDate ? data.pinnedAt.toDate() : data.pinnedAt,
     } as Note;
   } catch (error) {
     if (error instanceof Error) throw error;
@@ -151,6 +168,22 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
       },
       { merge: true }
     );
+  } catch (error) {
+    if (error instanceof Error) throw error;
+    else throw new Error("An unknown error occurred");
+  }
+};
+
+export const pinNote = async (user: User, note: Note): Promise<void> => {
+  if (!user) throw new Error("User is not defined");
+
+  try {
+    const noteRef = doc(db, "Notes", note.id);
+    const updatedNote = {
+      ...note,
+      pinnedAt: note.pinnedAt ? null : new Date(),
+    };
+    await setDoc(noteRef, updatedNote, { merge: true });
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error("An unknown error occurred");

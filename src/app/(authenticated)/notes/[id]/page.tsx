@@ -20,6 +20,7 @@ const INITIAL_NOTE: Note = {
   creator: "",
   id: "",
   updatedAt: new Date(0),
+  pinnedAt: null,
 };
 
 export default function NotePage() {
@@ -63,10 +64,7 @@ export default function NotePage() {
 
         // Check if edit mode should be enabled from URL
         const editParam = searchParams.get("edit");
-        if (editParam === "true") {
-          setIsEditing(true);
-        }
-
+        if (editParam === "true") setIsEditing(true);
         setLoadingState({ isLoading: false, error: null });
       } catch (err) {
         setLoadingState({
@@ -161,10 +159,11 @@ export default function NotePage() {
               aria-label="Deleting note"
             />
           ) : (
-            <TrashIcon className="group-hover:text-red-600 transition-colors" />
+            <TrashIcon className="size-5 group-hover:text-red-600 transition-colors" />
           )}
         </button>
       </div>
+
       <div className="absolute top-2 right-12">
         <button
           onClick={isEditing ? handleSave : handleEdit}
@@ -180,13 +179,15 @@ export default function NotePage() {
             />
           ) : (
             <PencilIcon
-              className={`${
+              className={`size-5 ${
                 isEditing ? "text-primary" : "group-hover:text-primary"
               } transition-colors`}
             />
           )}
         </button>
       </div>
+
+      {/* Edit mode */}
       {isEditing ? (
         <div className="pt-10">
           <input
@@ -222,6 +223,7 @@ export default function NotePage() {
           </div>
         </div>
       ) : (
+        /* View mode */
         <>
           <h1 className="text-3xl font-bold mb-6">{note.title}</h1>
           <div className="flex items-center gap-4 mb-6 text-sm text-text-400">

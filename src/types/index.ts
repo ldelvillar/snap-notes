@@ -13,4 +13,5 @@ export interface Note {
   text: string;
   creator: string;
   updatedAt: Date;
+  pinnedAt: Date | null;
 }

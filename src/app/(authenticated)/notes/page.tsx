@@ -1,22 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import ErrorMessage from "@/components/ErrorMessage";
 import ContentSkeleton from "@/components/ContentSkeleton";
 import { useAuth } from "@/context/useGlobalContext";
 import { useNotes } from "@/context/NotesContext";
-import { handleDeleteNote } from "@/lib/notesService";
 import PlusIcon from "@/assets/Plus";
-import TrashIcon from "@/assets/Trash";
 import DocumentIcon from "@/assets/Document";
+import PinIcon from "@/assets/Pin";
+import ThreeDots from "@/assets/ThreeDots";
+import NoteMenu from "@/components/NoteMenu";
 
 export default function Home() {
-  const { user, loading } = useAuth();
-  const { notes, refetchNotes } = useNotes();
-  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const { loading } = useAuth();
+  const { notes } = useNotes();
+  const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const noteMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.title = "Your Notes | SnapNotes";
@@ -25,13 +27,30 @@ export default function Home() {
       ?.setAttribute("content", "Manage your notes with SnapNotes");
   }, []);
 
-  const handleNoteDeletion = async (
-    e: React.MouseEvent,
-    noteId: string
-  ): Promise<void> => {
-    if (!user) return;
-    await handleDeleteNote(e, user, noteId, setIsDeleting, setError);
-    refetchNotes();
+  // Check if there is a click-outside for note menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // Close note menu
+      if (
+        openNoteMenuId &&
+        noteMenuRef.current &&
+        !noteMenuRef.current.contains(target)
+      ) {
+        setOpenNoteMenuId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openNoteMenuId]);
+
+  // Toggle note menu
+  const toggleNoteMenu = (e: React.MouseEvent, noteId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpenNoteMenuId(openNoteMenuId === noteId ? null : noteId);
   };
 
   if (loading) return <ContentSkeleton lines={6} />;
@@ -117,26 +136,36 @@ export default function Home() {
                       year: "numeric",
                     })}
                   </span>
+
+                  {note.pinnedAt && (
+                    <PinIcon className="size-4 text-yellow-400" />
+                  )}
                 </div>
               </Link>
 
-              {/* Delete Button */}
-              <button
-                onClick={(e) => handleNoteDeletion(e, note.id)}
-                className="p-2 absolute top-3 right-3 z-10 text-text-300 bg-bg-900/80 rounded-lg transition-all hover:text-white hover:bg-red-600/90 opacity-0 group-hover:opacity-100"
-                disabled={isDeleting === note.id}
-                aria-label="Delete note"
-              >
-                {isDeleting === note.id ? (
-                  <div
-                    className="size-5 rounded-full border-b-2 border-white animate-spin"
-                    role="status"
-                    aria-label="Deleting note"
+              {/* Toggle note menu */}
+              <div className="absolute top-3 right-4 flex items-center gap-1 text-text-200">
+                <button
+                  onClick={(e) => toggleNoteMenu(e, note.id)}
+                  className={`p-1 rounded opacity-0 hover:bg-bg-600 group-hover:opacity-100 transition-opacity ${
+                    openNoteMenuId === note.id ? "opacity-100 bg-bg-600" : ""
+                  }`}
+                  aria-label="Note options"
+                >
+                  <ThreeDots className="size-5" />
+                </button>
+              </div>
+
+              {/* Note menu */}
+              {openNoteMenuId === note.id && (
+                <div ref={noteMenuRef}>
+                  <NoteMenu
+                    note={note}
+                    setOpenNoteMenuId={setOpenNoteMenuId}
+                    setError={setError}
                   />
-                ) : (
-                  <TrashIcon className="size-5 transition-colors" />
-                )}
-              </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

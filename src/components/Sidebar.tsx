@@ -3,11 +3,9 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/context/useGlobalContext";
 import { Note } from "@/types";
-import { handleDeleteNote } from "@/lib/notesService";
 import AccountMenu from "@/components/AccountMenu";
 import SearchResults from "@/components/SearchResults";
 import Toast from "@/components/Toast";
@@ -18,8 +16,8 @@ import DocumentIcon from "@/assets/Document";
 import EditIcon from "@/assets/Edit";
 import Magnifier from "@/assets/Magnifier";
 import ThreeDotsIcon from "@/assets/ThreeDots";
-import PencilIcon from "@/assets/Pencil";
-import TrashIcon from "@/assets/Trash";
+import NoteMenu from "@/components/NoteMenu";
+import PinIcon from "@/assets/Pin";
 
 interface SidebarProps {
   children: React.ReactNode;
@@ -32,16 +30,13 @@ export default function Sidebar({
   children,
   notes,
   notesLoading,
-  refetchNotes,
 }: SidebarProps) {
   const { user } = useAuth();
-  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
-  const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [deletionError, setDeletionError] = useState<string | null>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const noteMenuRef = useRef<HTMLDivElement>(null);
@@ -80,27 +75,6 @@ export default function Sidebar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileOpen, accountMenuOpen, openNoteMenuId, searchOpen]);
 
-  // Handle note deletion
-  const handleNoteDeletion = async (
-    e: React.MouseEvent,
-    noteId: string
-  ): Promise<void> => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!user) return;
-    await handleDeleteNote(e, user, noteId, setIsDeleting, setDeletionError);
-    refetchNotes();
-    setOpenNoteMenuId(null);
-  };
-
-  // Handle edit navigation
-  const handleEditNote = (e: React.MouseEvent, noteId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    router.push(`/notes/${noteId}?edit=true`);
-    setOpenNoteMenuId(null);
-  };
-
   // Toggle note menu
   const toggleNoteMenu = (e: React.MouseEvent, noteId: string) => {
     e.preventDefault();
@@ -120,21 +94,19 @@ export default function Sidebar({
         />
       )}
 
-      {/* Sidebar */}
       <div
         id="sidebar"
-        className={`fixed inset-y-0 left-0 z-50 text-text-100 bg-bg-sidebar border-r border-border transform transition-all duration-300 ease-in-out h-screen
-                    ${
-                      isMobileOpen
-                        ? "translate-x-0"
-                        : "-translate-x-full md:translate-x-0"
-                    }
-                    ${isCollapsed ? "w-16" : "w-72"}
-                    md:relative`}
+        className={`fixed md:relative inset-y-0 left-0 z-50 text-text-100 bg-bg-sidebar border-r border-border transform transition-all duration-300 ease-in-out h-screen
+        ${isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        ${isCollapsed ? "w-16" : "w-72"}`}
       >
-        {/* Sidebar Header */}
+        {/* Header */}
         <div className="px-4 h-16 flex items-center justify-between">
-          <Link href="/notes" className="flex items-center space-x-2">
+          <Link
+            href="/notes"
+            onClick={() => setIsMobileOpen(false)}
+            className="flex items-center space-x-2"
+          >
             <Image
               src="/images/brand/logo.webp"
               width={28}
@@ -165,7 +137,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* Sidebar Content */}
+        {/* Main content */}
         <div className="flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
           <div className="px-2 py-4 overflow-y-auto">
             <Link
@@ -265,13 +237,23 @@ export default function Sidebar({
                         </span>
                       </div>
                       {!isCollapsed && (
-                        <div className="flex items-center gap-1">
+                        <div className="size-6 flex items-center justify-center">
+                          {note.pinnedAt && (
+                            <PinIcon
+                              className={`size-4 transition-opacity ${
+                                openNoteMenuId === note.id
+                                  ? "opacity-0"
+                                  : "group-hover:opacity-0"
+                              }`}
+                            />
+                          )}
+
                           <button
                             onClick={(e) => toggleNoteMenu(e, note.id)}
-                            className={`p-1 rounded opacity-0 hover:bg-bg-600 group-hover:opacity-100 transition-opacity ${
+                            className={`absolute p-1 rounded hover:bg-bg-600 transition-opacity ${
                               openNoteMenuId === note.id
                                 ? "opacity-100 bg-bg-600"
-                                : ""
+                                : "opacity-0 group-hover:opacity-100"
                             }`}
                             aria-label="Note options"
                           >
@@ -281,42 +263,13 @@ export default function Sidebar({
                       )}
                     </Link>
 
-                    {/* Dropdown Menu */}
+                    {/* Note menu */}
                     {openNoteMenuId === note.id && !isCollapsed && (
-                      <div className="mt-1 w-32 absolute right-0 top-full z-50 bg-bg-sidebar border border-border rounded-lg shadow-lg">
-                        <div className="py-2">
-                          <button
-                            onClick={(e) => handleEditNote(e, note.id)}
-                            className="w-full px-2"
-                          >
-                            <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-800 rounded-lg">
-                              <PencilIcon className="size-4" />
-                              <span>Edit</span>
-                            </div>
-                          </button>
-                          <button
-                            onClick={(e) => handleNoteDeletion(e, note.id)}
-                            disabled={isDeleting === note.id}
-                            className="w-full px-2 text-text-danger"
-                          >
-                            {isDeleting === note.id ? (
-                              <div className="px-2 py-1 w-full flex items-center gap-2">
-                                <div
-                                  className="size-4 rounded-full border-b-2 border-red-500 animate-spin"
-                                  role="status"
-                                  aria-label="Deleting note"
-                                />
-                                Deleting...
-                              </div>
-                            ) : (
-                              <div className="px-2 py-1 w-full flex items-center gap-2 hover:bg-bg-danger rounded-lg">
-                                <TrashIcon className="size-4" />
-                                <span>Delete</span>
-                              </div>
-                            )}
-                          </button>
-                        </div>
-                      </div>
+                      <NoteMenu
+                        note={note}
+                        setOpenNoteMenuId={setOpenNoteMenuId}
+                        setError={setDeletionError}
+                      />
                     )}
                   </div>
                 ))
@@ -370,7 +323,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* Mobile Toggle Button */}
+      {/* Mobile toggle button */}
       <button
         onClick={() => setIsMobileOpen(true)}
         className={`${
