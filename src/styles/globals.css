@@ -138,3 +138,13 @@ html {
   background-color: var(--color-primary);
   color: #fff;
 }
+
+/* Hide scrollbar for sidebar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

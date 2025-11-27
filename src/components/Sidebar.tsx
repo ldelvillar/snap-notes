@@ -148,7 +148,7 @@ export default function Sidebar({
 
         {/* Main content */}
         <div className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden">
-          <div className="overflow-y-auto px-2 py-4">
+          <div className="scrollbar-hide overflow-y-auto px-2 py-4">
             <Link
               href="/notes/create"
               onClick={() => setIsMobileOpen(false)}
@@ -196,7 +196,7 @@ export default function Sidebar({
             </button>
           </div>
 
-          <div className="flex-1 space-y-4 overflow-y-auto px-2 py-4">
+          <div className="scrollbar-hide flex-1 space-y-4 overflow-y-auto px-2 py-4">
             <h2
               className={`mb-2 px-2 text-sm font-medium text-text-400 transition-opacity duration-300 ${
                 isCollapsed ? 'h-0 opacity-0' : 'opacity-100'
