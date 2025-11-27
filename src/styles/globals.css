@@ -1,6 +1,31 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Onest';
+  src:
+    url('/fonts/Onest-VariableFont_wght.woff2') format('woff2-variations'),
+    url('/fonts/Onest-VariableFont_wght.woff2') format('woff2'),
+    url('/fonts/Onest-VariableFont_wght.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src:
+    url('/fonts/Roboto-VariableFont_wght.woff2') format('woff2-variations'),
+    url('/fonts/Roboto-VariableFont_wght.woff2') format('woff2'),
+    url('/fonts/Roboto-VariableFont_wght.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
+  --font-display: 'Onest', sans-serif;
+  --font-onest: 'Onest', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
   --color-primary: #681083;
   --color-text-100: #101828;
   --color-text-200: #1e2939;
@@ -33,6 +58,10 @@
   --color-bg-800: #1e2939;
   --color-bg-900: #101828;
   --color-border: #4d4d4d;
+}
+
+.font-roboto {
+  --font-display: 'Roboto', sans-serif;
 }
 
 html {

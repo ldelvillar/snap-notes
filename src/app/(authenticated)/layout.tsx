@@ -47,6 +47,41 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Apply font on mount and listen for font changes
+  useEffect(() => {
+    const applyFont = () => {
+      const font = localStorage.getItem('font') || 'default';
+      document.documentElement.classList.remove('font-display', 'font-roboto');
+      if (font === 'default') {
+        document.documentElement.classList.add('font-display');
+      } else {
+        document.documentElement.classList.add('font-roboto');
+      }
+    };
+
+    applyFont();
+
+    // Listen for storage changes from other tabs/windows
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'font') {
+        applyFont();
+      }
+    };
+
+    // Listen for custom event from same page
+    const handleFontChange = () => {
+      applyFont();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('fontChange', handleFontChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('fontChange', handleFontChange);
+    };
+  }, []);
+
   const fetchNotes = useCallback(async () => {
     if (!user) return;
     try {
@@ -77,7 +112,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
   if (loading || !user) return <ContentSkeleton lines={6} />;
 
   return (
-    <div className="bg-bg-primary">
+    <div id="layout" className="bg-bg-primary">
       <Sidebar
         notes={notes}
         notesLoading={notesLoading}

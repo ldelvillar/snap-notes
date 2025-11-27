@@ -8,7 +8,7 @@ import Toast from '@/components/Toast';
 import { useAuth } from '@/context/useGlobalContext';
 
 type Theme = 'light' | 'dark' | 'system';
-type FontSize = 'small' | 'medium' | 'large';
+type Font = 'default' | 'roboto';
 
 export default function GeneralSettingsPage() {
   useEffect(() => {
@@ -29,11 +29,11 @@ export default function GeneralSettingsPage() {
     return 'system';
   });
 
-  const [fontSize, setFontSize] = useState<FontSize>(() => {
+  const [font, setFont] = useState<Font>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('fontSize') as FontSize) || 'medium';
+      return (localStorage.getItem('font') as Font) || 'default';
     }
-    return 'medium';
+    return 'default';
   });
 
   const [showToast, setShowToast] = useState(false);
@@ -78,9 +78,10 @@ export default function GeneralSettingsPage() {
     setShowToast(true);
   };
 
-  const handleFontSizeChange = (newSize: FontSize) => {
-    setFontSize(newSize);
-    localStorage.setItem('fontSize', newSize);
+  const handleFontChange = (newFont: Font) => {
+    setFont(newFont);
+    localStorage.setItem('font', newFont);
+    window.dispatchEvent(new Event('fontChange'));
     setShowToast(true);
   };
 
@@ -104,7 +105,7 @@ export default function GeneralSettingsPage() {
 
       <section className="max-w-4xl rounded-lg border border-border">
         <div className="p-6">
-          {/* Theme Preference */}
+          {/* Theme preference */}
           <div className="space-y-6">
             <div className="space-y-3">
               <h2 className="text-lg font-semibold text-text-100">
@@ -146,7 +147,7 @@ export default function GeneralSettingsPage() {
               </div>
             </div>
 
-            {/* Font Size Preference */}
+            {/* Font family preference */}
             <div className="space-y-3 border-t border-border pt-4">
               <h2 className="text-lg font-semibold text-text-100">
                 Typography
@@ -154,34 +155,25 @@ export default function GeneralSettingsPage() {
               <div className="flex flex-col gap-2">
                 <div className="mt-2 flex gap-3">
                   <button
-                    onClick={() => handleFontSizeChange('small')}
+                    onClick={() => handleFontChange('default')}
                     className={`rounded-lg border px-4 py-2 transition-all ${
-                      fontSize === 'small'
+                      font === 'default'
                         ? 'border-primary bg-primary/70 text-white'
                         : 'border-border hover:border-gray-500'
                     }`}
                   >
-                    <span className="text-sm">Small</span>
+                    <span className="font-onest">Default</span>
                   </button>
+
                   <button
-                    onClick={() => handleFontSizeChange('medium')}
+                    onClick={() => handleFontChange('roboto')}
                     className={`rounded-lg border px-4 py-2 transition-all ${
-                      fontSize === 'medium'
+                      font === 'roboto'
                         ? 'border-primary bg-primary/70 text-white'
                         : 'border-border hover:border-gray-500'
                     }`}
                   >
-                    <span className="text-base">Medium</span>
-                  </button>
-                  <button
-                    onClick={() => handleFontSizeChange('large')}
-                    className={`rounded-lg border px-4 py-2 transition-all ${
-                      fontSize === 'large'
-                        ? 'border-primary bg-primary/70 text-white'
-                        : 'border-border hover:border-gray-500'
-                    }`}
-                  >
-                    <span className="text-lg">Large</span>
+                    <span className="font-roboto">Roboto</span>
                   </button>
                 </div>
               </div>
