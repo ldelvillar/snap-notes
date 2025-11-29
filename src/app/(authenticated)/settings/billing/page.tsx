@@ -127,10 +127,9 @@ export default function BillingPage() {
                 <p className="text-sm text-gray-400">
                   Next billing date:{' '}
                   <span className="text-gray-200">
-                    {new Date(
-                      user.subscription.currentPeriodEnd instanceof Date
-                        ? user.subscription.currentPeriodEnd
-                        : user.subscription.currentPeriodEnd.toDate()
+                    {(user.subscription.currentPeriodEnd instanceof Date
+                      ? user.subscription.currentPeriodEnd
+                      : user.subscription.currentPeriodEnd.toDate()
                     ).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',

@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export type PlanName = 'free' | 'pro' | 'team';
 
 export interface Note {
@@ -12,7 +14,7 @@ export interface Note {
 export interface Subscription {
   plan: PlanName;
   status: 'active' | 'canceled' | 'past_due';
-  currentPeriodEnd?: Date;
+  currentPeriodEnd?: Date | Timestamp;
   cancelAtPeriodEnd?: boolean;
 }
 
