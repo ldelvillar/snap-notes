@@ -30,9 +30,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            // Type assertion for document data
+            // Type assertion for document data and include uid from firebaseUser
             const userData = docSnap.data() as User;
-            setUser(userData);
+            setUser({ ...userData, uid: firebaseUser.uid });
           }
         } else {
           setUser(null);

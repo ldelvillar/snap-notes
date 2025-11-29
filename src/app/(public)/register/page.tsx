@@ -39,12 +39,6 @@ const ERROR_MESSAGES: { [key: string]: string } = {
 };
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const { user, loading } = useAuth();
-  const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
     document.title = 'Register | SnapNotes';
     document
@@ -54,6 +48,12 @@ export default function RegisterPage() {
         'Create a new account on Snap Notes to start taking and organizing your notes.'
       );
   }, []);
+
+  const router = useRouter();
+  const { user, loading } = useAuth();
+  const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Redirect after render to avoid updating Router during render
   useEffect(() => {
@@ -117,6 +117,10 @@ export default function RegisterPage() {
           lastName: formData.lname,
           phone: formData.phone,
           photo: '',
+          subscription: {
+            plan: 'free',
+            status: 'active',
+          },
         });
       }
       router.push('/notes');

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Cta from '@/components/landing/Cta';
+import Tick from '@/assets/Tick';
 import { PLANS } from '@/data/plans';
 
 interface FAQ {
@@ -76,7 +77,7 @@ export default function PricingPage() {
 
               <div className="p-8">
                 {/* Plan Name */}
-                <h3 className="mb-2 text-2xl font-bold text-white">
+                <h3 className="mb-2 text-2xl font-bold text-white capitalize">
                   {plan.name}
                 </h3>
                 <p className="mb-6 text-sm text-[#b09eb8]">
@@ -110,17 +111,7 @@ export default function PricingPage() {
                       key={fIdx}
                       className="flex items-center gap-3 text-sm text-[#b09eb8]"
                     >
-                      <svg
-                        className="h-5 w-5 shrink-0 text-primary"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                      <Tick className="size-5 shrink-0 text-primary" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -164,7 +155,7 @@ export default function PricingPage() {
                 >
                   <span className="text-left font-medium">{faq.question}</span>
                   <svg
-                    className={`h-5 w-5 transition-transform ${
+                    className={`size-5 transition-transform ${
                       expandedFaq === index ? 'rotate-180' : ''
                     }`}
                     viewBox="0 0 20 20"

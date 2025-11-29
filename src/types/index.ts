@@ -1,11 +1,4 @@
-export interface User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  photo?: string;
-  uid: string;
-}
+export type PlanName = 'free' | 'pro' | 'team';
 
 export interface Note {
   id: string;
@@ -14,4 +7,21 @@ export interface Note {
   creator: string;
   updatedAt: Date;
   pinnedAt: Date | null;
+}
+
+export interface Subscription {
+  plan: PlanName;
+  status: 'active' | 'canceled' | 'past_due';
+  currentPeriodEnd?: Date;
+  cancelAtPeriodEnd?: boolean;
+}
+
+export interface User {
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  photo?: string;
+  uid: string;
+  subscription: Subscription;
 }

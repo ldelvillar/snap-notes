@@ -8,17 +8,17 @@ import ContentSkeleton from '@/components/ContentSkeleton';
 import Toast from '@/components/Toast';
 import { useAuth } from '@/context/useGlobalContext';
 import { PLANS } from '@/data/plans';
-
-type Plan = 'free' | 'pro' | 'team';
+import { PlanName } from '@/types';
 
 export default function BillingPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  // Mock data
-  const [currentPlan] = useState<Plan>('free');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  // Get current plan from user's subscription
+  const currentPlan: PlanName = user?.subscription?.plan || 'free';
 
   useEffect(() => {
     document.title = 'Billing & Subscription | SnapNotes';
@@ -35,14 +35,8 @@ export default function BillingPage() {
     setShowToast(true);
   };
 
-  const getPlanInfo = (plan: Plan) => {
-    const planMap: { [key in Plan]: number } = {
-      free: 0,
-      pro: 1,
-      team: 2,
-    };
-
-    const selectedPlan = PLANS[planMap[plan]];
+  const getPlanInfo = (plan: PlanName) => {
+    const selectedPlan = PLANS.find(p => p.name === plan) || PLANS[0];
 
     return {
       name: selectedPlan.name,
@@ -83,7 +77,7 @@ export default function BillingPage() {
             </h2>
             <div className="flex items-start justify-between">
               <div>
-                <p className="mb-2 text-2xl font-bold text-text-100">
+                <p className="mb-2 text-2xl font-bold text-text-100 capitalize">
                   {planInfo.name}
                 </p>
                 <p className="mb-4 text-xl text-primary">{planInfo.price}</p>
@@ -128,11 +122,21 @@ export default function BillingPage() {
                 )}
               </div>
             </div>
-            {currentPlan !== 'free' && (
+            {currentPlan !== 'free' && user?.subscription?.currentPeriodEnd && (
               <div className="mt-4 border-t border-border pt-4">
                 <p className="text-sm text-gray-400">
                   Next billing date:{' '}
-                  <span className="text-gray-200">November 1, 2025</span>
+                  <span className="text-gray-200">
+                    {new Date(
+                      user.subscription.currentPeriodEnd instanceof Date
+                        ? user.subscription.currentPeriodEnd
+                        : user.subscription.currentPeriodEnd.toDate()
+                    ).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
                 </p>
               </div>
             )}

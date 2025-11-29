@@ -1,23 +1,27 @@
+import { PlanName } from '@/types';
+
 interface Plan {
-  name: string;
+  name: PlanName;
   price: string;
   description: string;
   features: string[];
   cta: string;
+  href: string;
   popular?: boolean;
 }
 
 export const PLANS: Plan[] = [
   {
-    name: 'Free',
-    price: '$0',
+    name: 'free',
+    price: '0€',
     description: 'Perfect for getting started',
     features: ['50MB storage', '100 notes', 'Basic features', '1 device sync'],
-    cta: 'Get Started',
+    href: '/register',
+    cta: 'Get started',
   },
   {
-    name: 'Pro',
-    price: '$9.99',
+    name: 'pro',
+    price: '9.99€',
     description: 'For individuals and power users',
     features: [
       '1GB storage',
@@ -27,11 +31,12 @@ export const PLANS: Plan[] = [
       '5 device sync',
     ],
     cta: 'Upgrade to Pro',
+    href: '/upgrade/pro',
     popular: true,
   },
   {
-    name: 'Team',
-    price: '$19.99',
+    name: 'team',
+    price: '19.99€',
     description: 'For teams and collaboration',
     features: [
       '5GB storage',
@@ -40,6 +45,7 @@ export const PLANS: Plan[] = [
       '10 members',
       'Priority support',
     ],
-    cta: 'Start Team Plan',
+    href: '/upgrade/team',
+    cta: 'Get Team',
   },
 ];
