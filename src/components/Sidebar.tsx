@@ -166,7 +166,9 @@ export default function Sidebar({
               >
                 New note
               </span>
-              <span className="ml-auto hidden text-sm text-text-400 group-hover:inline">
+              <span
+                className={`ml-auto hidden text-sm text-text-400 ${!isCollapsed ? 'group-hover:inline' : ''}`}
+              >
                 Ctrl + Alt + N
               </span>
             </Link>
@@ -190,7 +192,9 @@ export default function Sidebar({
               >
                 Search notes
               </span>
-              <span className="ml-auto hidden text-sm text-text-400 group-hover:inline">
+              <span
+                className={`ml-auto hidden text-sm text-text-400 ${!isCollapsed ? 'group-hover:inline' : ''}`}
+              >
                 Ctrl + K
               </span>
             </button>
@@ -225,7 +229,7 @@ export default function Sidebar({
                 notes.map(note => (
                   <div
                     key={note.id}
-                    className="relative"
+                    className={`relative ${isCollapsed ? 'hidden' : ''}`}
                     ref={openNoteMenuId === note.id ? noteMenuRef : null}
                   >
                     <Link
@@ -235,11 +239,7 @@ export default function Sidebar({
                       } group rounded-lg px-2 py-2 text-sm hover:bg-bg-700`}
                       onClick={() => setIsMobileOpen(false)}
                     >
-                      <div
-                        className={`flex min-w-0 flex-1 items-center gap-3 ${
-                          isCollapsed ? 'justify-center' : ''
-                        }`}
-                      >
+                      <div className={`flex min-w-0 flex-1 items-center gap-3`}>
                         <span className="shrink-0">
                           <DocumentIcon className="size-5" />
                         </span>
