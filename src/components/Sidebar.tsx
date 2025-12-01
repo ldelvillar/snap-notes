@@ -319,9 +319,9 @@ export default function Sidebar({
                   {user.firstName} {user.lastName}
                 </h3>
                 <p className="truncate text-xs text-text-300">
-                  {notes.length === 1
-                    ? notes.length + ' note'
-                    : notes.length + ' notes'}
+                  {user.subscription.plan.charAt(0).toUpperCase() +
+                    user.subscription.plan.slice(1)}{' '}
+                  plan
                 </p>
               </div>
             </button>
