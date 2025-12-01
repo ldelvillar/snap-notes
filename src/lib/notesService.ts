@@ -10,7 +10,6 @@ import {
   where,
   orderBy,
 } from 'firebase/firestore';
-import { nanoid } from 'nanoid';
 import { db } from '@/config/firebase';
 import { User, Note } from '@/types/index';
 
@@ -22,15 +21,17 @@ export const createNote = async (
   if (!user) throw new Error('User is not defined');
 
   try {
+    const noteRef = doc(collection(db, 'Notes'));
+
     const newNote: Note = {
-      id: nanoid(),
+      id: noteRef.id,
       title: title || 'Untitled',
       text,
       creator: user.email,
       updatedAt: new Date(),
       pinnedAt: null,
     };
-    await setDoc(doc(collection(db, 'Notes')), newNote);
+    await setDoc(noteRef, newNote);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
