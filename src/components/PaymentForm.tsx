@@ -67,27 +67,17 @@ export default function PaymentForm({
         redirect: 'if_required',
       });
 
-      console.log('Payment result:', { error, paymentIntent });
-
       if (error) {
         setErrorMessage(error.message || 'An unexpected error occurred.');
       } else if (paymentIntent?.status === 'succeeded') {
-        console.log('Payment succeeded, updating subscription...');
-        console.log('User UID:', user?.uid);
-        console.log('Plan name:', planName.toLowerCase());
-
         // Update Firestore with the new plan
         await updateUserSubscription(planName.toLowerCase() as PlanName);
-        console.log('Firestore updated, redirecting...');
 
         onSuccess?.();
         // Use window.location for hard redirect to prevent useEffect from redirecting elsewhere
         window.location.href = '/settings/billing';
-      } else {
-        console.log('Payment intent status:', paymentIntent?.status);
       }
     } catch (err) {
-      console.error('Payment error:', err);
       setErrorMessage('Payment failed. Please try again.');
     } finally {
       setIsProcessing(false);

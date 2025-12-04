@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Sidebar from '@/components/Sidebar';
 import ContentSkeleton from '@/components/ContentSkeleton';
+import ErrorMessage from '@/components/ErrorMessage';
 import { useAuth } from '@/context/useGlobalContext';
 import { NotesProvider, useNotes } from '@/context/NotesContext';
 import { getNotes } from '@/lib/notesService';
@@ -18,6 +19,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     useNotes();
   const router = useRouter();
   useKeyboardShortcuts();
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
   // Apply theme on mount and listen for system theme changes
   useEffect(() => {
@@ -86,10 +88,11 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     if (!user) return;
     try {
       setNotesLoading(true);
+      setFetchError(null);
       const data = await getNotes(user);
       setNotes(data);
-    } catch (err) {
-      console.error('Failed to fetch notes:', err);
+    } catch {
+      setFetchError('Failed to load notes. Please try again.');
     } finally {
       setNotesLoading(false);
     }
@@ -118,7 +121,13 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
         notesLoading={notesLoading}
         refetchNotes={fetchNotes}
       >
-        {children}
+        {fetchError ? (
+          <div className="mx-4 mt-12 md:mx-20">
+            <ErrorMessage message={fetchError} />
+          </div>
+        ) : (
+          children
+        )}
       </Sidebar>
     </div>
   );

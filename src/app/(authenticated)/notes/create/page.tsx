@@ -101,7 +101,6 @@ export default function CreateNotePage() {
       } else {
         setError('Failed to create note. Please try again later.');
       }
-      console.error('Error creating note:', err);
     } finally {
       setIsSubmitting(false);
     }

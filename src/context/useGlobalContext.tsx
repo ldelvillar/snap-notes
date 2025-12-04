@@ -45,17 +45,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const handleLogout = async (): Promise<void> => {
-    try {
-      await auth.signOut();
-      window.location.href = '/login';
-      console.log('User logged out successfully!');
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error('Error logging out:', err.message);
-      } else {
-        console.error('Failed to logout. Please try again.');
-      }
-    }
+    await auth.signOut();
+    window.location.href = '/login';
   };
 
   const value: AuthContextType = {
