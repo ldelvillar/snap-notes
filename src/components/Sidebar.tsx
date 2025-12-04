@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useAuth } from '@/context/useGlobalContext';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import { Note } from '@/types';
 import AccountMenu from '@/components/AccountMenu';
 import SearchResults from '@/components/SearchResults';
@@ -40,42 +41,18 @@ export default function Sidebar({
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
   const [deletionError, setDeletionError] = useState<string | null>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
   const noteMenuRef = useRef<HTMLDivElement>(null);
 
-  // Check if there is a click-outside for all menus
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
+  // Close menus when clicking outside
+  const closeMobileSidebar = useCallback(() => setIsMobileOpen(false), []);
+  const closeAccountMenu = useCallback(() => setAccountMenuOpen(false), []);
+  const closeNoteMenu = useCallback(() => setOpenNoteMenuId(null), []);
 
-      // Close mobile sidebar
-      const sidebar = document.getElementById('sidebar');
-      if (isMobileOpen && sidebar && !sidebar.contains(target)) {
-        setIsMobileOpen(false);
-      }
-
-      // Close account menu
-      if (
-        accountMenuOpen &&
-        accountMenuRef.current &&
-        !accountMenuRef.current.contains(target)
-      ) {
-        setAccountMenuOpen(false);
-      }
-
-      // Close note menu
-      if (
-        openNoteMenuId &&
-        noteMenuRef.current &&
-        !noteMenuRef.current.contains(target)
-      ) {
-        setOpenNoteMenuId(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobileOpen, accountMenuOpen, openNoteMenuId, searchOpen]);
+  useClickOutside(sidebarRef, closeMobileSidebar, isMobileOpen);
+  useClickOutside(accountMenuRef, closeAccountMenu, accountMenuOpen);
+  useClickOutside(noteMenuRef, closeNoteMenu, !!openNoteMenuId);
 
   // Listen for global open-search event
   useEffect(() => {
@@ -106,6 +83,7 @@ export default function Sidebar({
       )}
 
       <div
+        ref={sidebarRef}
         id="sidebar"
         className={`fixed inset-y-0 left-0 z-50 h-screen transform border-r border-border bg-bg-sidebar text-text-100 transition-all duration-300 ease-in-out md:relative ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'} ${isCollapsed ? 'w-16' : 'w-72'}`}
       >

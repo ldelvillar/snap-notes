@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 import ErrorMessage from '@/components/ErrorMessage';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import ContentSkeleton from '@/components/ContentSkeleton';
 import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
@@ -27,24 +28,9 @@ export default function Home() {
       ?.setAttribute('content', 'Manage your notes with SnapNotes');
   }, []);
 
-  // Check if there is a click-outside for note menu
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      // Close note menu
-      if (
-        openNoteMenuId &&
-        noteMenuRef.current &&
-        !noteMenuRef.current.contains(target)
-      ) {
-        setOpenNoteMenuId(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [openNoteMenuId]);
+  // Close note menu when clicking outside
+  const closeNoteMenu = useCallback(() => setOpenNoteMenuId(null), []);
+  useClickOutside(noteMenuRef, closeNoteMenu, !!openNoteMenuId);
 
   // Toggle note menu
   const toggleNoteMenu = (e: React.MouseEvent, noteId: string) => {
