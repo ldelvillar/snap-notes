@@ -1,4 +1,6 @@
+import { useCallback } from 'react';
 import { useAuth } from '@/context/useGlobalContext';
+import { useFocusTrap, useEscapeKey } from '@/hooks/useModalAccessibility';
 
 interface LogoutConfirmationProps {
   setConfirmationOpen: (open: boolean) => void;
@@ -8,11 +10,24 @@ export default function LogoutConfirmation({
   setConfirmationOpen,
 }: LogoutConfirmationProps) {
   const { handleLogout } = useAuth();
+  const modalRef = useFocusTrap<HTMLDivElement>();
+
+  const closeModal = useCallback(
+    () => setConfirmationOpen(false),
+    [setConfirmationOpen]
+  );
+  useEscapeKey(closeModal);
 
   return (
     <div className="fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black/40 text-text-200 backdrop-blur-sm">
-      <div className="mx-4 w-full max-w-sm rounded-lg bg-bg-primary p-6 text-lg shadow-xl">
-        <p className="mb-4 text-center font-medium">
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="logout-title"
+        className="mx-4 w-full max-w-sm rounded-lg bg-bg-primary p-6 text-lg shadow-xl"
+      >
+        <p id="logout-title" className="mb-4 text-center font-medium">
           Do you really want to logout?
         </p>
         <div className="flex justify-center gap-4">

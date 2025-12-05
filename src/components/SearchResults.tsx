@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import CrossIcon from '@/assets/Cross';
 import DocumentIcon from '@/assets/Document';
 import Magnifier from '@/assets/Magnifier';
 import { useNotes } from '@/context/NotesContext';
+import { useFocusTrap, useEscapeKey } from '@/hooks/useModalAccessibility';
 
 interface SearchResultsProps {
   setSearchOpen: (open: boolean) => void;
@@ -14,6 +15,10 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const isEmpty = searchQuery.trim() === '';
   const overlayRef = useRef<HTMLDivElement>(null);
+  const modalRef = useFocusTrap<HTMLDivElement>();
+
+  const closeModal = useCallback(() => setSearchOpen(false), [setSearchOpen]);
+  useEscapeKey(closeModal);
 
   // Close search results when clicking outside the modal
   useEffect(() => {
@@ -39,7 +44,13 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs md:bg-black/40 md:p-4"
     >
-      <div className="animate-in fade-in zoom-in-95 h-full w-full bg-bg-800 shadow-2xl duration-200 md:h-auto md:max-w-2xl md:rounded-xl md:border md:border-border">
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search notes"
+        className="animate-in fade-in zoom-in-95 h-full w-full bg-bg-800 shadow-2xl duration-200 md:h-auto md:max-w-2xl md:rounded-xl md:border md:border-border"
+      >
         {/* Header with input */}
         <div className="border-b border-border p-4 md:p-6">
           <div className="flex items-center gap-3 rounded-lg bg-bg-700 px-4 py-3">

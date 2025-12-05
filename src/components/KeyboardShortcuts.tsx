@@ -1,5 +1,6 @@
 import CrossIcon from '@/assets/Cross';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
+import { useFocusTrap, useEscapeKey } from '@/hooks/useModalAccessibility';
 
 interface KeyboardShortcutsProps {
   setShortcutsOpen: (open: boolean) => void;
@@ -20,8 +21,15 @@ export default function KeyboardShortcuts({
   setShortcutsOpen,
 }: KeyboardShortcutsProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const modalRef = useFocusTrap<HTMLDivElement>();
 
-  // Close search results when clicking outside the modal
+  const closeModal = useCallback(
+    () => setShortcutsOpen(false),
+    [setShortcutsOpen]
+  );
+  useEscapeKey(closeModal);
+
+  // Close modal when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       // Close if clicking on the overlay (outside modal)
@@ -39,10 +47,19 @@ export default function KeyboardShortcuts({
       ref={overlayRef}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
     >
-      <div className="w-full max-w-md rounded-xl border border-border bg-bg-800 shadow-2xl">
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="shortcuts-title"
+        className="w-full max-w-md rounded-xl border border-border bg-bg-800 shadow-2xl"
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border p-6">
-          <h2 className="text-xl font-semibold text-text-100">
+          <h2
+            id="shortcuts-title"
+            className="text-xl font-semibold text-text-100"
+          >
             Keyboard Shortcuts
           </h2>
           <button
