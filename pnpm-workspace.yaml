@@ -3,3 +3,7 @@ onlyBuiltDependencies:
   - protobufjs
   - sharp
   - unrs-resolver
+
+packages:
+  - 'frontend'
+  - 'backend'

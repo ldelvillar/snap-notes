@@ -11,6 +11,7 @@ import LogoutIcon from '@/assets/Logout';
 import DocumentIcon from '@/assets/Document';
 import KeyboardIcon from '@/assets/Keyboard';
 import { User } from '@/types';
+
 interface AccountMenuProps {
   user: User;
   setAccountMenuOpen: (open: boolean) => void;
