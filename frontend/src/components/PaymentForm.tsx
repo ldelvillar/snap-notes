@@ -6,10 +6,8 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import { doc, updateDoc, Timestamp } from 'firebase/firestore';
 
 import Lock from '@/assets/Lock';
-import { db } from '@/config/firebase';
 import { useAuth } from '@/context/useGlobalContext';
 import { PlanName } from '@/types';
 
@@ -26,28 +24,28 @@ export default function PaymentForm({
   onSuccess,
   onCancel,
 }: PaymentFormProps) {
+  const API_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
   const stripe = useStripe();
   const elements = useElements();
-  const { user } = useAuth();
+  const { refreshSession } = useAuth();
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const updateUserSubscription = async (plan: PlanName) => {
-    if (!user?.uid) return;
-
-    const userRef = doc(db, 'Users', user.uid);
-    const currentPeriodEnd = new Date();
-    currentPeriodEnd.setMonth(currentPeriodEnd.getMonth() + 1);
-
-    await updateDoc(userRef, {
-      subscription: {
-        plan,
-        status: 'active',
-        currentPeriodEnd: Timestamp.fromDate(currentPeriodEnd),
-        cancelAtPeriodEnd: false,
+    const response = await fetch(`${API_URL}/auth/subscription`, {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ plan }),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to update subscription');
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -70,8 +68,8 @@ export default function PaymentForm({
       if (error) {
         setErrorMessage(error.message || 'An unexpected error occurred.');
       } else if (paymentIntent?.status === 'succeeded') {
-        // Update Firestore with the new plan
         await updateUserSubscription(planName.toLowerCase() as PlanName);
+        await refreshSession();
 
         onSuccess?.();
         // Use window.location for hard redirect to prevent useEffect from redirecting elsewhere

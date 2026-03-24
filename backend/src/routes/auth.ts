@@ -6,6 +6,9 @@ import { requireAuth } from '@/middlewares/requireAuth';
 
 export const authRouter = Router();
 
+const allowedPlans = ['free', 'pro', 'team'] as const;
+type SubscriptionPlan = (typeof allowedPlans)[number];
+
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.user!.id },
@@ -183,4 +186,36 @@ authRouter.post('/logout', (req, res) => {
   });
 
   return res.status(204).send();
+});
+
+authRouter.patch('/subscription', requireAuth, async (req, res) => {
+  const plan = String(req.body?.plan || '')
+    .trim()
+    .toLowerCase() as SubscriptionPlan;
+
+  if (!allowedPlans.includes(plan)) {
+    return res.status(400).json({ message: 'Invalid subscription plan' });
+  }
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: req.user!.id },
+      data: { subscription: plan },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,
+        photo: true,
+        subscription: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return res.json({ user });
+  } catch {
+    return res.status(500).json({ message: 'Failed to update subscription' });
+  }
 });
