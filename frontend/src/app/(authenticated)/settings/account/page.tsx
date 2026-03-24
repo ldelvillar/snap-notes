@@ -10,7 +10,7 @@ import { useAuth } from '@/context/useGlobalContext';
 
 type ProfileField = {
   label: string;
-  value: string;
+  value: string | null;
 };
 
 export default function AccountPage() {
