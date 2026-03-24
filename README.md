@@ -52,7 +52,6 @@ Create `frontend/.env` using `frontend/.env.example`:
 ```env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
 ```
 
 Create `backend/.env` using `backend/.env.example`:
@@ -62,6 +61,7 @@ PORT=3001
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB_NAME?sslmode=require
 AUTH_JWT_SECRET=your_super_secret_key
 AUTH_COOKIE_NAME=snapnotes_session
+STRIPE_SECRET_KEY=
 ```
 
 ## Prisma Setup (Backend)

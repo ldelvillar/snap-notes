@@ -23,6 +23,8 @@ const PLAN_AMOUNTS: Record<ValidSlug, number> = {
   team: 1999,
 };
 
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
 export default function UpgradePlanPage() {
   const router = useRouter();
   const params = useParams();
@@ -54,8 +56,9 @@ export default function UpgradePlanPage() {
 
     const fetchPaymentIntent = async () => {
       try {
-        const response = await fetch('/api/payment-intent', {
+        const response = await fetch(`${API_URL}/payments/payment-intent`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ amount: PLAN_AMOUNTS[slug as ValidSlug] }),
         });
