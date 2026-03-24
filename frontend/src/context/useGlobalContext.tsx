@@ -10,29 +10,6 @@ interface AuthContextType {
   refreshSession: () => Promise<void>;
 }
 
-interface BackendUser {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string | null;
-  phone: string | null;
-  photo: string | null;
-  subscription: 'free' | 'pro' | 'team';
-}
-
-const mapBackendUserToUser = (backendUser: BackendUser): User => ({
-  uid: backendUser.id,
-  email: backendUser.email,
-  firstName: backendUser.firstName,
-  lastName: backendUser.lastName ?? '',
-  phone: backendUser.phone ?? '',
-  photo: backendUser.photo ?? '',
-  subscription: {
-    plan: backendUser.subscription,
-    status: 'active',
-  },
-});
-
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -57,8 +34,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return;
       }
 
-      const data = (await response.json()) as { user: BackendUser };
-      setUser(mapBackendUserToUser(data.user));
+      const data = (await response.json()) as { user: User };
+      setUser(data.user);
     } catch {
       setUser(null);
     } finally {

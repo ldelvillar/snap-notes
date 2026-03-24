@@ -18,7 +18,7 @@ export default function BillingPage() {
   const [toastMessage, setToastMessage] = useState('');
 
   // Get current plan from user's subscription
-  const currentPlan: PlanName = user?.subscription?.plan || 'free';
+  const currentPlan: PlanName = user?.subscription || 'free';
 
   useEffect(() => {
     document.title = 'Billing & Subscription | SnapNotes';
@@ -122,20 +122,11 @@ export default function BillingPage() {
                 )}
               </div>
             </div>
-            {currentPlan !== 'free' && user?.subscription?.currentPeriodEnd && (
+            {currentPlan !== 'free' && (
               <div className="mt-4 border-t border-border pt-4">
                 <p className="text-sm text-gray-400">
-                  Next billing date:{' '}
-                  <span className="text-gray-200">
-                    {(user.subscription.currentPeriodEnd instanceof Date
-                      ? user.subscription.currentPeriodEnd
-                      : user.subscription.currentPeriodEnd.toDate()
-                    ).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </span>
+                  Plan active. Billing details are managed by your Stripe
+                  subscription cycle.
                 </p>
               </div>
             )}

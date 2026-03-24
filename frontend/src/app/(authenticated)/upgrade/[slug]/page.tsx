@@ -76,7 +76,7 @@ export default function UpgradePlanPage() {
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
-    } else if (!loading && user?.subscription?.plan === slug) {
+    } else if (!loading && user?.subscription === slug) {
       router.push('/upgrade');
     }
   }, [loading, user, slug, router]);
@@ -89,7 +89,7 @@ export default function UpgradePlanPage() {
   if (loading) return <ContentSkeleton lines={3} />;
 
   // Show nothing while redirecting
-  if (!user || user?.subscription?.plan === slug) return null;
+  if (!user || user?.subscription === slug) return null;
 
   if (error) {
     return (

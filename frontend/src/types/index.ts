@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 export type PlanName = 'free' | 'pro' | 'team';
 
 export interface Note {
@@ -11,19 +9,14 @@ export interface Note {
   pinnedAt: Date | null;
 }
 
-export interface Subscription {
-  plan: PlanName;
-  status: 'active' | 'canceled' | 'past_due';
-  currentPeriodEnd?: Date | Timestamp;
-  cancelAtPeriodEnd?: boolean;
-}
-
 export interface User {
+  id: string;
   email: string;
   firstName: string;
-  lastName: string;
-  phone: string;
-  photo?: string;
-  uid: string;
-  subscription: Subscription;
+  lastName: string | null;
+  phone: string | null;
+  photo: string | null;
+  subscription: PlanName | null;
+  createdAt: string;
+  updatedAt: string;
 }

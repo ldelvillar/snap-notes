@@ -70,7 +70,7 @@ export default function UpgradePage() {
                 </div>
 
                 {/* CTA Button */}
-                {user?.subscription?.plan === plan.name ? (
+                {user?.subscription === plan.name ? (
                   <button
                     className="mb-8 w-full cursor-not-allowed rounded-lg bg-bg-600 py-3 text-center font-bold text-text-300"
                     disabled
@@ -86,7 +86,7 @@ export default function UpgradePage() {
                         : 'border border-primary/20 bg-[#332938] text-white hover:bg-[#3a303d]'
                     }`}
                   >
-                    {user?.subscription?.plan === 'team'
+                    {user?.subscription === 'team'
                       ? `Downgrade to ${plan.name}`
                       : plan.cta}
                   </Link>
