@@ -3,14 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FirebaseError } from 'firebase/app';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import ContentSkeleton from '@/components/ContentSkeleton';
 import ErrorMessage from '@/components/ErrorMessage';
 import EyeIcon from '@/assets/Eye';
 import EyedClosedIcon from '@/assets/EyeClosed';
-import { auth } from '@/config/firebase';
 import { useAuth } from '@/context/useGlobalContext';
 
 interface LoginForm {
@@ -23,17 +20,11 @@ interface FormErrors {
   password?: string;
 }
 
-const ERROR_MESSAGES: { [key: string]: string } = {
-  'auth/invalid-email': 'Please enter a valid email address.',
-  'auth/user-disabled': 'This account has been disabled.',
-  'auth/user-not-found': 'No account found with this email.',
-  'auth/wrong-password': 'Invalid email or password.',
-  'auth/too-many-requests': 'Too many attempts. Please try again later.',
-};
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshSession } = useAuth();
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -105,17 +96,36 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      router.push('/notes');
-    } catch (err) {
-      if (err instanceof FirebaseError) {
-        const errorCode = err?.code as string;
-        setError(
-          ERROR_MESSAGES[errorCode] || 'Failed to login. Please try again.'
-        );
-      } else {
-        setError('An unexpected error occurred. Please try again.');
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          message?: string;
+        } | null;
+        setError(data?.message || 'Failed to login. Please try again.');
+
+        setFormData(prev => ({
+          ...prev,
+          password: '',
+        }));
+
+        return;
       }
+
+      await refreshSession();
+      router.push('/notes');
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
 
       // Clear password on error for security
       setFormData(prev => ({

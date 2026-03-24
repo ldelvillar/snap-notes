@@ -1,17 +1,39 @@
 'use client';
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { User as FirebaseUser } from 'firebase/auth';
-import { auth, db } from '@/config/firebase';
-import { doc, getDoc } from 'firebase/firestore';
 import { User } from '@/types/index';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   handleLogout: () => Promise<void>;
+  refreshSession: () => Promise<void>;
 }
 
+interface BackendUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string | null;
+  phone: string | null;
+  photo: string | null;
+  subscription: 'free' | 'pro' | 'team';
+}
+
+const mapBackendUserToUser = (backendUser: BackendUser): User => ({
+  uid: backendUser.id,
+  email: backendUser.email,
+  firstName: backendUser.firstName,
+  lastName: backendUser.lastName ?? '',
+  phone: backendUser.phone ?? '',
+  photo: backendUser.photo ?? '',
+  subscription: {
+    plan: backendUser.subscription,
+    status: 'active',
+  },
+});
+
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
@@ -22,37 +44,49 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(
-      async (firebaseUser: FirebaseUser | null) => {
-        if (firebaseUser) {
-          const docRef = doc(db, 'Users', firebaseUser.uid);
-          const docSnap = await getDoc(docRef);
+  const refreshSession = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/auth/me`, {
+        method: 'GET',
+        credentials: 'include',
+      });
 
-          if (docSnap.exists()) {
-            // Type assertion for document data and include uid from firebaseUser
-            const userData = docSnap.data() as User;
-            setUser({ ...userData, uid: firebaseUser.uid });
-          }
-        } else {
-          setUser(null);
-        }
-        setLoading(false);
+      if (!response.ok) {
+        setUser(null);
+        return;
       }
-    );
 
-    return () => unsubscribe();
+      const data = (await response.json()) as { user: BackendUser };
+      setUser(mapBackendUserToUser(data.user));
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshSession();
   }, []);
 
   const handleLogout = async (): Promise<void> => {
-    await auth.signOut();
-    window.location.href = '/login';
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } finally {
+      setUser(null);
+      window.location.href = '/login';
+    }
   };
 
   const value: AuthContextType = {
     user,
     loading,
     handleLogout,
+    refreshSession,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

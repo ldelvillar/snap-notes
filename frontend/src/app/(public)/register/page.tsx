@@ -3,12 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FirebaseError } from 'firebase/app';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
 
 import ErrorMessage from '@/components/ErrorMessage';
-import { auth, db } from '@/config/firebase';
 import { useAuth } from '@/context/useGlobalContext';
 import ContentSkeleton from '@/components/ContentSkeleton';
 
@@ -30,13 +26,7 @@ const INITIAL_FORM_STATE: SignupForm = {
   repeatPassword: '',
 };
 
-const ERROR_MESSAGES: { [key: string]: string } = {
-  'auth/email-already-in-use': 'This email is already registered.',
-  'auth/invalid-email': 'Please enter a valid email address.',
-  'auth/operation-not-allowed': 'Email/password accounts are not enabled.',
-  'auth/weak-password': 'Password is too weak. Please use a stronger password.',
-  'auth/too-many-requests': 'Too many attempts. Please try again later.',
-};
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
 export default function RegisterPage() {
   useEffect(() => {
@@ -50,7 +40,7 @@ export default function RegisterPage() {
   }, []);
 
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshSession } = useAuth();
   const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -103,36 +93,36 @@ export default function RegisterPage() {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setIsLoading(true);
+
     try {
-      await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      const user = auth.currentUser;
-      if (user) {
-        await setDoc(doc(db, 'Users', user.uid), {
-          email: user.email,
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
           firstName: formData.fname,
           lastName: formData.lname,
           phone: formData.phone,
-          photo: '',
-          subscription: {
-            plan: 'free',
-            status: 'active',
-          },
-        });
+        }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          message?: string;
+        } | null;
+        setError(data?.message || 'Failed to register. Please try again.');
+        return;
       }
+
+      await refreshSession();
       router.push('/notes');
-    } catch (err) {
-      if (err instanceof FirebaseError) {
-        const errorCode = err.code as string;
-        setError(
-          ERROR_MESSAGES[errorCode] || 'Failed to register. Please try again.'
-        );
-      } else {
-        setError('An unexpected error occurred. Please try again.');
-      }
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
