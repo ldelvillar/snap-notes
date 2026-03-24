@@ -9,6 +9,9 @@ export const authRouter = Router();
 const allowedPlans = ['free', 'pro', 'team'] as const;
 type SubscriptionPlan = (typeof allowedPlans)[number];
 
+const isProduction = process.env.NODE_ENV === 'production';
+const cookieSameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax';
+
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: req.user!.id },
@@ -93,8 +96,8 @@ authRouter.post('/login', async (req, res) => {
 
     res.cookie(cookieName, token, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: cookieSameSite,
+      secure: isProduction,
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -163,8 +166,8 @@ authRouter.post('/register', async (req, res) => {
 
     res.cookie(cookieName, token, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: cookieSameSite,
+      secure: isProduction,
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -180,8 +183,8 @@ authRouter.post('/logout', (req, res) => {
 
   res.clearCookie(cookieName, {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production',
+    sameSite: cookieSameSite,
+    secure: isProduction,
     path: '/',
   });
 
