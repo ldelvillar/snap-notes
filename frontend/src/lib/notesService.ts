@@ -1,17 +1,38 @@
 import type { MouseEvent, Dispatch, SetStateAction } from 'react';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-  orderBy,
-} from 'firebase/firestore';
-import { db } from '@/config/firebase';
 import { User, Note } from '@/types/index';
+
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+interface NoteDto {
+  id: string;
+  title: string;
+  text: string;
+  creator: string;
+  updatedAt: string;
+  pinnedAt: string | null;
+}
+
+const mapNote = (note: NoteDto): Note => ({
+  id: note.id,
+  title: note.title,
+  text: note.text,
+  creator: note.creator,
+  updatedAt: new Date(note.updatedAt),
+  pinnedAt: note.pinnedAt ? new Date(note.pinnedAt) : null,
+});
+
+const sortNotes = (notes: Note[]): Note[] => {
+  const pinnedNotes = notes.filter(note => note.pinnedAt !== null);
+  const unpinnedNotes = notes.filter(note => note.pinnedAt === null);
+
+  pinnedNotes.sort((a, b) => {
+    const dateA = a.pinnedAt ? new Date(a.pinnedAt).getTime() : 0;
+    const dateB = b.pinnedAt ? new Date(b.pinnedAt).getTime() : 0;
+    return dateB - dateA;
+  });
+
+  return [...pinnedNotes, ...unpinnedNotes];
+};
 
 export const createNote = async (
   user: User,
@@ -21,17 +42,21 @@ export const createNote = async (
   if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(collection(db, 'Notes'));
+    const response = await fetch(`${API_URL}/notes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ title, text }),
+    });
 
-    const newNote: Note = {
-      id: noteRef.id,
-      title: title || 'Untitled',
-      text,
-      creator: user.email,
-      updatedAt: new Date(),
-      pinnedAt: null,
-    };
-    await setDoc(noteRef, newNote);
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Failed to create note');
+    }
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -42,40 +67,20 @@ export const getNotes = async (user: User): Promise<Note[]> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const q = query(
-      collection(db, 'Notes'),
-      where('creator', '==', user.email),
-      orderBy('updatedAt', 'desc')
-    );
-    const querySnapshot = await getDocs(q);
-    const dataArr = querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        ...data,
-        id: doc.id,
-        // Convert Firestore Timestamp to JavaScript Date
-        updatedAt: data.updatedAt?.toDate
-          ? data.updatedAt.toDate()
-          : new Date(data.updatedAt),
-        pinnedAt: data.pinnedAt?.toDate
-          ? data.pinnedAt.toDate()
-          : data.pinnedAt,
-      };
-    }) as Note[];
-
-    // Separate pinned and unpinned notes
-    const pinnedNotes = dataArr.filter(note => note.pinnedAt !== null);
-    const unpinnedNotes = dataArr.filter(note => note.pinnedAt === null);
-
-    // Sort pinned notes by pinnedAt descending (most recently pinned first)
-    pinnedNotes.sort((a, b) => {
-      const dateA = a.pinnedAt ? new Date(a.pinnedAt).getTime() : 0;
-      const dateB = b.pinnedAt ? new Date(b.pinnedAt).getTime() : 0;
-      return dateB - dateA;
+    const response = await fetch(`${API_URL}/notes`, {
+      method: 'GET',
+      credentials: 'include',
     });
 
-    // Return pinned notes first, then unpinned notes
-    return [...pinnedNotes, ...unpinnedNotes];
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Failed to fetch notes');
+    }
+
+    const data = (await response.json()) as { notes: NoteDto[] };
+    return sortNotes(data.notes.map(mapNote));
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -89,23 +94,20 @@ export const getNoteById = async (
   if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, 'Notes', noteId);
-    const noteSnap = await getDoc(noteRef);
-    if (!noteSnap.exists()) throw new Error('Note not found');
+    const response = await fetch(`${API_URL}/notes/${noteId}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
 
-    const data = noteSnap.data();
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Note not found');
+    }
 
-    // Verify the note belongs to the user
-    if (data.creator !== user.email) throw new Error('Note not found');
-
-    return {
-      ...data,
-      id: noteSnap.id,
-      updatedAt: data.updatedAt?.toDate
-        ? data.updatedAt.toDate()
-        : new Date(data.updatedAt),
-      pinnedAt: data.pinnedAt?.toDate ? data.pinnedAt.toDate() : data.pinnedAt,
-    } as Note;
+    const data = (await response.json()) as { note: NoteDto };
+    return mapNote(data.note);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -116,17 +118,17 @@ export const deleteNote = async (user: User, noteId: string): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, 'Notes', noteId);
-    const noteSnap = await getDoc(noteRef);
-    if (!noteSnap.exists()) throw new Error('Note not found');
+    const response = await fetch(`${API_URL}/notes/${noteId}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
 
-    const data = noteSnap.data();
-
-    // Verify the note belongs to the user
-    if (data.creator !== user.email) throw new Error('Note not found');
-
-    // Delete the note
-    await deleteDoc(noteRef);
+    if (!response.ok && response.status !== 204) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Failed to delete note');
+    }
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -159,16 +161,24 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, 'Notes', note.id);
-    await setDoc(
-      noteRef,
-      {
-        ...note,
-        creator: user.email, // Ensure creator remains unchanged
-        updatedAt: new Date(), // Update the updatedAt timestamp
+    const response = await fetch(`${API_URL}/notes/${note.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      { merge: true }
-    );
+      credentials: 'include',
+      body: JSON.stringify({
+        title: note.title,
+        text: note.text,
+      }),
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Failed to update note');
+    }
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -179,12 +189,17 @@ export const pinNote = async (user: User, note: Note): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const noteRef = doc(db, 'Notes', note.id);
-    const updatedNote = {
-      ...note,
-      pinnedAt: note.pinnedAt ? null : new Date(),
-    };
-    await setDoc(noteRef, updatedNote, { merge: true });
+    const response = await fetch(`${API_URL}/notes/${note.id}/pin`, {
+      method: 'PATCH',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
+      throw new Error(data?.message || 'Failed to pin note');
+    }
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
