@@ -79,7 +79,11 @@ notesRouter.get('/:id', async (req, res) => {
 
 notesRouter.post('/', async (req, res) => {
   const title = String(req.body?.title || '').trim();
-  const text = String(req.body?.text || '');
+  const text = String(req.body?.text || '').trim();
+
+  if (!text) {
+    return res.status(400).json({ message: 'Note text is required' });
+  }
 
   try {
     const note = await prisma.note.create({
@@ -107,7 +111,8 @@ notesRouter.post('/', async (req, res) => {
         pinnedAt: note.pinnedAt,
       },
     });
-  } catch {
+  } catch (error) {
+    console.error('SERVER ERROR IN POST /notes:', error);
     return res.status(500).json({ message: 'Failed to create note' });
   }
 });
@@ -116,7 +121,8 @@ notesRouter.patch('/:id', async (req, res) => {
   const noteId = String(req.params.id || '').trim();
   const title =
     typeof req.body?.title === 'string' ? req.body.title.trim() : undefined;
-  const text = typeof req.body?.text === 'string' ? req.body.text : undefined;
+  const text =
+    typeof req.body?.text === 'string' ? req.body.text.trim() : undefined;
 
   if (!noteId) {
     return res.status(400).json({ message: 'Note id is required' });

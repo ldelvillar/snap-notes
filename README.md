@@ -64,6 +64,8 @@ AUTH_COOKIE_NAME=snapnotes_session
 STRIPE_SECRET_KEY=
 ```
 
+> **Note for testing:** You must also create a `backend/.env.test` file with similar variables. Make sure to create a PostgreSQL database named `test` and point the `DATABASE_URL` in your `.env.test` to this test database in order to run the backend tests.
+
 ## Prisma Setup (Backend)
 
 From the workspace root:

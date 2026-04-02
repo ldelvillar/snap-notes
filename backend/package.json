@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm dlx tsx watch src/server.ts",
-    "test": "vitest run",
+    "test": "dotenv -e .env.test -- prisma db push --accept-data-loss && dotenv -e .env.test -- vitest",
     "format": "prettier --write \"src/**/*.{ts,js,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,json}\""
   },
@@ -32,6 +32,7 @@
     "@types/node": "^20.19.23",
     "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.0",
+    "dotenv-cli": "^11.0.0",
     "prettier": "^3.6.2",
     "prisma": "^7.5.0",
     "supertest": "^7.2.2",
