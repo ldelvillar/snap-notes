@@ -6,7 +6,8 @@ ignoredBuiltDependencies:
   - bcrypt
 
 onlyBuiltDependencies:
-  - '@firebase/util'
+  - '@prisma/engines'
+  - prisma
   - protobufjs
   - sharp
   - unrs-resolver
