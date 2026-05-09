@@ -35,7 +35,7 @@ export const requireAuth = (
 
     req.user = { id: payload.sub };
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ message: 'Unauthorized' });
   }
 };

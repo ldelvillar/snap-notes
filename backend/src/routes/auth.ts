@@ -102,7 +102,7 @@ authRouter.post('/login', async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    const { passwordHash, ...safeUser } = user;
+    const { passwordHash: _passwordHash, ...safeUser } = user;
     return res.json({ user: safeUser });
   } catch {
     return res.status(500).json({ message: 'Failed to login' });
