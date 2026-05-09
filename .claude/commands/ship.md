@@ -25,6 +25,7 @@ If any `.env` or `.env.test` files are staged, **stop immediately** and warn the
 ```bash
 pnpm --filter backend format        # Auto-fixes formatting
 pnpm --filter backend test          # Must pass — do not proceed if tests fail
+pnpm --filter backend lint          # Must pass — do not proceed if linting fails
 ```
 
 If tests fail:
@@ -37,6 +38,7 @@ If tests fail:
 ### 4. Frontend checks
 
 ```bash
+pnpm --filter frontend format       # Auto-fixes formatting
 pnpm --filter frontend lint         # ESLint — fix auto-fixable issues
 pnpm --filter frontend build        # Production build + type-check — must pass
 ```
