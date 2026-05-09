@@ -58,6 +58,8 @@ pnpm --filter backend test -- --grep "login"
 ### Code Quality
 
 ```bash
+pnpm --filter backend lint          # ESLint
+pnpm --filter backend lint:fix
 pnpm --filter backend format        # Prettier
 pnpm --filter backend format:check
 pnpm --filter frontend lint         # ESLint
@@ -103,7 +105,7 @@ Routes are defined in `backend/src/routes/`: `auth.ts`, `notes.ts`, `payments.ts
 
 - Use `pnpm --filter` for all commands — never run npm/yarn or cd into packages
 - After any `schema.prisma` change, run `prisma generate` before writing or running tests
-- Tests mock Prisma — never write tests that hit the real database
+- Tests are integration tests that hit a real test database via `backend/.env.test` — do not mock Prisma
 - Cookie config differs by environment (`SameSite: none` prod, `lax` dev) — don't flatten this
 - All API calls go through `frontend/src/lib/notesService.ts` — don't fetch directly from components
 - Notes must always be returned pinned-first, then `updatedAt` descending — don't change this ordering
@@ -118,9 +120,10 @@ Note: `backend/.env.test` is a separate file for the test database — don't use
 
 ## Testing Practices
 
-- Tests use a **separate test database** via `backend/.env.test` — loaded automatically by `dotenv-cli`
-- Prisma client is fully mocked — tests never hit the real DB
-- `src/tests/setup.ts` clears all mocks `beforeEach`
+- Tests are **integration tests** — they hit a real PostgreSQL test database via `backend/.env.test`, loaded automatically by `dotenv-cli`
+- Never mock Prisma; do not use `vi.mock('@/lib/prisma')` or `vi.spyOn(prisma.*)` in tests
+- Each test file must use a **unique email** for its test user to avoid parallel-worker collisions
+- `beforeAll` sets up users and notes directly via Prisma; `afterAll` cleans them up
 - Mirror route structure for new test files: `src/tests/auth/login.test.ts` → `src/routes/auth.ts`
 - Run `prisma generate` after any schema change before writing tests
 
