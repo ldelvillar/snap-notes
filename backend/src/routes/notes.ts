@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/middlewares/requireAuth';
+import { validate } from '@/middlewares/validate';
+import { createNoteSchema, updateNoteSchema } from '@/schemas/notes';
 
 export const notesRouter = Router();
 
@@ -80,13 +82,8 @@ notesRouter.get('/:id', async (req, res) => {
   }
 });
 
-notesRouter.post('/', async (req, res) => {
-  const title = String(req.body?.title || '').trim();
-  const text = String(req.body?.text || '').trim();
-
-  if (!text) {
-    return res.status(400).json({ message: 'Note text is required' });
-  }
+notesRouter.post('/', validate(createNoteSchema), async (req, res) => {
+  const { title = '', text } = req.body;
 
   try {
     const note = await prisma.note.create({
@@ -114,25 +111,17 @@ notesRouter.post('/', async (req, res) => {
         pinnedAt: note.pinnedAt,
       },
     });
-  } catch (error) {
-    console.error('SERVER ERROR IN POST /notes:', error);
+  } catch {
     return res.status(500).json({ message: 'Failed to create note' });
   }
 });
 
-notesRouter.patch('/:id', async (req, res) => {
+notesRouter.patch('/:id', validate(updateNoteSchema), async (req, res) => {
   const noteId = String(req.params.id || '').trim();
-  const title =
-    typeof req.body?.title === 'string' ? req.body.title.trim() : undefined;
-  const text =
-    typeof req.body?.text === 'string' ? req.body.text.trim() : undefined;
+  const { title, text } = req.body;
 
   if (!noteId) {
     return res.status(400).json({ message: 'Note id is required' });
-  }
-
-  if (title === undefined && text === undefined) {
-    return res.status(400).json({ message: 'Nothing to update' });
   }
 
   try {

@@ -82,7 +82,10 @@ describe('POST /payments/payment-intent', () => {
       .send({});
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'Invalid or missing amount');
+    expect(response.body).toHaveProperty(
+      'message',
+      'Invalid or missing amount'
+    );
   });
 
   it('should return 400 when amount is not a number', async () => {
@@ -92,7 +95,10 @@ describe('POST /payments/payment-intent', () => {
       .send({ amount: 'veinte' });
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'Invalid or missing amount');
+    expect(response.body).toHaveProperty(
+      'message',
+      'Invalid or missing amount'
+    );
   });
 
   it('should return 400 when amount is zero or negative', async () => {
@@ -102,7 +108,10 @@ describe('POST /payments/payment-intent', () => {
       .send({ amount: -500 });
 
     expect(response.status).toBe(400);
-    expect(response.body).toHaveProperty('error', 'Invalid or missing amount');
+    expect(response.body).toHaveProperty(
+      'message',
+      'Invalid or missing amount'
+    );
   });
 
   it('should return 400 when Stripe API fails', async () => {
