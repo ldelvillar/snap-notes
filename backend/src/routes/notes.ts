@@ -11,7 +11,7 @@ notesRouter.get('/', async (req, res) => {
   try {
     const notes = await prisma.note.findMany({
       where: { userId: req.user!.id },
-      orderBy: [{ updatedAt: 'desc' }],
+      orderBy: [{ pinnedAt: { sort: 'desc', nulls: 'last' } }, { updatedAt: 'desc' }],
       include: {
         user: {
           select: {
