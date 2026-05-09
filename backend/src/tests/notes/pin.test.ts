@@ -120,5 +120,4 @@ describe('PATCH /notes/:id/pin', () => {
     expect(response.body.note).toHaveProperty('pinnedAt');
     expect(response.body.note.pinnedAt).toBeNull();
   });
-
 });

@@ -93,5 +93,4 @@ describe('GET /notes', () => {
     expect(firstNote).toHaveProperty('updatedAt');
     expect(firstNote).toHaveProperty('pinnedAt');
   });
-
 });

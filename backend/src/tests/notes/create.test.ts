@@ -97,5 +97,4 @@ describe('POST /notes', () => {
     expect(response.status).toBe(400);
     expect(response.body).toEqual({ message: 'Note text is required' });
   });
-
 });

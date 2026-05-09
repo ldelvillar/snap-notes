@@ -133,5 +133,4 @@ describe('PATCH /notes/:id', () => {
     expect(response.status).toBe(200);
     expect(response.body.note.title).toBe('Untitled');
   });
-
 });
