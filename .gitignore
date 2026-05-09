@@ -41,3 +41,5 @@ next-env.d.ts
 *.njsproj
 *.sln
 *.sw?
+
+.claude/settings.local.json
