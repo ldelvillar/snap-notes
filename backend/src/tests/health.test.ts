@@ -11,6 +11,7 @@ vi.mock('@/lib/prisma', () => ({
 
 describe('GET /health', () => {
   it('returns 200 when database is reachable', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (prisma.$queryRaw as any).mockResolvedValueOnce(1);
 
     const response = await request(app).get('/health');
@@ -25,6 +26,7 @@ describe('GET /health', () => {
   });
 
   it('returns 503 when database is not reachable', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (prisma.$queryRaw as any).mockRejectedValueOnce(new Error('db error'));
 
     const response = await request(app).get('/health');

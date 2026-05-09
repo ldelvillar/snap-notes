@@ -13,7 +13,7 @@ import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
 describe('POST /notes', () => {
-  const testEmail = 'test@example.com';
+  const testEmail = 'create@example.com';
   const testPassword = 'password123';
   let authCookie: string[];
 
