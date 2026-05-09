@@ -20,10 +20,10 @@ describe('POST /auth/logout', () => {
         lastName: 'User',
       },
     });
-  });
+  }, 30000);
 
   afterAll(async () => {
-    await prisma.user.delete({
+    await prisma.user.deleteMany({
       where: { email: testEmail },
     });
   });

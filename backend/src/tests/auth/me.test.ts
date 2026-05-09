@@ -28,7 +28,7 @@ describe('GET /auth/me', () => {
 
   // Clean up the test user after tests are done
   afterAll(async () => {
-    await prisma.user.delete({
+    await prisma.user.deleteMany({
       where: { email: testEmail },
     });
   });
