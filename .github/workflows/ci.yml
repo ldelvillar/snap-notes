@@ -88,6 +88,9 @@ jobs:
       - name: Generate Prisma client
         run: pnpm --filter backend exec prisma generate
 
+      - name: Lint
+        run: pnpm --filter backend lint
+
       - name: Check formatting
         run: pnpm --filter backend format:check
 
