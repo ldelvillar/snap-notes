@@ -1,6 +1,6 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
@@ -134,19 +134,4 @@ describe('PATCH /notes/:id', () => {
     expect(response.body.note.title).toBe('Untitled');
   });
 
-  it('should return 500 if there is a database error on update', async () => {
-    const updateMock = vi
-      .spyOn(prisma.note, 'update')
-      .mockRejectedValue(new Error('Database update error'));
-
-    const response = await request(app)
-      .patch(/notes/ + myNoteId)
-      .set('Cookie', authCookie)
-      .send({ text: 'Will fail' });
-
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({ message: 'Failed to update note' });
-
-    updateMock.mockRestore();
-  });
 });

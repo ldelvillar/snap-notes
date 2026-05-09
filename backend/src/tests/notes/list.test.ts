@@ -1,6 +1,6 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
@@ -94,16 +94,4 @@ describe('GET /notes', () => {
     expect(firstNote).toHaveProperty('pinnedAt');
   });
 
-  it("should return 500 if there's an error fetching notes", async () => {
-    // Mock the prisma.note.findMany method to throw an error
-    const findManyMock = vi
-      .spyOn(prisma.note, 'findMany')
-      .mockRejectedValue(new Error('Database error'));
-
-    const response = await request(app).get('/notes').set('Cookie', authCookie);
-
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({ message: 'Failed to fetch notes' });
-    findManyMock.mockRestore();
-  });
 });

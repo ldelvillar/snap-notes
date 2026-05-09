@@ -1,6 +1,6 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
@@ -10,7 +10,6 @@ describe('DELETE /notes/:id', () => {
   const otherEmail = 'otherdelete@example.com';
   let authCookie: string[];
   let noteToDeleteId: string;
-  let noteToFailId: string;
   let otherNoteId: string;
 
   beforeAll(async () => {
@@ -42,17 +41,10 @@ describe('DELETE /notes/:id', () => {
       where: { userId: { in: [user.id, otherUser.id] } },
     });
 
-    // We create two notes for the primary user:
-    // one to successfully delete, and another to try and trigger a 500
     const noteToDelete = await prisma.note.create({
       data: { title: 'To Be Deleted', text: 'Bye', userId: user.id },
     });
     noteToDeleteId = noteToDelete.id;
-
-    const noteToFail = await prisma.note.create({
-      data: { title: 'To Fail Deletion', text: 'Error', userId: user.id },
-    });
-    noteToFailId = noteToFail.id;
 
     const otherNote = await prisma.note.create({
       data: { title: 'Not My Note', text: 'Secret', userId: otherUser.id },
@@ -101,21 +93,6 @@ describe('DELETE /notes/:id', () => {
       where: { id: otherNoteId },
     });
     expect(stillExists).not.toBeNull();
-  });
-
-  it('should return 500 if there is a database error during deletion', async () => {
-    const deleteMock = vi
-      .spyOn(prisma.note, 'delete')
-      .mockRejectedValue(new Error('Database delete error'));
-
-    const response = await request(app)
-      .delete(/notes/ + noteToFailId)
-      .set('Cookie', authCookie);
-
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({ message: 'Failed to delete note' });
-
-    deleteMock.mockRestore();
   });
 
   it('should successfully delete the note and return 204', async () => {

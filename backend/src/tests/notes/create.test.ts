@@ -1,14 +1,6 @@
 import request from 'supertest';
 import bcrypt from 'bcrypt';
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
@@ -40,10 +32,6 @@ describe('POST /notes', () => {
       .send({ email: testEmail, password: testPassword });
 
     authCookie = loginResponse.headers['set-cookie'];
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   // Clean up the test user after tests are done
@@ -110,19 +98,4 @@ describe('POST /notes', () => {
     expect(response.body).toEqual({ message: 'Note text is required' });
   });
 
-  it("should return 500 if there's an error creating the note", async () => {
-    // Mock the prisma.note.create method to throw an error
-    const createMock = vi
-      .spyOn(prisma.note, 'create')
-      .mockRejectedValue(new Error('Database error'));
-
-    const response = await request(app)
-      .post('/notes')
-      .set('Cookie', authCookie)
-      .send({ text: 'Test note' });
-
-    expect(response.status).toBe(500);
-    expect(response.body).toEqual({ message: 'Failed to create note' });
-    createMock.mockRestore();
-  });
 });

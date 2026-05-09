@@ -5,7 +5,7 @@ import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
 describe('POST /auth/login', () => {
-  const testEmail = 'test@example.com';
+  const testEmail = 'login@example.com';
   const testPassword = 'password123';
 
   // Seed the database with a test user before running the tests
