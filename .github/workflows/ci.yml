@@ -1,0 +1,125 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - backend/**
+      - frontend/**
+      - .github/workflows/ci.yml
+  pull_request:
+    paths:
+      - backend/**
+      - frontend/**
+      - .github/workflows/ci.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Detect changed areas
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Filter paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - '.github/workflows/ci.yml'
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/ci.yml'
+
+  backend:
+    name: Backend (Node.js / Vitest)
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: snapnotes_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Write .env.test
+        run: |
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/snapnotes_test" >> backend/.env.test
+          echo "AUTH_JWT_SECRET=ci-test-jwt-secret" >> backend/.env.test
+          echo "AUTH_COOKIE_NAME=snapnotes_session" >> backend/.env.test
+          echo "STRIPE_SECRET_KEY=sk_test_dummy" >> backend/.env.test
+
+      - name: Check formatting
+        run: pnpm --filter backend format:check
+
+      - name: Run tests
+        run: pnpm --filter backend test
+
+  frontend:
+    name: Frontend (Next.js)
+    needs: changes
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm --filter frontend lint
+
+      - name: Build
+        run: pnpm --filter frontend build
+        env:
+          NEXT_PUBLIC_BACKEND_URL: http://localhost:3001
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_dummy
