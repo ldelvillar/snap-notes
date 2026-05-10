@@ -25,7 +25,7 @@ const INITIAL_NOTE: Note = {
 
 export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
-  const { notes, refetchNotes } = useNotes();
+  const { notes, fetchNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const [note, setNote] = useState<Note>(INITIAL_NOTE);
@@ -97,7 +97,7 @@ export default function NotePage() {
     try {
       setIsDeleting(noteId);
       await deleteNote(user, noteId);
-      refetchNotes();
+      fetchNotes();
       router.push('/notes');
     } catch (err) {
       setDeletionError(
@@ -123,7 +123,7 @@ export default function NotePage() {
       await updateNote(user, editedNote);
       setNote(editedNote);
       setIsEditing(false);
-      refetchNotes();
+      fetchNotes();
     } catch (err) {
       setLoadingState({
         isLoading: false,
@@ -135,7 +135,7 @@ export default function NotePage() {
     } finally {
       setIsSaving(false);
     }
-  }, [user, editedNote, router, refetchNotes]);
+  }, [user, editedNote, router, fetchNotes]);
 
   // Listen for Ctrl+S save event
   useEffect(() => {

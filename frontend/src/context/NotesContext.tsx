@@ -4,18 +4,18 @@ import React, {
   createContext,
   useContext,
   useCallback,
-  useRef,
   useState,
+  useEffect,
 } from 'react';
 import { Note } from '@/types';
+import { useAuth } from '@/context/useGlobalContext';
+import { getNotes } from '@/lib/notesService';
 
 interface NotesContextType {
   notes: Note[];
   notesLoading: boolean;
-  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
-  setNotesLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchNotes: () => void;
-  registerRefetch: (callback: () => Promise<void>) => () => void;
+  fetchError: string | null;
+  fetchNotes: () => Promise<void>;
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -23,35 +23,32 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined);
 export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { user } = useAuth();
   const [notes, setNotes] = useState<Note[]>([]);
   const [notesLoading, setNotesLoading] = useState(true);
-  const refetchCallbacks = useRef<Set<() => Promise<void>>>(new Set());
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const registerRefetch = useCallback((callback: () => Promise<void>) => {
-    refetchCallbacks.current.add(callback);
+  const fetchNotes = useCallback(async () => {
+    if (!user) return;
+    try {
+      setNotesLoading(true);
+      setFetchError(null);
+      const data = await getNotes(user);
+      setNotes(data);
+    } catch {
+      setFetchError('Failed to load notes. Please try again.');
+    } finally {
+      setNotesLoading(false);
+    }
+  }, [user]);
 
-    // Return cleanup function to remove callback when component unmounts
-    return () => {
-      refetchCallbacks.current.delete(callback);
-    };
-  }, []);
-
-  const refetchNotes = useCallback(() => {
-    refetchCallbacks.current.forEach(callback => {
-      callback();
-    });
-  }, []);
+  useEffect(() => {
+    if (user) fetchNotes();
+  }, [user, fetchNotes]);
 
   return (
     <NotesContext.Provider
-      value={{
-        notes,
-        notesLoading,
-        setNotes,
-        setNotesLoading,
-        refetchNotes,
-        registerRefetch,
-      }}
+      value={{ notes, notesLoading, fetchError, fetchNotes }}
     >
       {children}
     </NotesContext.Provider>

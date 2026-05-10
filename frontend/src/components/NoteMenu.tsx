@@ -24,7 +24,7 @@ export default function NoteMenu({
 }: NoteMenuProps) {
   const router = useRouter();
   const { user } = useAuth();
-  const { refetchNotes } = useNotes();
+  const { fetchNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isPinning, setIsPinning] = useState(false);
 
@@ -37,7 +37,7 @@ export default function NoteMenu({
     try {
       setIsPinning(true);
       await pinNote(user, note);
-      refetchNotes();
+      fetchNotes();
       setOpenNoteMenuId(null);
     } catch (err) {
       setError(
@@ -66,7 +66,7 @@ export default function NoteMenu({
     try {
       setIsDeleting(noteId);
       await deleteNote(user, noteId);
-      refetchNotes();
+      fetchNotes();
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to delete note. Please try again later.'

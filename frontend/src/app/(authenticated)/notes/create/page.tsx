@@ -22,7 +22,7 @@ interface FormErrors {
 export default function CreateNotePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const { refetchNotes } = useNotes();
+  const { fetchNotes } = useNotes();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [formData, setFormData] = useState<NoteFormData>({
     title: '',
@@ -93,7 +93,7 @@ export default function CreateNotePage() {
 
     try {
       await createNote(user, formData.title, formData.text);
-      refetchNotes();
+      fetchNotes();
       router.replace('/notes');
     } catch (err) {
       if (err instanceof Error) {
