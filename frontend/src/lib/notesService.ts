@@ -1,4 +1,3 @@
-import type { MouseEvent, Dispatch, SetStateAction } from 'react';
 import { User, Note } from '@/types/index';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
@@ -122,28 +121,6 @@ export const deleteNote = async (user: User, noteId: string): Promise<void> => {
   }
 };
 
-export const handleDeleteNote = async (
-  e: MouseEvent,
-  user: User,
-  noteId: string,
-  setIsDeleting: Dispatch<SetStateAction<string | null>>,
-  setError: Dispatch<SetStateAction<string | null>>
-): Promise<void> => {
-  e.preventDefault();
-  try {
-    setIsDeleting(noteId);
-    await deleteNote(user, noteId);
-  } catch (err) {
-    if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError('Failed to delete note. Please try again later.');
-    }
-  } finally {
-    setIsDeleting(null);
-  }
-};
-
 export const updateNote = async (user: User, note: Note): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
@@ -193,25 +170,3 @@ export const pinNote = async (user: User, note: Note): Promise<void> => {
   }
 };
 
-export const handleUpdateNote = async (
-  note: Note,
-  user: User,
-  setIsSaving: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string | null>>
-): Promise<void> => {
-  if (!user) throw new Error('User is not defined');
-
-  try {
-    setIsSaving(true);
-    await updateNote(user, note);
-  } catch (err) {
-    if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError('Failed to update note. Please try again later.');
-    }
-    throw err;
-  } finally {
-    setIsSaving(false);
-  }
-};

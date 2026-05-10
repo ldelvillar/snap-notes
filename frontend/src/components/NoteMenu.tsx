@@ -7,7 +7,7 @@ import TrashIcon from '@/assets/Trash';
 import PinIcon from '@/assets/Pin';
 import { useNotes } from '@/context/NotesContext';
 import { useAuth } from '@/context/useGlobalContext';
-import { handleDeleteNote, pinNote } from '@/lib/notesService';
+import { deleteNote, pinNote } from '@/lib/notesService';
 import { Note } from '@/types';
 import PinOff from '@/assets/PinOff';
 
@@ -62,8 +62,18 @@ export default function NoteMenu({
     noteId: string
   ): Promise<void> => {
     if (!user) return;
-    await handleDeleteNote(e, user, noteId, setIsDeleting, setError);
-    refetchNotes();
+    e.preventDefault();
+    try {
+      setIsDeleting(noteId);
+      await deleteNote(user, noteId);
+      refetchNotes();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Failed to delete note. Please try again later.'
+      );
+    } finally {
+      setIsDeleting(null);
+    }
   };
 
   return (

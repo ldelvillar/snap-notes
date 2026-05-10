@@ -5,7 +5,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
-import { getNoteById, handleDeleteNote, updateNote } from '@/lib/notesService';
+import { getNoteById, deleteNote, updateNote } from '@/lib/notesService';
 import { Note } from '@/types';
 import ContentSkeleton from '@/components/ContentSkeleton';
 import ErrorMessage from '@/components/ErrorMessage';
@@ -93,9 +93,19 @@ export default function NotePage() {
     noteId: string
   ): Promise<void> => {
     if (!user) return;
-    await handleDeleteNote(e, user, noteId, setIsDeleting, setDeletionError);
-    refetchNotes();
-    router.push('/notes');
+    e.preventDefault();
+    try {
+      setIsDeleting(noteId);
+      await deleteNote(user, noteId);
+      refetchNotes();
+      router.push('/notes');
+    } catch (err) {
+      setDeletionError(
+        err instanceof Error ? err.message : 'Failed to delete note. Please try again later.'
+      );
+    } finally {
+      setIsDeleting(null);
+    }
   };
 
   const handleEdit = () => {
