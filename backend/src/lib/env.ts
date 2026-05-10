@@ -1,0 +1,13 @@
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing required environment variable: ${key}`);
+  return value;
+}
+
+export const env = {
+  jwtSecret: requireEnv('AUTH_JWT_SECRET'),
+  stripeSecretKey: requireEnv('STRIPE_SECRET_KEY'),
+  cookieName: process.env.AUTH_COOKIE_NAME || 'snapnotes_session',
+  port: process.env.PORT || '3001',
+  isProduction: process.env.NODE_ENV === 'production',
+};

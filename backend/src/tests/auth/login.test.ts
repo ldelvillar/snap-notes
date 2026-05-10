@@ -81,21 +81,4 @@ describe('POST /auth/login', () => {
 
     expect(response.status).toBe(401);
   });
-
-  it('should return 500 if AUTH_JWT_SECRET is missing', async () => {
-    // Save original env
-    const originalSecret = process.env.AUTH_JWT_SECRET;
-
-    // Temporarily delete the secret
-    delete process.env.AUTH_JWT_SECRET;
-
-    const response = await request(app)
-      .post('/auth/login')
-      .send({ email: testEmail, password: testPassword });
-
-    expect(response.status).toBe(500);
-
-    // Restore env for following tests
-    process.env.AUTH_JWT_SECRET = originalSecret;
-  });
 });

@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 import { prisma } from '@/lib/prisma';
+import { env } from '@/lib/env';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import {
@@ -12,8 +13,7 @@ import {
 
 export const authRouter = Router();
 
-const isProduction = process.env.NODE_ENV === 'production';
-const cookieSameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax';
+const cookieSameSite: 'lax' | 'none' = env.isProduction ? 'none' : 'lax';
 
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({
@@ -39,13 +39,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
 });
 
 authRouter.post('/login', validate(loginSchema), async (req, res) => {
-  const cookieName = process.env.AUTH_COOKIE_NAME || 'snapnotes_session';
-  const jwtSecret = process.env.AUTH_JWT_SECRET;
   const { email, password } = req.body;
-
-  if (!jwtSecret) {
-    return res.status(500).json({ message: 'Missing auth configuration' });
-  }
 
   try {
     const user = await prisma.user.findUnique({
@@ -90,12 +84,14 @@ authRouter.post('/login', validate(loginSchema), async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ sub: user.id }, jwtSecret, { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, env.jwtSecret, {
+      expiresIn: '7d',
+    });
 
-    res.cookie(cookieName, token, {
+    res.cookie(env.cookieName, token, {
       httpOnly: true,
       sameSite: cookieSameSite,
-      secure: isProduction,
+      secure: env.isProduction,
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -108,14 +104,8 @@ authRouter.post('/login', validate(loginSchema), async (req, res) => {
 });
 
 authRouter.post('/register', validate(registerSchema), async (req, res) => {
-  const cookieName = process.env.AUTH_COOKIE_NAME || 'snapnotes_session';
-  const jwtSecret = process.env.AUTH_JWT_SECRET;
   const { email: rawEmail, password, firstName, lastName, phone } = req.body;
   const email = rawEmail.trim().toLowerCase();
-
-  if (!jwtSecret) {
-    return res.status(500).json({ message: 'Missing auth configuration' });
-  }
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -149,12 +139,14 @@ authRouter.post('/register', validate(registerSchema), async (req, res) => {
       },
     });
 
-    const token = jwt.sign({ sub: user.id }, jwtSecret, { expiresIn: '7d' });
+    const token = jwt.sign({ sub: user.id }, env.jwtSecret, {
+      expiresIn: '7d',
+    });
 
-    res.cookie(cookieName, token, {
+    res.cookie(env.cookieName, token, {
       httpOnly: true,
       sameSite: cookieSameSite,
-      secure: isProduction,
+      secure: env.isProduction,
       path: '/',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -166,12 +158,10 @@ authRouter.post('/register', validate(registerSchema), async (req, res) => {
 });
 
 authRouter.post('/logout', (req, res) => {
-  const cookieName = process.env.AUTH_COOKIE_NAME || 'snapnotes_session';
-
-  res.clearCookie(cookieName, {
+  res.clearCookie(env.cookieName, {
     httpOnly: true,
     sameSite: cookieSameSite,
-    secure: isProduction,
+    secure: env.isProduction,
     path: '/',
   });
 

@@ -72,19 +72,4 @@ describe('POST /auth/register', () => {
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('message');
   });
-
-  it('should return 500 if AUTH_JWT_SECRET is missing', async () => {
-    const originalSecret = process.env.AUTH_JWT_SECRET;
-    delete process.env.AUTH_JWT_SECRET;
-
-    const response = await request(app).post('/auth/register').send({
-      email: testEmail,
-      password: testPassword,
-      firstName: testFirstName,
-    });
-
-    expect(response.status).toBe(500);
-
-    process.env.AUTH_JWT_SECRET = originalSecret;
-  });
 });
