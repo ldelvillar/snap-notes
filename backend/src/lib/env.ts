@@ -9,5 +9,8 @@ export const env = {
   stripeSecretKey: requireEnv('STRIPE_SECRET_KEY'),
   cookieName: process.env.AUTH_COOKIE_NAME || 'snapnotes_session',
   port: process.env.PORT || '3001',
+  allowedOrigins: (
+    process.env.CORS_ALLOWED_ORIGINS || 'http://localhost:3000'
+  ).split(','),
   isProduction: process.env.NODE_ENV === 'production',
 };

@@ -1,11 +1,7 @@
 import cors from 'cors';
+import { env } from '@/lib/env';
 
-const ACCEPTED_ORIGINS = [
-  'http://localhost:3000',
-  'https://snap-notes.vercel.app',
-];
-
-export const corsMiddleware = ({ acceptedOrigins = ACCEPTED_ORIGINS } = {}) =>
+export const corsMiddleware = ({ acceptedOrigins = env.allowedOrigins } = {}) =>
   cors({
     credentials: true,
     origin: (origin: string, callback) => {
