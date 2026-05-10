@@ -3,11 +3,11 @@ import Stripe from 'stripe';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import { paymentIntentSchema } from '@/schemas/payments';
+import { env } from '@/lib/env';
 
 export const paymentsRouter = Router();
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
+const stripe = new Stripe(env.stripeSecretKey);
 
 paymentsRouter.post(
   '/payment-intent',
@@ -15,12 +15,6 @@ paymentsRouter.post(
   validate(paymentIntentSchema),
   async (req, res) => {
     const { amount } = req.body;
-
-    if (!stripe) {
-      return res
-        .status(500)
-        .json({ error: 'Missing STRIPE_SECRET_KEY configuration' });
-    }
 
     try {
       const paymentIntent = await stripe.paymentIntents.create({
