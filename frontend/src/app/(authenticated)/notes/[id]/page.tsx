@@ -25,7 +25,7 @@ const INITIAL_NOTE: Note = {
 
 export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
-  const { refetchNotes } = useNotes();
+  const { notes, refetchNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const [note, setNote] = useState<Note>(INITIAL_NOTE);
@@ -52,6 +52,17 @@ export default function NotePage() {
       return;
     }
 
+    const editParam = searchParams.get('edit');
+
+    const cached = notes.find(n => n.id === id);
+    if (cached) {
+      setNote(cached);
+      setEditedNote(cached);
+      if (editParam === 'true') setIsEditing(true);
+      setLoadingState({ isLoading: false, error: null });
+      return;
+    }
+
     const fetchNote = async () => {
       try {
         const noteData = await getNoteById(user, id);
@@ -61,9 +72,6 @@ export default function NotePage() {
         }
         setNote(noteData);
         setEditedNote(noteData);
-
-        // Check if edit mode should be enabled from URL
-        const editParam = searchParams.get('edit');
         if (editParam === 'true') setIsEditing(true);
         setLoadingState({ isLoading: false, error: null });
       } catch (err) {
@@ -78,7 +86,7 @@ export default function NotePage() {
     };
 
     fetchNote();
-  }, [id, user, router, authLoading, searchParams]);
+  }, [id, user, router, authLoading, searchParams, notes]);
 
   const handleNoteDeletion = async (
     e: React.MouseEvent,
