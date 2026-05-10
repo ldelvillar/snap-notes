@@ -109,6 +109,7 @@ Routes are defined in `backend/src/routes/`: `auth.ts`, `notes.ts`, `payments.ts
 - Cookie config differs by environment (`SameSite: none` prod, `lax` dev) — don't flatten this
 - All API calls go through `frontend/src/lib/notesService.ts` — don't fetch directly from components
 - Notes must always be returned pinned-first, then `updatedAt` descending — don't change this ordering
+- In backend source files, always use `env` from `@/lib/env` — never `process.env` directly (except in `lib/prisma.ts` and `lib/env.ts` itself)
 
 ## Environment Variables
 
@@ -117,6 +118,8 @@ See `frontend/.env.example` and `backend/.env.example`.
 Note: `backend/.env.test` is a separate file for the test database — don't use the main `DATABASE_URL` in tests.
 
 `backend/.env.test` — separate test database; loaded via `dotenv-cli` before Vitest runs.
+
+All backend environment variables are centralized in `backend/src/lib/env.ts`. Never read `process.env` directly in backend source files — always import from `@/lib/env`. The only exceptions are `backend/src/lib/prisma.ts` (consumed by Prisma directly) and `env.ts` itself.
 
 ## Testing Practices
 
