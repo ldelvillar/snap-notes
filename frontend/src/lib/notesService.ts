@@ -21,19 +21,6 @@ const mapNote = (note: NoteDto): Note => ({
   pinnedAt: note.pinnedAt ? new Date(note.pinnedAt) : null,
 });
 
-const sortNotes = (notes: Note[]): Note[] => {
-  const pinnedNotes = notes.filter(note => note.pinnedAt !== null);
-  const unpinnedNotes = notes.filter(note => note.pinnedAt === null);
-
-  pinnedNotes.sort((a, b) => {
-    const dateA = a.pinnedAt ? new Date(a.pinnedAt).getTime() : 0;
-    const dateB = b.pinnedAt ? new Date(b.pinnedAt).getTime() : 0;
-    return dateB - dateA;
-  });
-
-  return [...pinnedNotes, ...unpinnedNotes];
-};
-
 export const createNote = async (
   user: User,
   title: string,
@@ -80,7 +67,7 @@ export const getNotes = async (user: User): Promise<Note[]> => {
     }
 
     const data = (await response.json()) as { notes: NoteDto[] };
-    return sortNotes(data.notes.map(mapNote));
+    return data.notes.map(mapNote);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
