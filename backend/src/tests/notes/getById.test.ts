@@ -17,23 +17,25 @@ describe('GET /notes/:id', () => {
 
     const user = await prisma.user.upsert({
       where: { email: testEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: testEmail,
         passwordHash,
         firstName: 'Get',
         lastName: 'ById',
+        emailVerifiedAt: new Date(),
       },
     });
 
     const otherUser = await prisma.user.upsert({
       where: { email: otherEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: otherEmail,
         passwordHash,
         firstName: 'Other',
         lastName: 'User',
+        emailVerifiedAt: new Date(),
       },
     });
 

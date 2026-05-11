@@ -85,6 +85,8 @@ jobs:
           echo "AUTH_COOKIE_NAME=snapnotes_session" >> backend/.env.test
           echo "STRIPE_SECRET_KEY=sk_test_dummy" >> backend/.env.test
           echo "STRIPE_WEBHOOK_SECRET=whsec_test" >> backend/.env.test
+          echo "APP_URL=http://localhost:3000" >> backend/.env.test
+          echo "RESEND_API_KEY=re_test" >> backend/.env.test
 
       - name: Generate Prisma client
         run: pnpm --filter backend exec prisma generate

@@ -1,7 +1,11 @@
 import request from 'supertest';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
+
+vi.mock('@/lib/email', () => ({
+  sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
+}));
 
 describe('POST /auth/register', () => {
   const testEmail = 'newuser@example.com';
@@ -9,14 +13,13 @@ describe('POST /auth/register', () => {
   const testFirstName = 'New';
   const testLastName = 'User';
 
-  // Clean up directly after each test so the database stays pure
   afterEach(async () => {
     await prisma.user.deleteMany({
       where: { email: { in: [testEmail, 'another@example.com'] } },
     });
   });
 
-  it('should register a new user successfully, set cookie, and return user data without password', async () => {
+  it('should register a new user, send a verification email, and return a message', async () => {
     const response = await request(app).post('/auth/register').send({
       email: testEmail,
       password: testPassword,
@@ -24,36 +27,26 @@ describe('POST /auth/register', () => {
       lastName: testLastName,
     });
 
-    // Validations: Status and cookie
     expect(response.status).toBe(201);
-    expect(response.headers['set-cookie']).toBeDefined();
-    expect(response.headers['set-cookie'][0]).toMatch('snapnotes_session');
+    expect(response.headers['set-cookie']).toBeUndefined();
+    expect(response.body).toEqual({
+      message: 'Check your email to complete registration',
+    });
 
-    // Validations: Returned data
-    expect(response.body).toHaveProperty('user');
-    expect(response.body.user).toHaveProperty('email', testEmail);
-    expect(response.body.user).toHaveProperty('firstName', testFirstName);
-    expect(response.body.user).toHaveProperty('lastName', testLastName);
-    expect(response.body.user).toHaveProperty('id');
-    expect(response.body.user).not.toHaveProperty('passwordHash');
-    expect(response.body.user).not.toHaveProperty('password');
-
-    // Validations: Database state
     const userInDb = await prisma.user.findUnique({
       where: { email: testEmail },
     });
     expect(userInDb).not.toBeNull();
+    expect(userInDb?.emailVerifiedAt).toBeNull();
   });
 
   it('should return 409 if user with the same email already exists', async () => {
-    // Create the user first
     await request(app).post('/auth/register').send({
       email: testEmail,
       password: testPassword,
       firstName: testFirstName,
     });
 
-    // Attempt to create again with the same email
     const response = await request(app).post('/auth/register').send({
       email: testEmail,
       password: 'AnotherPassword456',

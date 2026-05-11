@@ -101,6 +101,10 @@ registry.registerPath({
       description: 'Invalid credentials',
       content: { 'application/json': { schema: ErrorSchema } },
     },
+    403: {
+      description: 'Email not verified',
+      content: { 'application/json': { schema: ErrorSchema } },
+    },
     429: {
       description: 'Rate limit exceeded (10 req / 15 min)',
       content: { 'application/json': { schema: ErrorSchema } },
@@ -129,9 +133,15 @@ registry.registerPath({
   },
   responses: {
     201: {
-      description: 'Account created — sets httpOnly session cookie',
+      description: 'Account created — verification email sent',
       content: {
-        'application/json': { schema: z.object({ user: UserSchema }) },
+        'application/json': {
+          schema: z.object({
+            message: z.string().openapi({
+              example: 'Check your email to complete registration',
+            }),
+          }),
+        },
       },
     },
     409: {
@@ -140,6 +150,69 @@ registry.registerPath({
     },
     429: {
       description: 'Rate limit exceeded (10 req / 1 hour)',
+      content: { 'application/json': { schema: ErrorSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/auth/resend-verification',
+  summary: 'Resend email verification link',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            email: z.email().openapi({ example: 'user@example.com' }),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description:
+        'Link sent if email is registered and unverified (always 200 to prevent enumeration)',
+      content: {
+        'application/json': {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+    },
+    429: {
+      description: 'Rate limit exceeded (5 req / 1 hour)',
+      content: { 'application/json': { schema: ErrorSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: 'post',
+  path: '/auth/verify-email',
+  summary: 'Verify email address and start session',
+  request: {
+    body: {
+      content: {
+        'application/json': {
+          schema: z.object({
+            token: z
+              .string()
+              .openapi({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' }),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    200: {
+      description: 'Email verified — sets httpOnly session cookie',
+      content: {
+        'application/json': { schema: z.object({ user: UserSchema }) },
+      },
+    },
+    400: {
+      description: 'Invalid, expired, or already-used token',
       content: { 'application/json': { schema: ErrorSchema } },
     },
   },

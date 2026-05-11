@@ -40,10 +40,11 @@ export default function RegisterPage() {
   }, []);
 
   const router = useRouter();
-  const { user, loading, refreshSession } = useAuth();
+  const { user, loading } = useAuth();
   const [formData, setFormData] = useState<SignupForm>(INITIAL_FORM_STATE);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [registered, setRegistered] = useState(false);
 
   // Redirect after render to avoid updating Router during render
   useEffect(() => {
@@ -119,8 +120,7 @@ export default function RegisterPage() {
         return;
       }
 
-      await refreshSession();
-      router.push('/notes');
+      setRegistered(true);
     } catch {
       setError('An unexpected error occurred. Please try again.');
     } finally {
@@ -131,6 +131,30 @@ export default function RegisterPage() {
   if (loading) return <ContentSkeleton lines={3} />;
 
   if (user) return null;
+
+  if (registered) {
+    return (
+      <section className="min-h-screen px-4 pt-20 pb-8 text-white">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-100">Check your email</h1>
+          <p className="mt-4 text-gray-300">
+            We sent a verification link to{' '}
+            <span className="font-medium text-white">{formData.email}</span>.
+            Click it to complete your registration.
+          </p>
+          <p className="mt-6 text-sm text-gray-400">
+            Already verified?{' '}
+            <Link
+              href="/login"
+              className="text-primary transition-colors hover:text-primary/90"
+            >
+              Log in here
+            </Link>
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="login" className="min-h-screen px-4 pt-20 pb-8 text-white">

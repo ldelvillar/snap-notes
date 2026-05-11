@@ -16,20 +16,23 @@ describe('POST /auth/login', () => {
     // Create or ensure the test user exists in the database
     await prisma.user.upsert({
       where: { email: testEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: testEmail,
         passwordHash,
         firstName: 'User',
         lastName: 'Test',
+        emailVerifiedAt: new Date(),
       },
     });
   });
 
+  const unverifiedEmail = 'login-unverified@example.com';
+
   // Clean up the test user after tests are done
   afterAll(async () => {
     await prisma.user.deleteMany({
-      where: { email: testEmail },
+      where: { email: { in: [testEmail, unverifiedEmail] } },
     });
   });
 
@@ -80,5 +83,29 @@ describe('POST /auth/login', () => {
       .send({ email: testEmail, password: 'wrongpassword' });
 
     expect(response.status).toBe(401);
+  });
+
+  it('should return 403 when email is not verified', async () => {
+    const passwordHash = await bcrypt.hash(testPassword, 10);
+    await prisma.user.upsert({
+      where: { email: unverifiedEmail },
+      update: { passwordHash, emailVerifiedAt: null },
+      create: {
+        email: unverifiedEmail,
+        passwordHash,
+        firstName: 'Unverified',
+        lastName: 'User',
+      },
+    });
+
+    const response = await request(app)
+      .post('/auth/login')
+      .send({ email: unverifiedEmail, password: testPassword });
+
+    expect(response.status).toBe(403);
+    expect(response.body).toHaveProperty(
+      'message',
+      'Please verify your email before logging in'
+    );
   });
 });

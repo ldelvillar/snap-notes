@@ -31,12 +31,13 @@ describe('POST /payments/payment-intent', () => {
     const passwordHash = await bcrypt.hash(testPassword, 10);
     await prisma.user.upsert({
       where: { email: testEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: testEmail,
         passwordHash,
         firstName: 'Payment',
         lastName: 'Tester',
+        emailVerifiedAt: new Date(),
       },
     });
 

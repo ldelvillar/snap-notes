@@ -29,6 +29,8 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showResend, setShowResend] = useState(false);
+  const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: '',
@@ -85,6 +87,19 @@ export default function LoginPage() {
     setError(null);
   };
 
+  const handleResend = async () => {
+    setResendStatus('sending');
+    try {
+      await fetch(`${API_URL}/auth/resend-verification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email }),
+      });
+    } finally {
+      setResendStatus('sent');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -113,6 +128,7 @@ export default function LoginPage() {
           message?: string;
         } | null;
         setError(data?.message || 'Failed to login. Please try again.');
+        setShowResend(response.status === 403);
 
         setFormData(prev => ({
           ...prev,
@@ -155,6 +171,22 @@ export default function LoginPage() {
       {error && (
         <div className="mt-12 md:mx-20">
           <ErrorMessage message={error} />
+          {showResend && (
+            <div className="mt-3 text-center text-sm">
+              {resendStatus === 'sent' ? (
+                <p className="text-gray-300">Verification email sent — check your inbox.</p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resendStatus === 'sending'}
+                  className="text-primary transition-colors hover:text-primary/90 disabled:opacity-50"
+                >
+                  {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
 

@@ -17,12 +17,13 @@ describe('POST /notes', () => {
     // Create or ensure the test user exists in the database
     await prisma.user.upsert({
       where: { email: testEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: testEmail,
         passwordHash,
         firstName: 'User',
         lastName: 'Test',
+        emailVerifiedAt: new Date(),
       },
     });
 

@@ -12,3 +12,7 @@ export const registerSchema = z.object({
   lastName: z.string().optional(),
   phone: z.string().optional(),
 });
+
+export const resendVerificationSchema = z.object({
+  email: z.email('Invalid email address'),
+});

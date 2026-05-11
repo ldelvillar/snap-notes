@@ -18,24 +18,26 @@ describe('GET /notes', () => {
     // Create or ensure the test user exists in the database
     const user = await prisma.user.upsert({
       where: { email: testEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: testEmail,
         passwordHash,
         firstName: 'User',
         lastName: 'Test',
+        emailVerifiedAt: new Date(),
       },
     });
 
     // Create another user to test isolation (make sure we don't get their notes)
     const otherUser = await prisma.user.upsert({
       where: { email: otherEmail },
-      update: { passwordHash },
+      update: { passwordHash, emailVerifiedAt: new Date() },
       create: {
         email: otherEmail,
         passwordHash,
         firstName: 'Other',
         lastName: 'User',
+        emailVerifiedAt: new Date(),
       },
     });
 
