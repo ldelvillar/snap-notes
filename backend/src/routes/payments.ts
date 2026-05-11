@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/middlewares/requireAuth';
@@ -41,7 +41,9 @@ paymentsRouter.post('/webhook', async (req, res) => {
     event = stripe.webhooks.constructEvent(req.body, sig, env.webhookSecret);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    return res.status(400).json({ error: `Webhook signature verification failed: ${message}` });
+    return res
+      .status(400)
+      .json({ error: `Webhook signature verification failed: ${message}` });
   }
 
   if (event.type === 'payment_intent.succeeded') {
