@@ -44,6 +44,7 @@
 }
 
 .dark {
+  --color-primary: #b16bed;
   --color-text-100: #f3f4f6;
   --color-text-200: #e5e7eb;
   --color-text-300: #d1d5dc;
