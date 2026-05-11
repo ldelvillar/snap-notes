@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
 import { prisma } from '@/lib/prisma';
 import { env } from '@/lib/env';
 import { requireAuth } from '@/middlewares/requireAuth';
@@ -10,6 +11,22 @@ import { loginSchema, registerSchema } from '@/schemas/auth';
 export const authRouter = Router();
 
 const cookieSameSite: 'lax' | 'none' = env.isProduction ? 'none' : 'lax';
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many login attempts, please try again later' },
+});
+
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: 'Too many registration attempts, please try again later' },
+});
 
 authRouter.get('/me', requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({
@@ -34,7 +51,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
   return res.json({ user });
 });
 
-authRouter.post('/login', validate(loginSchema), async (req, res) => {
+authRouter.post('/login', loginLimiter, validate(loginSchema), async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -99,7 +116,7 @@ authRouter.post('/login', validate(loginSchema), async (req, res) => {
   }
 });
 
-authRouter.post('/register', validate(registerSchema), async (req, res) => {
+authRouter.post('/register', registerLimiter, validate(registerSchema), async (req, res) => {
   const { email: rawEmail, password, firstName, lastName, phone } = req.body;
   const email = rawEmail.trim().toLowerCase();
 
