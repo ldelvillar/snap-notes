@@ -16,6 +16,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.24.0",
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^8.5.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.5.0",
     "bcrypt": "^6.0.0",
@@ -27,6 +28,7 @@
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "stripe": "^20.0.0",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "@types/node": "^20.19.23",
     "@types/pg": "^8.20.0",
     "@types/supertest": "^7.2.0",
+    "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.59.2",
     "@typescript-eslint/parser": "^8.59.2",
     "dotenv-cli": "^11.0.0",
