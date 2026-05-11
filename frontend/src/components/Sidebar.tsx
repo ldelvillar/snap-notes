@@ -25,7 +25,6 @@ interface SidebarProps {
   children: React.ReactNode;
   notes: Note[];
   notesLoading: boolean;
-  refetchNotes: () => void;
 }
 
 export default function Sidebar({

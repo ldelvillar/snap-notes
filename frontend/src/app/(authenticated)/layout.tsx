@@ -78,7 +78,7 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
 
   return (
     <div id="layout" className="bg-bg-primary">
-      <Sidebar notes={notes} notesLoading={notesLoading} refetchNotes={fetchNotes}>
+      <Sidebar notes={notes} notesLoading={notesLoading}>
         {fetchError ? (
           <div className="mx-4 mt-12 md:mx-20">
             <ErrorMessage message={fetchError} />
