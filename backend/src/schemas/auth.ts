@@ -13,8 +13,3 @@ export const registerSchema = z.object({
   phone: z.string().optional(),
 });
 
-export const subscriptionSchema = z.object({
-  plan: z.enum(['free', 'pro', 'team'], {
-    error: 'Invalid subscription plan',
-  }),
-});

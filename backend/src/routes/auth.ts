@@ -5,11 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { env } from '@/lib/env';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
-import {
-  loginSchema,
-  registerSchema,
-  subscriptionSchema,
-} from '@/schemas/auth';
+import { loginSchema, registerSchema } from '@/schemas/auth';
 
 export const authRouter = Router();
 
@@ -168,33 +164,3 @@ authRouter.post('/logout', (req, res) => {
   return res.status(204).send();
 });
 
-authRouter.patch(
-  '/subscription',
-  requireAuth,
-  validate(subscriptionSchema),
-  async (req, res) => {
-    const { plan } = req.body;
-
-    try {
-      const user = await prisma.user.update({
-        where: { id: req.user!.id },
-        data: { subscription: plan },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-          photo: true,
-          subscription: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      });
-
-      return res.json({ user });
-    } catch {
-      return res.status(500).json({ message: 'Failed to update subscription' });
-    }
-  }
-);

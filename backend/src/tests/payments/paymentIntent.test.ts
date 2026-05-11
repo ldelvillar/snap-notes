@@ -69,7 +69,7 @@ describe('POST /payments/payment-intent', () => {
     const response = await request(app)
       .post('/payments/payment-intent')
       .set('Cookie', authCookie)
-      .send({ amount: 2000 });
+      .send({ amount: 2000, plan: 'pro' });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('clientSecret', 'pi_test_secret_mock');
@@ -118,7 +118,7 @@ describe('POST /payments/payment-intent', () => {
     const response = await request(app)
       .post('/payments/payment-intent')
       .set('Cookie', authCookie)
-      .send({ amount: 9999 });
+      .send({ amount: 9999, plan: 'pro' });
 
     expect(response.status).toBe(400);
     expect(response.body).toHaveProperty('error', 'Stripe API Simulated Error');

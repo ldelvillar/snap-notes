@@ -60,7 +60,7 @@ export default function UpgradePlanPage() {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: PLAN_AMOUNTS[slug as ValidSlug] }),
+          body: JSON.stringify({ amount: PLAN_AMOUNTS[slug as ValidSlug], plan: slug }),
         });
 
         if (!response.ok) throw new Error('Failed to create payment intent');

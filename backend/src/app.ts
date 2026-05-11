@@ -9,6 +9,7 @@ import { paymentsRouter } from '@/routes/payments';
 export const app = express();
 
 app.disable('x-powered-by');
+app.use('/payments/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(corsMiddleware());

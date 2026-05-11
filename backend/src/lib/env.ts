@@ -7,6 +7,7 @@ function requireEnv(key: string): string {
 export const env = {
   jwtSecret: requireEnv('AUTH_JWT_SECRET'),
   stripeSecretKey: requireEnv('STRIPE_SECRET_KEY'),
+  webhookSecret: requireEnv('STRIPE_WEBHOOK_SECRET'),
   cookieName: process.env.AUTH_COOKIE_NAME || 'snapnotes_session',
   port: process.env.PORT || '3001',
   allowedOrigins: (

@@ -1,5 +1,6 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import Stripe from 'stripe';
+import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import { paymentIntentSchema } from '@/schemas/payments';
@@ -14,13 +15,14 @@ paymentsRouter.post(
   requireAuth,
   validate(paymentIntentSchema),
   async (req, res) => {
-    const { amount } = req.body;
+    const { amount, plan } = req.body;
 
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency: 'eur',
         payment_method_types: ['card'],
+        metadata: { userId: req.user!.id, plan },
       });
 
       return res.json({ clientSecret: paymentIntent.client_secret });
@@ -30,3 +32,33 @@ paymentsRouter.post(
     }
   }
 );
+
+paymentsRouter.post('/webhook', async (req, res) => {
+  const sig = req.headers['stripe-signature'] as string;
+
+  let event: Stripe.Event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, env.webhookSecret);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return res.status(400).json({ error: `Webhook signature verification failed: ${message}` });
+  }
+
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    const { userId, plan } = paymentIntent.metadata;
+
+    if (userId && (plan === 'pro' || plan === 'team')) {
+      try {
+        await prisma.user.update({
+          where: { id: userId },
+          data: { subscription: plan },
+        });
+      } catch {
+        return res.status(500).json({ error: 'Failed to update subscription' });
+      }
+    }
+  }
+
+  return res.json({ received: true });
+});
