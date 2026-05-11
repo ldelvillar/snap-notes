@@ -75,23 +75,7 @@ authRouter.post('/login', loginLimiter, validate(loginSchema), async (req, res) 
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    let isPasswordValid = false;
-
-    try {
-      isPasswordValid = await bcrypt.compare(password, user.passwordHash);
-    } catch {
-      isPasswordValid = false;
-    }
-
-    if (!isPasswordValid && user.passwordHash === password) {
-      isPasswordValid = true;
-      const newPasswordHash = await bcrypt.hash(password, 10);
-
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { passwordHash: newPasswordHash },
-      });
-    }
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash).catch(() => false);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
