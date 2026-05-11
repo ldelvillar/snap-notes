@@ -52,8 +52,8 @@ paymentsRouter.post('/webhook', async (req, res) => {
 
     if (userId && (plan === 'pro' || plan === 'team')) {
       try {
-        await prisma.user.update({
-          where: { id: userId },
+        await prisma.user.updateMany({
+          where: { id: userId, subscription: { not: plan } },
           data: { subscription: plan },
         });
       } catch {
