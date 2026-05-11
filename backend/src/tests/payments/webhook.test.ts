@@ -5,12 +5,17 @@ import Stripe from 'stripe';
 import { app } from '@/app';
 import { prisma } from '@/lib/prisma';
 
-const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy');
+const stripeClient = new Stripe(
+  process.env.STRIPE_SECRET_KEY || 'sk_test_dummy'
+);
 
 const buildWebhookRequest = (event: object) => {
   const payload = JSON.stringify(event);
   const secret = process.env.STRIPE_WEBHOOK_SECRET!;
-  const header = stripeClient.webhooks.generateTestHeaderString({ payload, secret });
+  const header = stripeClient.webhooks.generateTestHeaderString({
+    payload,
+    secret,
+  });
   return { payload, header };
 };
 

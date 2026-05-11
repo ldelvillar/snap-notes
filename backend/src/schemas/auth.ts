@@ -12,4 +12,3 @@ export const registerSchema = z.object({
   lastName: z.string().optional(),
   phone: z.string().optional(),
 });
-
