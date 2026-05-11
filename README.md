@@ -58,13 +58,23 @@ Create `backend/.env` using `backend/.env.example`:
 
 ```env
 PORT=3001
+CORS_ALLOWED_ORIGINS=frontend URL (e.g. http://localhost:3000)
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB_NAME?sslmode=require
 AUTH_JWT_SECRET=your_super_secret_key
 AUTH_COOKIE_NAME=snapnotes_session
 STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 ```
 
-> **Note for testing:** You must also create a `backend/.env.test` file with similar variables. Make sure to create a PostgreSQL database named `test` and point the `DATABASE_URL` in your `.env.test` to this test database in order to run the backend tests.
+To get `STRIPE_WEBHOOK_SECRET` for local development, use the [Stripe CLI](https://docs.stripe.com/stripe-cli):
+
+```bash
+stripe listen --forward-to localhost:3001/payments/webhook
+```
+
+Copy the `whsec_...` secret it prints and set it as `STRIPE_WEBHOOK_SECRET`.
+
+> **Note for testing:** You must also create a `backend/.env.test` file pointing to a separate test database. Required keys: `DATABASE_URL`, `AUTH_JWT_SECRET`, `AUTH_COOKIE_NAME`, `STRIPE_SECRET_KEY`, and `STRIPE_WEBHOOK_SECRET` (any `whsec_...` value works for tests, e.g. `whsec_test`).
 
 ## Prisma Setup (Backend)
 
@@ -99,6 +109,10 @@ pnpm --filter frontend dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## API Documentation
+
+When the backend is running, interactive API docs are available at [http://localhost:3001/docs](http://localhost:3001/docs) (Swagger UI).
+
 ## Useful Commands
 
 ```bash
@@ -109,6 +123,8 @@ pnpm --filter frontend lint
 
 # backend
 pnpm --filter backend dev
+pnpm --filter backend test
+pnpm --filter backend lint
 pnpm --filter backend format
 pnpm --filter backend format:check
 ```
