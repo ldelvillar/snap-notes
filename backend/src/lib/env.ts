@@ -11,6 +11,7 @@ export const env = {
   webhookSecret: requireEnv('STRIPE_WEBHOOK_SECRET'),
   resendApiKey: requireEnv('RESEND_API_KEY'),
   appUrl: requireEnv('APP_URL'),
+  emailFrom: requireEnv('EMAIL_FROM'),
   cookieName: process.env.AUTH_COOKIE_NAME || 'snapnotes_session',
   port: process.env.PORT || '3001',
   allowedOrigins: (

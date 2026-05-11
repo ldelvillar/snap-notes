@@ -5,6 +5,7 @@ import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import { paymentIntentSchema } from '@/schemas/payments';
 import { env } from '@/lib/env';
+import { logger } from '@/lib/logger';
 
 export const paymentsRouter = Router();
 
@@ -26,8 +27,9 @@ paymentsRouter.post(
       });
 
       return res.json({ clientSecret: paymentIntent.client_secret });
-    } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      logger.error(err, 'Failed to create payment intent');
       return res.status(400).json({ error: message });
     }
   }

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import { createNoteSchema, updateNoteSchema } from '@/schemas/notes';
+import { logger } from '@/lib/logger';
 
 export const notesRouter = Router();
 
@@ -36,7 +37,8 @@ notesRouter.get('/', async (req, res) => {
         pinnedAt: note.pinnedAt,
       })),
     });
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to fetch notes');
     return res.status(500).json({ message: 'Failed to fetch notes' });
   }
 });
@@ -77,7 +79,8 @@ notesRouter.get('/:id', async (req, res) => {
         pinnedAt: note.pinnedAt,
       },
     });
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to fetch note');
     return res.status(500).json({ message: 'Failed to fetch note' });
   }
 });
@@ -111,7 +114,8 @@ notesRouter.post('/', validate(createNoteSchema), async (req, res) => {
         pinnedAt: note.pinnedAt,
       },
     });
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to create note');
     return res.status(500).json({ message: 'Failed to create note' });
   }
 });
@@ -158,7 +162,8 @@ notesRouter.patch('/:id', validate(updateNoteSchema), async (req, res) => {
         pinnedAt: note!.pinnedAt,
       },
     });
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to update note');
     return res.status(500).json({ message: 'Failed to update note' });
   }
 });
@@ -204,7 +209,8 @@ notesRouter.patch('/:id/pin', async (req, res) => {
         pinnedAt: note.pinnedAt,
       },
     });
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to pin note');
     return res.status(500).json({ message: 'Failed to pin note' });
   }
 });
@@ -226,7 +232,8 @@ notesRouter.delete('/:id', async (req, res) => {
     }
 
     return res.status(204).send();
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Failed to delete note');
     return res.status(500).json({ message: 'Failed to delete note' });
   }
 });

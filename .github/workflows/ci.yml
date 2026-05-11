@@ -87,6 +87,7 @@ jobs:
           echo "STRIPE_WEBHOOK_SECRET=whsec_test" >> backend/.env.test
           echo "APP_URL=http://localhost:3000" >> backend/.env.test
           echo "RESEND_API_KEY=re_test" >> backend/.env.test
+          echo "EMAIL_FROM=noreply@example.com" >> backend/.env.test
           echo "CSRF_SECRET=ci-test-csrf-secret" >> backend/.env.test
 
       - name: Generate Prisma client

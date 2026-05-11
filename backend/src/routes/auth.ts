@@ -13,6 +13,7 @@ import {
   resendVerificationSchema,
 } from '@/schemas/auth';
 import { generateCsrfToken } from '@/lib/csrf';
+import { logger } from '@/lib/logger';
 
 export const authRouter = Router();
 
@@ -133,7 +134,8 @@ authRouter.post(
         ...safeUser
       } = user;
       return res.json({ user: safeUser });
-    } catch {
+    } catch (err) {
+      logger.error(err, 'Failed to fetch notes');
       return res.status(500).json({ message: 'Failed to login' });
     }
   }
@@ -180,7 +182,8 @@ authRouter.post(
       return res
         .status(201)
         .json({ message: 'Check your email to complete registration' });
-    } catch {
+    } catch (err) {
+      logger.error(err, 'Failed to register');
       return res.status(500).json({ message: 'Failed to register' });
     }
   }
@@ -196,7 +199,8 @@ authRouter.post('/verify-email', async (req, res) => {
   let payload: jwt.JwtPayload;
   try {
     payload = jwt.verify(token, env.jwtSecret) as jwt.JwtPayload;
-  } catch {
+  } catch (err) {
+    logger.error(err, 'Invalid or expired token');
     return res.status(400).json({ message: 'Invalid or expired token' });
   }
 
@@ -279,7 +283,8 @@ authRouter.post(
 
     try {
       await sendVerificationEmail(user.email, verifyToken);
-    } catch {
+    } catch (err) {
+      logger.error(err, 'Failed to send verification email');
       return res
         .status(500)
         .json({ message: 'Failed to send verification email' });

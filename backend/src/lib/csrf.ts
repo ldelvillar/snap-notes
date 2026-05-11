@@ -3,7 +3,7 @@ import { env } from '@/lib/env';
 
 export const { generateCsrfToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => env.csrfSecret,
-  getSessionIdentifier: (req) =>
+  getSessionIdentifier: req =>
     (req.cookies as Record<string, string>)[env.cookieName] ?? '',
   cookieName: 'snapnotes_csrf',
   cookieOptions: {
@@ -12,6 +12,6 @@ export const { generateCsrfToken, doubleCsrfProtection } = doubleCsrf({
     secure: env.isProduction,
     path: '/',
   },
-  skipCsrfProtection: (req) =>
+  skipCsrfProtection: req =>
     process.env.NODE_ENV === 'test' || req.path === '/payments/webhook',
 });

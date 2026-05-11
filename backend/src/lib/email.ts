@@ -9,10 +9,12 @@ export async function sendVerificationEmail(
 ): Promise<void> {
   const url = `${env.appUrl}/verify-email?token=${token}`;
 
-  await resend.emails.send({
-    from: `Snap Notes <noreply@${new URL(env.appUrl).hostname}>`,
+  const { error } = await resend.emails.send({
+    from: env.emailFrom,
     to,
     subject: 'Verify your email address',
     html: `<p>Click the link below to verify your email. It expires in 24 hours.</p><p><a href="${url}">${url}</a></p>`,
   });
+
+  if (error) throw error;
 }
