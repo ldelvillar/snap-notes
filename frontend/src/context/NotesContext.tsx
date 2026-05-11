@@ -1,12 +1,7 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-  useState,
-  useEffect,
-} from 'react';
+import React, { createContext, useContext } from 'react';
+import useSWR from 'swr';
 import { Note } from '@/types';
 import { useAuth } from '@/context/useGlobalContext';
 import { getNotes } from '@/lib/notesService';
@@ -24,31 +19,21 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { user } = useAuth();
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [notesLoading, setNotesLoading] = useState(true);
-  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const fetchNotes = useCallback(async () => {
-    if (!user) return;
-    try {
-      setNotesLoading(true);
-      setFetchError(null);
-      const data = await getNotes(user);
-      setNotes(data);
-    } catch {
-      setFetchError('Failed to load notes. Please try again.');
-    } finally {
-      setNotesLoading(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (user) fetchNotes();
-  }, [user, fetchNotes]);
+  const { data, error, isLoading, mutate } = useSWR(
+    user ? `/notes/${user.id}` : null,
+    () => getNotes(user!),
+    { dedupingInterval: 5 * 60 * 1000 }
+  );
 
   return (
     <NotesContext.Provider
-      value={{ notes, notesLoading, fetchError, fetchNotes }}
+      value={{
+        notes: data ?? [],
+        notesLoading: isLoading,
+        fetchError: error ? 'Failed to load notes. Please try again.' : null,
+        fetchNotes: async () => { await mutate(); },
+      }}
     >
       {children}
     </NotesContext.Provider>
