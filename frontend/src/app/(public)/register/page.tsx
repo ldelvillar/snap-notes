@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import ErrorMessage from '@/components/ErrorMessage';
 import { useAuth } from '@/context/useGlobalContext';
 import ContentSkeleton from '@/components/ContentSkeleton';
+import { getCsrfToken } from '@/lib/csrf';
 
 interface SignupForm {
   fname: string;
@@ -97,10 +98,12 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
         },
         credentials: 'include',
         body: JSON.stringify({

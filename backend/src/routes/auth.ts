@@ -12,8 +12,14 @@ import {
   registerSchema,
   resendVerificationSchema,
 } from '@/schemas/auth';
+import { generateCsrfToken } from '@/lib/csrf';
 
 export const authRouter = Router();
+
+authRouter.get('/csrf-token', (req, res) => {
+  const csrfToken = generateCsrfToken(req, res);
+  return res.json({ csrfToken });
+});
 
 const cookieSameSite: 'lax' | 'none' = env.isProduction ? 'none' : 'lax';
 

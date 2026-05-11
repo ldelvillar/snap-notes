@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { User } from '@/types/index';
+import { getCsrfToken } from '@/lib/csrf';
 
 interface AuthContextType {
   user: User | null;
@@ -49,9 +50,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const handleLogout = async (): Promise<void> => {
     try {
+      const csrfToken = await getCsrfToken();
       await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
+        headers: { 'X-CSRF-Token': csrfToken },
       });
     } finally {
       setUser(null);

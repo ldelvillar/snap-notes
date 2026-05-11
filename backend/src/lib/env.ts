@@ -6,6 +6,7 @@ function requireEnv(key: string): string {
 
 export const env = {
   jwtSecret: requireEnv('AUTH_JWT_SECRET'),
+  csrfSecret: requireEnv('CSRF_SECRET'),
   stripeSecretKey: requireEnv('STRIPE_SECRET_KEY'),
   webhookSecret: requireEnv('STRIPE_WEBHOOK_SECRET'),
   resendApiKey: requireEnv('RESEND_API_KEY'),

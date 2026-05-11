@@ -9,6 +9,7 @@ import ErrorMessage from '@/components/ErrorMessage';
 import EyeIcon from '@/assets/Eye';
 import EyedClosedIcon from '@/assets/EyeClosed';
 import { useAuth } from '@/context/useGlobalContext';
+import { getCsrfToken } from '@/lib/csrf';
 
 interface LoginForm {
   email: string;
@@ -90,9 +91,11 @@ export default function LoginPage() {
   const handleResend = async () => {
     setResendStatus('sending');
     try {
+      const csrfToken = await getCsrfToken();
       await fetch(`${API_URL}/auth/resend-verification`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+        credentials: 'include',
         body: JSON.stringify({ email: formData.email }),
       });
     } finally {
@@ -111,10 +114,12 @@ export default function LoginPage() {
     setError(null);
 
     try {
+      const csrfToken = await getCsrfToken();
       const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
         },
         credentials: 'include',
         body: JSON.stringify({

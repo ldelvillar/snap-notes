@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/useGlobalContext';
+import { getCsrfToken } from '@/lib/csrf';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
@@ -27,9 +28,10 @@ function VerifyEmailContent() {
       }
 
       try {
+        const csrfToken = await getCsrfToken();
         const response = await fetch(`${API_URL}/auth/verify-email`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
           credentials: 'include',
           body: JSON.stringify({ token }),
         });

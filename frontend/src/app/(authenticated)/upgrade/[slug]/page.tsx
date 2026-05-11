@@ -10,6 +10,7 @@ import PaymentForm from '@/components/PaymentForm';
 import ContentSkeleton from '@/components/ContentSkeleton';
 import { useAuth } from '@/context/useGlobalContext';
 import { PLANS } from '@/data/plans';
+import { getCsrfToken } from '@/lib/csrf';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -56,10 +57,11 @@ export default function UpgradePlanPage() {
 
     const fetchPaymentIntent = async () => {
       try {
+        const csrfToken = await getCsrfToken();
         const response = await fetch(`${API_URL}/payments/payment-intent`, {
           method: 'POST',
           credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
           body: JSON.stringify({ amount: PLAN_AMOUNTS[slug as ValidSlug], plan: slug }),
         });
 

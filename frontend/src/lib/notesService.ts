@@ -1,4 +1,5 @@
 import { User, Note } from '@/types/index';
+import { getCsrfToken } from '@/lib/csrf';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
@@ -28,10 +29,12 @@ export const createNote = async (
   if (!user) throw new Error('User is not defined');
 
   try {
+    const csrfToken = await getCsrfToken();
     const response = await fetch(`${API_URL}/notes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
       },
       credentials: 'include',
       body: JSON.stringify({ title, text }),
@@ -104,8 +107,10 @@ export const deleteNote = async (user: User, noteId: string): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
+    const csrfToken = await getCsrfToken();
     const response = await fetch(`${API_URL}/notes/${noteId}`, {
       method: 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken },
       credentials: 'include',
     });
 
@@ -125,10 +130,12 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
+    const csrfToken = await getCsrfToken();
     const response = await fetch(`${API_URL}/notes/${note.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -153,8 +160,10 @@ export const pinNote = async (user: User, note: Note): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
+    const csrfToken = await getCsrfToken();
     const response = await fetch(`${API_URL}/notes/${note.id}/pin`, {
       method: 'PATCH',
+      headers: { 'X-CSRF-Token': csrfToken },
       credentials: 'include',
     });
 
