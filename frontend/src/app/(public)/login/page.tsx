@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import ContentSkeleton from '@/components/ContentSkeleton';
-import ErrorMessage from '@/components/ErrorMessage';
 import EyeIcon from '@/assets/Eye';
 import EyedClosedIcon from '@/assets/EyeClosed';
+import Logo from '@/assets/Logo';
 import { useAuth } from '@/context/useGlobalContext';
 import { getCsrfToken } from '@/lib/csrf';
 
@@ -32,22 +32,15 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [showResend, setShowResend] = useState(false);
   const [resendStatus, setResendStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
-  const [formData, setFormData] = useState<LoginForm>({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState<LoginForm>({ email: '', password: '' });
 
   useEffect(() => {
     document.title = 'Login | SnapNotes';
     document
       .querySelector('meta[name="description"]')
-      ?.setAttribute(
-        'content',
-        'Log in to your Snap Notes account to access your notes.'
-      );
+      ?.setAttribute('content', 'Log in to your Snap Notes account to access your notes.');
   }, []);
 
-  // Redirect after render to avoid updating Router during render
   useEffect(() => {
     if (user) router.push('/notes');
   }, [user, router]);
@@ -74,16 +67,9 @@ export default function LoginPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error when user starts typing
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: undefined,
-      }));
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
     setError(null);
   };
@@ -105,10 +91,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setError(null);
@@ -117,29 +100,16 @@ export default function LoginPage() {
       const csrfToken = await getCsrfToken();
       const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken,
-        },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
         credentials: 'include',
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as {
-          message?: string;
-        } | null;
+        const data = (await response.json().catch(() => null)) as { message?: string } | null;
         setError(data?.message || 'Failed to login. Please try again.');
         setShowResend(response.status === 403);
-
-        setFormData(prev => ({
-          ...prev,
-          password: '',
-        }));
-
+        setFormData(prev => ({ ...prev, password: '' }));
         return;
       }
 
@@ -147,131 +117,130 @@ export default function LoginPage() {
       router.push('/notes');
     } catch {
       setError('An unexpected error occurred. Please try again.');
-
-      // Clear password on error for security
-      setFormData(prev => ({
-        ...prev,
-        password: '',
-      }));
+      setFormData(prev => ({ ...prev, password: '' }));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (loading) return <ContentSkeleton lines={3} />;
-
   if (user) return null;
 
   return (
-    <section className="min-h-screen px-4 pt-20 pb-8 text-white">
-      <div className="mb-8 text-center">
-        <h1 className="text-center text-4xl font-bold text-gray-100">
-          Welcome back!
-        </h1>
-        <p className="pt-1 text-center text-sm text-gray-200">
-          Log in to access your account
-        </p>
-      </div>
+    <section className="flex min-h-screen items-center justify-center px-4 py-24">
+      <div className="w-full max-w-md">
+        <div className="mb-8 flex flex-col items-center gap-3">
+          <div className="flex size-12 items-center justify-center rounded-xl bg-primary">
+            <Logo className="size-6 text-white" />
+          </div>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-white">Welcome back</h1>
+            <p className="mt-1 text-sm text-gray-400">Sign in to your SnapNotes account</p>
+          </div>
+        </div>
 
-      {error && (
-        <div className="mt-12 md:mx-20">
-          <ErrorMessage message={error} />
-          {showResend && (
-            <div className="mt-3 text-center text-sm">
-              {resendStatus === 'sent' ? (
-                <p className="text-gray-300">Verification email sent — check your inbox.</p>
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleResend}
-                  disabled={resendStatus === 'sending'}
-                  className="text-primary transition-colors hover:text-primary/90 disabled:opacity-50"
-                >
-                  {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
-                </button>
+        <div className="rounded-2xl border border-white/10 bg-neutral-900 p-8">
+          {error && (
+            <div className="mb-6 rounded-lg border border-red-800/50 bg-red-900/20 px-4 py-3 text-sm text-red-400">
+              <p>{error}</p>
+              {showResend && (
+                <div className="mt-2">
+                  {resendStatus === 'sent' ? (
+                    <p className="text-green-400">Verification email sent — check your inbox.</p>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleResend}
+                      disabled={resendStatus === 'sending'}
+                      className="font-medium text-red-300 underline underline-offset-2 hover:text-red-200 disabled:opacity-50"
+                    >
+                      {resendStatus === 'sending' ? 'Sending…' : 'Resend verification email'}
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           )}
-        </div>
-      )}
 
-      <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-6">
-        <div className="mb-3 flex flex-col">
-          <label htmlFor="email">Email address</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="border-b border-primary py-2 focus:outline-none"
-            placeholder="your@email.com"
-            disabled={isSubmitting}
-            autoComplete="email"
-          />
-          {errors.email && (
-            <p className="text-sm text-red-500">{errors.email}</p>
-          )}
-        </div>
-
-        <div className="relative mb-3 flex flex-col">
-          <label htmlFor="password">Password</label>
-          <input
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="border-b border-primary py-2 focus:outline-none"
-            placeholder="Enter your password"
-            disabled={isSubmitting}
-            autoComplete="current-password"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 bottom-0 -translate-y-1/2 text-gray-500 transition-colors hover:text-gray-700"
-            tabIndex={-1}
-          >
-            {showPassword ? (
-              <EyedClosedIcon className="size-5" />
-            ) : (
-              <EyeIcon className="size-5" />
-            )}
-          </button>
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password}</p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className="mt-4 w-full rounded-lg bg-primary px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <div className="flex items-center justify-center">
-              <div
-                className="h-5 w-5 animate-spin rounded-full border-b-2 border-white"
-                role="status"
-                aria-label="Submitting form"
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-300">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                disabled={isSubmitting}
+                autoComplete="email"
+                className={`w-full rounded-lg border bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:outline-none focus:ring-2 disabled:opacity-50 ${
+                  errors.email
+                    ? 'border-red-700 focus:border-red-600 focus:ring-red-900/50'
+                    : 'border-white/10 focus:border-primary focus:ring-primary/20'
+                }`}
               />
+              {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
             </div>
-          ) : (
-            'Login'
-          )}
-        </button>
 
-        <div className="space-y-4 text-center">
-          <p>
-            New user?{' '}
-            <Link
-              href="/register"
-              className="text-primary transition-colors hover:text-primary/90"
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-300">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  disabled={isSubmitting}
+                  autoComplete="current-password"
+                  className={`w-full rounded-lg border bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:outline-none focus:ring-2 disabled:opacity-50 ${
+                    errors.password
+                      ? 'border-red-700 focus:border-red-600 focus:ring-red-900/50'
+                      : 'border-white/10 focus:border-primary focus:ring-primary/20'
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyedClosedIcon className="size-4" /> : <EyeIcon className="size-4" />}
+                </button>
+              </div>
+              {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password}</p>}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 w-full rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              Register here
+              {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  Signing in…
+                </span>
+              ) : (
+                'Sign in'
+              )}
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-500">
+            Don&apos;t have an account?{' '}
+            <Link href="/register" className="font-medium text-primary transition hover:text-primary/90">
+              Sign up for free
             </Link>
           </p>
         </div>
-      </form>
+      </div>
     </section>
   );
 }
