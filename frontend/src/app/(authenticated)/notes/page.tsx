@@ -69,6 +69,8 @@ function NoteCard({
   return (
     <div
       className={`group relative flex flex-col rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+        isMenuOpen ? 'z-10' : ''
+      } ${
         isPinned
           ? 'border-amber-400/40 bg-linear-to-br from-bg-800 to-bg-900 hover:border-amber-400/60 hover:shadow-amber-400/10'
           : 'border-border bg-linear-to-br from-bg-800 to-bg-900 hover:border-primary/40 hover:shadow-primary/10'
@@ -92,25 +94,27 @@ function NoteCard({
         </div>
       </Link>
 
-      <button
-        onClick={e => toggleNoteMenu(e, note.id)}
-        className={`absolute right-3 top-3 rounded-md p-1 text-text-300 transition-all hover:bg-bg-700 ${
-          isMenuOpen ? 'bg-bg-700 opacity-100' : 'opacity-0 group-hover:opacity-100'
-        }`}
-        aria-label="Note options"
-      >
-        <ThreeDots className="size-4" />
-      </button>
+      <div className="absolute right-3 top-3">
+        <button
+          onClick={e => toggleNoteMenu(e, note.id)}
+          className={`rounded-md p-1 text-text-300 transition-all hover:bg-bg-700 ${
+            isMenuOpen ? 'bg-bg-700 opacity-100' : 'opacity-0 group-hover:opacity-100'
+          }`}
+          aria-label="Note options"
+        >
+          <ThreeDots className="size-4" />
+        </button>
 
-      {isMenuOpen && (
-        <div ref={noteMenuRef}>
-          <NoteMenu
-            note={note}
-            setOpenNoteMenuId={setOpenNoteMenuId}
-            setError={setError}
-          />
-        </div>
-      )}
+        {isMenuOpen && (
+          <div ref={noteMenuRef}>
+            <NoteMenu
+              note={note}
+              setOpenNoteMenuId={setOpenNoteMenuId}
+              setError={setError}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
