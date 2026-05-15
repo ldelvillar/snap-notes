@@ -6,19 +6,18 @@ export default function Hero() {
       {/* Radial glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[700px] rounded-full bg-primary/15 blur-[140px]"
+        className="pointer-events-none absolute top-0 left-1/2 size-[700px] -translate-x-1/2 rounded-full bg-primary/15 blur-[140px]"
       />
 
-      <div className="relative mx-auto max-w-3xl text-center">
+      <div className="relative mx-auto max-w-lg text-center">
         {/* Badge */}
         <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
           ✨ Simple, fast, secure note-taking
         </div>
 
         {/* Headline */}
-        <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
-          All your notes,{' '}
-          <span className="text-primary">in one place</span>
+        <h1 className="mb-6 text-5xl leading-tight font-bold tracking-tight md:text-6xl lg:text-7xl">
+          All your notes, <span className="text-primary">in one place</span>
         </h1>
 
         {/* Subheadline */}
@@ -48,19 +47,28 @@ export default function Hero() {
       <div className="relative mx-auto mt-20 max-w-lg px-4">
         <div className="grid grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/4 py-6 backdrop-blur-sm">
           <div className="px-6 text-center">
-            <p className="text-3xl font-bold md:text-4xl" aria-label="15,000 plus active users">
+            <p
+              className="text-3xl font-bold md:text-4xl"
+              aria-label="15,000 plus active users"
+            >
               15k+
             </p>
             <p className="mt-1 text-xs text-white/45">Active Users</p>
           </div>
           <div className="px-6 text-center">
-            <p className="text-3xl font-bold md:text-4xl" aria-label="30,000 plus total downloads">
+            <p
+              className="text-3xl font-bold md:text-4xl"
+              aria-label="30,000 plus total downloads"
+            >
               30k+
             </p>
             <p className="mt-1 text-xs text-white/45">Downloads</p>
           </div>
           <div className="px-6 text-center">
-            <p className="text-3xl font-bold md:text-4xl" aria-label="10,000 plus customers">
+            <p
+              className="text-3xl font-bold md:text-4xl"
+              aria-label="10,000 plus customers"
+            >
               10k+
             </p>
             <p className="mt-1 text-xs text-white/45">Customers</p>
