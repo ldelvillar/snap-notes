@@ -16,7 +16,8 @@ import DocumentIcon from '@/assets/Document';
 import HalfArrow from '@/assets/HalfArrow';
 import Tick from '@/assets/Tick';
 
-const TEXT_MAX = 3000;
+const TEXT_MAX = 10000;
+const TITLE_MAX = 200;
 
 const INITIAL_NOTE: Note = {
   title: '',
@@ -159,6 +160,10 @@ export default function NotePage() {
       router.push('/login');
       return;
     }
+    if (editedNote.title.length > TITLE_MAX) {
+      setEditError(`Title must be less than ${TITLE_MAX} characters`);
+      return;
+    }
     if (!editedNote.text.trim()) {
       setEditError('Note text is required');
       return;
@@ -245,6 +250,7 @@ export default function NotePage() {
                   setEditedNote({ ...editedNote, title: e.target.value })
                 }
                 placeholder="Note title"
+                maxLength={TITLE_MAX}
                 disabled={isSaving}
                 className="w-full bg-transparent text-xl font-semibold text-text-100 placeholder:text-text-400 focus:outline-none disabled:opacity-60"
               />

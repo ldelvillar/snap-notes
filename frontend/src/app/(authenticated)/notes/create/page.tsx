@@ -11,8 +11,8 @@ import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
 import { createNote } from '@/lib/notesService';
 
-const TEXT_MAX = 3000;
-const TITLE_MAX = 100;
+const TEXT_MAX = 10000;
+const TITLE_MAX = 200;
 
 interface NoteFormData {
   title: string;
@@ -148,7 +148,7 @@ export default function CreateNotePage() {
               value={formData.title}
               onChange={handleChange}
               disabled={isSubmitting}
-              maxLength={TITLE_MAX + 10}
+              maxLength={TITLE_MAX}
               className="w-full bg-transparent text-xl font-semibold text-text-100 placeholder:text-text-400 focus:outline-none disabled:opacity-60"
             />
             {errors.title && (
