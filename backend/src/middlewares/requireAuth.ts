@@ -4,6 +4,7 @@ import { env } from '@/lib/env';
 
 interface SessionPayload {
   sub: string;
+  purpose: 'session';
 }
 
 export const requireAuth = (
@@ -21,7 +22,7 @@ export const requireAuth = (
   try {
     const payload = jwt.verify(token, env.jwtSecret) as SessionPayload;
 
-    if (!payload?.sub) {
+    if (!payload?.sub || payload.purpose !== 'session') {
       res.status(401).json({ message: 'Unauthorized' });
       return;
     }

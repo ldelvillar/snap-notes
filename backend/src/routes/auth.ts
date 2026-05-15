@@ -116,7 +116,7 @@ authRouter.post(
           .json({ message: 'Please verify your email before logging in' });
       }
 
-      const token = jwt.sign({ sub: user.id }, env.jwtSecret, {
+      const token = jwt.sign({ sub: user.id, purpose: 'session' }, env.jwtSecret, {
         expiresIn: '7d',
       });
 
@@ -237,7 +237,7 @@ authRouter.post('/verify-email', async (req, res) => {
     data: { emailVerifiedAt: new Date() },
   });
 
-  const sessionToken = jwt.sign({ sub: user.id }, env.jwtSecret, {
+  const sessionToken = jwt.sign({ sub: user.id, purpose: 'session' }, env.jwtSecret, {
     expiresIn: '7d',
   });
 
