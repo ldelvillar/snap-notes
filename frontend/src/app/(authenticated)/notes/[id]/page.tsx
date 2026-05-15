@@ -313,8 +313,8 @@ export default function NotePage() {
         /* ── View mode ── */
         <>
           {/* Title row */}
-          <div className="mb-4 flex items-start justify-between gap-4">
-            <h1 className="text-3xl leading-tight font-bold">
+          <div className="mb-6 flex items-start justify-between gap-4">
+            <h1 className="min-w-0 text-3xl leading-tight font-bold">
               {note.title || 'Untitled'}
             </h1>
             <div className="flex shrink-0 items-center gap-2">
@@ -345,26 +345,29 @@ export default function NotePage() {
             </div>
           </div>
 
-          {/* Metadata */}
-          <div className="mb-8 flex items-center gap-4 text-sm text-text-400">
-            <span className="flex items-center gap-1.5">
-              <CalendarIcon className="size-3.5" />
-              {note.updatedAt.toLocaleDateString('en-GB', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <DocumentIcon className="size-3.5" />
-              {note.text.length}{' '}
-              {note.text.length === 1 ? 'character' : 'characters'}
-            </span>
-          </div>
+          {/* Card */}
+          <div className="rounded-xl border border-border bg-bg-800 shadow-sm">
+            {/* Body */}
+            <div className="px-6 py-6 text-sm leading-relaxed whitespace-pre-wrap wrap-break-word text-text-200">
+              {note.text}
+            </div>
 
-          {/* Body */}
-          <div className="text-base leading-relaxed whitespace-pre-wrap text-text-200">
-            {note.text}
+            {/* Metadata footer */}
+            <div className="flex items-center gap-4 border-t border-border px-6 py-3 text-xs text-text-400">
+              <span className="flex items-center gap-1.5">
+                <CalendarIcon className="size-3.5" />
+                {note.updatedAt.toLocaleDateString('en-GB', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <DocumentIcon className="size-3.5" />
+                {note.text.length}{' '}
+                {note.text.length === 1 ? 'character' : 'characters'}
+              </span>
+            </div>
           </div>
         </>
       )}
