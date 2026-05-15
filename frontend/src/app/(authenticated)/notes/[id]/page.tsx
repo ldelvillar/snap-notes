@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
-import { getNoteById, deleteNote, updateNote } from '@/lib/notesService';
+import { getNoteById, deleteNote, updateNote, noteToListItem } from '@/lib/notesService';
 import { Note } from '@/types';
 import ErrorMessage from '@/components/ErrorMessage';
 import TrashIcon from '@/assets/Trash';
@@ -54,7 +54,7 @@ function NoteDetailSkeleton() {
 
 export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
-  const { notes, mutateNotes } = useNotes();
+  const { mutateNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const editTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -85,14 +85,6 @@ export default function NotePage() {
     }
 
     const editParam = searchParams.get('edit');
-    const cached = notes.find(n => n.id === id);
-    if (cached) {
-      setNote(cached);
-      setEditedNote(cached);
-      if (editParam === 'true') setIsEditing(true);
-      setLoadingState({ isLoading: false, error: null });
-      return;
-    }
 
     const fetchNote = async () => {
       try {
@@ -117,7 +109,7 @@ export default function NotePage() {
     };
 
     fetchNote();
-  }, [id, user, router, authLoading, searchParams, notes]);
+  }, [id, user, router, authLoading, searchParams]);
 
   // Auto-resize textarea whenever edit mode is active and text changes
   useEffect(() => {
@@ -174,7 +166,7 @@ export default function NotePage() {
       const updatedNote = await updateNote(user, editedNote);
       setNote(updatedNote);
       setIsEditing(false);
-      await mutateNotes(notes => notes.map(n => n.id === updatedNote.id ? updatedNote : n));
+      await mutateNotes(notes => notes.map(n => n.id === updatedNote.id ? noteToListItem(updatedNote) : n));
     } catch (err) {
       setEditError(
         err instanceof Error

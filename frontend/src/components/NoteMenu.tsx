@@ -7,12 +7,12 @@ import TrashIcon from '@/assets/Trash';
 import PinIcon from '@/assets/Pin';
 import { useNotes } from '@/context/NotesContext';
 import { useAuth } from '@/context/useGlobalContext';
-import { deleteNote, pinNote } from '@/lib/notesService';
-import { Note } from '@/types';
+import { deleteNote, pinNote, noteToListItem } from '@/lib/notesService';
+import { NoteListItem } from '@/types';
 import PinOff from '@/assets/PinOff';
 
 interface NoteMenuProps {
-  note: Note;
+  note: NoteListItem;
   setOpenNoteMenuId: (id: string | null) => void;
   setError: Dispatch<SetStateAction<string | null>>;
 }
@@ -28,7 +28,7 @@ export default function NoteMenu({
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isPinning, setIsPinning] = useState(false);
 
-  const handlePin = async (e: React.MouseEvent, note: Note) => {
+  const handlePin = async (e: React.MouseEvent, note: NoteListItem) => {
     if (!user) return;
 
     e.preventDefault();
@@ -37,7 +37,7 @@ export default function NoteMenu({
     try {
       setIsPinning(true);
       const pinnedNote = await pinNote(user, note);
-      await mutateNotes(notes => notes.map(n => n.id === pinnedNote.id ? pinnedNote : n));
+      await mutateNotes(notes => notes.map(n => n.id === pinnedNote.id ? noteToListItem(pinnedNote) : n));
       setOpenNoteMenuId(null);
     } catch (err) {
       setError(

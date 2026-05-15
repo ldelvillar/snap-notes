@@ -9,7 +9,7 @@ import PlusIcon from '@/assets/Plus';
 import HalfArrow from '@/assets/HalfArrow';
 import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
-import { createNote } from '@/lib/notesService';
+import { createNote, noteToListItem } from '@/lib/notesService';
 
 const TEXT_MAX = 10000;
 const TITLE_MAX = 200;
@@ -80,7 +80,7 @@ export default function CreateNotePage() {
 
     try {
       const newNote = await createNote(user, formData.title, formData.text);
-      await mutateNotes(notes => [newNote, ...notes]);
+      await mutateNotes(notes => [noteToListItem(newNote), ...notes]);
       router.replace('/notes');
     } catch (err) {
       setError(

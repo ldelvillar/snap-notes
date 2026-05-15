@@ -31,7 +31,7 @@ notesRouter.get('/', async (req, res) => {
       notes: notes.map(note => ({
         id: note.id,
         title: note.title,
-        text: note.text,
+        textPreview: note.text.substring(0, 150),
         creator: note.user.email,
         updatedAt: note.updatedAt,
         pinnedAt: note.pinnedAt,

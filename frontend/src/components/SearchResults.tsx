@@ -36,7 +36,7 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
   const filteredNotes = notes.filter(
     note =>
       note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.text.toLowerCase().includes(searchQuery.toLowerCase())
+      note.textPreview.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -94,8 +94,8 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
                           {note.title}
                         </p>
                         <p className="truncate text-xs text-text-400">
-                          {note.text.substring(0, 50)}
-                          {note.text.length > 50 ? '...' : ''}
+                          {note.textPreview.substring(0, 50)}
+                          {note.textPreview.length > 50 ? '...' : ''}
                         </p>
                       </div>
                     </Link>

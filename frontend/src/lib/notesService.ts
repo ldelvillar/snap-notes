@@ -1,4 +1,4 @@
-import { User, Note, NoteDto } from '@/types/index';
+import { User, Note, NoteDto, NoteListItem, NoteListItemDto } from '@/types/index';
 import { getCsrfToken, resetCsrfToken } from '@/lib/csrf';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
@@ -58,7 +58,12 @@ export const createNote = async (
   }
 };
 
-export const getNotes = async (user: User): Promise<Note[]> => {
+export const noteToListItem = ({ text: _, ...rest }: Note): NoteListItem => ({
+  ...rest,
+  textPreview: _.substring(0, 150),
+});
+
+export const getNotes = async (user: User): Promise<NoteListItem[]> => {
   if (!user) throw new Error('User is not defined');
 
   try {
@@ -74,8 +79,15 @@ export const getNotes = async (user: User): Promise<Note[]> => {
       throw new Error(data?.message || 'Failed to fetch notes');
     }
 
-    const data = (await response.json()) as { notes: NoteDto[] };
-    return data.notes.map(mapNote);
+    const data = (await response.json()) as { notes: NoteListItemDto[] };
+    return data.notes.map(dto => ({
+      id: dto.id,
+      title: dto.title,
+      textPreview: dto.textPreview,
+      creator: dto.creator,
+      updatedAt: new Date(dto.updatedAt),
+      pinnedAt: dto.pinnedAt ? new Date(dto.pinnedAt) : null,
+    }));
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -157,7 +169,7 @@ export const updateNote = async (user: User, note: Note): Promise<Note> => {
   }
 };
 
-export const pinNote = async (user: User, note: Note): Promise<Note> => {
+export const pinNote = async (user: User, note: NoteListItem): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {

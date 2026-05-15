@@ -12,7 +12,7 @@ import PlusIcon from '@/assets/Plus';
 import DocumentIcon from '@/assets/Document';
 import PinIcon from '@/assets/Pin';
 import ThreeDots from '@/assets/ThreeDots';
-import { Note } from '@/types';
+import { NoteListItem } from '@/types';
 
 function formatDate(date: Date): string {
   const d = new Date(date);
@@ -47,7 +47,7 @@ function NoteCardSkeleton() {
 }
 
 interface NoteCardProps {
-  note: Note;
+  note: NoteListItem;
   openNoteMenuId: string | null;
   noteMenuRef: React.MutableRefObject<HTMLDivElement | null>;
   toggleNoteMenu: (e: React.MouseEvent, noteId: string) => void;
@@ -81,7 +81,7 @@ function NoteCard({
           {note.title || 'Untitled'}
         </h2>
         <p className="mb-4 line-clamp-3 flex-1 text-sm leading-relaxed text-text-400">
-          {note.text}
+          {note.textPreview}
         </p>
         <div className="flex items-center justify-between text-xs text-text-400">
           <span>{formatDate(note.updatedAt)}</span>

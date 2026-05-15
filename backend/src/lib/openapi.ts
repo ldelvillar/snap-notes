@@ -35,6 +35,20 @@ const UserSchema = registry.register(
     .openapi('User')
 );
 
+const NoteListItemSchema = registry.register(
+  'NoteListItem',
+  z
+    .object({
+      id: z.string().openapi({ example: 'cm1abc456' }),
+      title: z.string().openapi({ example: 'Shopping list' }),
+      textPreview: z.string().openapi({ example: 'Milk, eggs...' }),
+      creator: z.email().openapi({ example: 'user@example.com' }),
+      updatedAt: z.string().datetime(),
+      pinnedAt: z.string().datetime().nullable(),
+    })
+    .openapi('NoteListItem')
+);
+
 const NoteSchema = registry.register(
   'Note',
   z
@@ -238,7 +252,7 @@ registry.registerPath({
       description: "User's notes",
       content: {
         'application/json': {
-          schema: z.object({ notes: z.array(NoteSchema) }),
+          schema: z.object({ notes: z.array(NoteListItemSchema) }),
         },
       },
     },

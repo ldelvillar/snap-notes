@@ -2,19 +2,19 @@
 
 import React, { createContext, useContext } from 'react';
 import useSWR from 'swr';
-import { Note } from '@/types';
+import { NoteListItem } from '@/types';
 import { useAuth } from '@/context/useGlobalContext';
 import { getNotes } from '@/lib/notesService';
 
 interface NotesContextType {
-  notes: Note[];
+  notes: NoteListItem[];
   notesLoading: boolean;
   fetchError: string | null;
   fetchNotes: () => Promise<void>;
-  mutateNotes: (updater: (notes: Note[]) => Note[]) => Promise<void>;
+  mutateNotes: (updater: (notes: NoteListItem[]) => NoteListItem[]) => Promise<void>;
 }
 
-function sortNotes(notes: Note[]): Note[] {
+function sortNotes(notes: NoteListItem[]): NoteListItem[] {
   return [...notes].sort((a, b) => {
     if (a.pinnedAt && !b.pinnedAt) return -1;
     if (!a.pinnedAt && b.pinnedAt) return 1;
