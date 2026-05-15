@@ -136,7 +136,10 @@ registry.registerPath({
         'application/json': {
           schema: z.object({
             email: z.email().openapi({ example: 'user@example.com' }),
-            password: z.string().min(8).openapi({ example: 'secret123', description: 'Min 8 chars, at least 1 letter and 1 number' }),
+            password: z.string().min(8).openapi({
+              example: 'secret123',
+              description: 'Min 8 chars, at least 1 letter and 1 number',
+            }),
             firstName: z.string().min(1).openapi({ example: 'Jane' }),
             lastName: z.string().optional().openapi({ example: 'Doe' }),
             phone: z.string().optional().openapi({ example: '+34600000000' }),
