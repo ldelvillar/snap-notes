@@ -129,20 +129,21 @@ notesRouter.patch('/:id', validate(updateNoteSchema), async (req, res) => {
   }
 
   try {
-    const { count } = await prisma.note.updateMany({
+    const existing = await prisma.note.findFirst({
       where: { id: noteId, userId: req.user!.id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
+
+    const note = await prisma.note.update({
+      where: { id: noteId },
       data: {
         ...(title !== undefined ? { title: title || 'Untitled' } : {}),
         ...(text !== undefined ? { text } : {}),
       },
-    });
-
-    if (count === 0) {
-      return res.status(404).json({ message: 'Note not found' });
-    }
-
-    const note = await prisma.note.findFirst({
-      where: { id: noteId },
       include: {
         user: {
           select: {
@@ -154,12 +155,12 @@ notesRouter.patch('/:id', validate(updateNoteSchema), async (req, res) => {
 
     return res.json({
       note: {
-        id: note!.id,
-        title: note!.title,
-        text: note!.text,
-        creator: note!.user.email,
-        updatedAt: note!.updatedAt,
-        pinnedAt: note!.pinnedAt,
+        id: note.id,
+        title: note.title,
+        text: note.text,
+        creator: note.user.email,
+        updatedAt: note.updatedAt,
+        pinnedAt: note.pinnedAt,
       },
     });
   } catch (err) {
