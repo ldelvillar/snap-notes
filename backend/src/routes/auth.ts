@@ -135,7 +135,7 @@ authRouter.post(
       } = user;
       return res.json({ user: safeUser });
     } catch (err) {
-      logger.error(err, 'Failed to fetch notes');
+      logger.error(err, 'Failed to login');
       return res.status(500).json({ message: 'Failed to login' });
     }
   }
