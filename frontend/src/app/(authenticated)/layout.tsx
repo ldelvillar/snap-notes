@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Sidebar from '@/components/Sidebar';
-import ContentSkeleton from '@/components/ContentSkeleton';
 import ErrorMessage from '@/components/ErrorMessage';
 import { useAuth } from '@/context/useGlobalContext';
 import { NotesProvider, useNotes } from '@/context/NotesContext';
@@ -73,8 +72,6 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
       router.replace('/login');
     }
   }, [user, loading, router]);
-
-  if (loading || !user) return <ContentSkeleton lines={6} />;
 
   return (
     <div id="layout" className="bg-bg-primary">

@@ -69,8 +69,6 @@ export default function Sidebar({
     setOpenNoteMenuId(openNoteMenuId === noteId ? null : noteId);
   };
 
-  if (!user) return null;
-
   return (
     <div className="relative flex h-screen overflow-hidden">
       {/* Overlay for mobile */}
@@ -271,46 +269,59 @@ export default function Sidebar({
 
           {/* Footer */}
           <div className="p-2" ref={accountMenuRef}>
-            <button
-              className={`flex w-full items-center rounded-lg p-2 hover:bg-bg-700 ${
-                isCollapsed ? 'justify-center' : 'space-x-3'
-              }`}
-              onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-            >
-              <div className="shrink-0">
-                <Image
-                  src={user.photo || '/images/nopicture.webp'}
-                  width={36}
-                  height={36}
-                  alt={`${user.firstName} ${user.lastName}'s profile picture`}
-                  className="size-8 rounded-full object-cover"
-                />
-              </div>
+            {user ? (
+              <>
+                <button
+                  className={`flex w-full items-center rounded-lg p-2 hover:bg-bg-700 ${
+                    isCollapsed ? 'justify-center' : 'space-x-3'
+                  }`}
+                  onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                >
+                  <div className="shrink-0">
+                    <Image
+                      src={user.photo || '/images/nopicture.webp'}
+                      width={36}
+                      height={36}
+                      alt={`${user.firstName} ${user.lastName}'s profile picture`}
+                      className="size-8 rounded-full object-cover"
+                    />
+                  </div>
 
-              <div
-                className={`flex min-w-0 flex-col items-start transition-opacity duration-300 ${
-                  isCollapsed ? 'hidden' : 'block'
-                }`}
-              >
-                <h3 className="truncate text-sm font-medium text-text-100">
-                  {user.firstName} {user.lastName}
-                </h3>
-                <p className="truncate text-xs text-text-300">
-                  {(user.subscription || 'free').charAt(0).toUpperCase() +
-                    (user.subscription || 'free').slice(1)}{' '}
-                  plan
-                </p>
-              </div>
-            </button>
+                  <div
+                    className={`flex min-w-0 flex-col items-start transition-opacity duration-300 ${
+                      isCollapsed ? 'hidden' : 'block'
+                    }`}
+                  >
+                    <h3 className="truncate text-sm font-medium text-text-100">
+                      {user.firstName} {user.lastName}
+                    </h3>
+                    <p className="truncate text-xs text-text-300">
+                      {(user.subscription || 'free').charAt(0).toUpperCase() +
+                        (user.subscription || 'free').slice(1)}{' '}
+                      plan
+                    </p>
+                  </div>
+                </button>
 
-            {/* Account Menu */}
-            {accountMenuOpen && (
-              <AccountMenu
-                user={user}
-                setAccountMenuOpen={setAccountMenuOpen}
-                setIsMobileOpen={setIsMobileOpen}
-                setShortcutsOpen={setShortcutsOpen}
-              />
+                {accountMenuOpen && (
+                  <AccountMenu
+                    user={user}
+                    setAccountMenuOpen={setAccountMenuOpen}
+                    setIsMobileOpen={setIsMobileOpen}
+                    setShortcutsOpen={setShortcutsOpen}
+                  />
+                )}
+              </>
+            ) : (
+              <div className={`flex items-center p-2 ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+                <div className="size-8 shrink-0 animate-pulse rounded-full bg-bg-700" />
+                {!isCollapsed && (
+                  <div className="flex min-w-0 flex-col gap-1.5">
+                    <div className="h-3.5 w-24 animate-pulse rounded bg-bg-700" />
+                    <div className="h-3 w-16 animate-pulse rounded bg-bg-700" />
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>

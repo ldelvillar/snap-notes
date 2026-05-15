@@ -30,7 +30,7 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
     <NotesContext.Provider
       value={{
         notes: data ?? [],
-        notesLoading: isLoading,
+        notesLoading: !user || isLoading,
         fetchError: error ? 'Failed to load notes. Please try again.' : null,
         fetchNotes: async () => { await mutate(); },
       }}
