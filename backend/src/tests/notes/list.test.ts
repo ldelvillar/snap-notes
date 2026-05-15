@@ -90,7 +90,7 @@ describe('GET /notes', () => {
     const firstNote = response.body.notes[0];
     expect(firstNote).toHaveProperty('id');
     expect(firstNote).toHaveProperty('title');
-    expect(firstNote).toHaveProperty('text');
+    expect(firstNote).toHaveProperty('textPreview');
     expect(firstNote).toHaveProperty('creator', testEmail);
     expect(firstNote).toHaveProperty('updatedAt');
     expect(firstNote).toHaveProperty('pinnedAt');
