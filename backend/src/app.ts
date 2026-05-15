@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import pinoHttp from 'pino-http';
 import swaggerUi from 'swagger-ui-express';
@@ -30,3 +30,8 @@ app.use('/auth', authRouter);
 app.use('/health', healthRouter);
 app.use('/notes', notesRouter);
 app.use('/payments', paymentsRouter);
+
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  logger.error(err);
+  res.status(500).json({ message: 'Internal server error' });
+});
