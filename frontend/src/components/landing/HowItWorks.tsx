@@ -40,65 +40,60 @@ const steps: Step[] = [
 
 export default function HowItWorks() {
   return (
-    <section className="mx-auto max-w-6xl border-t border-[#4d3d54] px-4 py-20">
-      {/* Header */}
-      <div className="mb-16 text-center">
-        <h2 className="mb-4 text-4xl font-bold text-white md:text-5xl">
-          How It Works
-        </h2>
-        <p className="mx-auto max-w-2xl text-lg text-[#b09eb8]">
-          Get started with Snap Notes in just 4 simple steps.
-        </p>
-      </div>
+    <section className="px-4 py-24 text-white">
+      <div className="mx-auto max-w-6xl">
+        {/* Header */}
+        <div className="mb-16 text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            How it works
+          </p>
+          <h2 className="mb-4 text-4xl font-bold md:text-5xl">
+            Up and running in minutes
+          </h2>
+          <p className="mx-auto max-w-2xl text-lg text-white/50">
+            Get started with Snap Notes in just 4 simple steps.
+          </p>
+        </div>
 
-      {/* Steps Container */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {steps.map((step, idx) => (
-          <div key={idx} className="relative">
-            {/* Connector Line */}
-            {idx < steps.length - 1 && (
-              <div className="absolute top-24 left-full hidden h-0.5 w-8 bg-linear-to-r from-primary to-transparent lg:block" />
-            )}
+        {/* Steps */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, idx) => (
+            <div key={idx} className="relative">
+              {/* Connector line */}
+              {idx < steps.length - 1 && (
+                <div className="absolute top-6 left-[calc(50%+24px)] hidden h-px w-[calc(100%-48px)] bg-linear-to-r from-primary/40 to-transparent lg:block" />
+              )}
 
-            {/* Card */}
-            <div className="h-full rounded-lg border border-[#4d3d54] bg-[#1a1520] p-8 transition-all duration-300 hover:border-primary/50">
-              {/* Step Number */}
-              <div className="mb-4 text-5xl font-black text-primary/30">
-                {step.number}
-              </div>
+              <div className="rounded-2xl border border-white/8 bg-white/3 p-7 transition-all duration-300 hover:border-primary/40 hover:bg-white/5">
+                {/* Step circle */}
+                <div className="mb-5 flex size-11 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-sm font-bold text-primary">
+                  {step.number}
+                </div>
 
-              {/* Icon */}
-              <div className="mb-4 text-4xl">{step.icon}</div>
+                {/* Icon */}
+                <div className="mb-4 text-3xl">{step.icon}</div>
 
-              {/* Title */}
-              <h3 className="mb-3 text-xl font-bold text-white">
-                {step.title}
-              </h3>
+                {/* Title */}
+                <h3 className="mb-2.5 text-base font-semibold">{step.title}</h3>
 
-              {/* Description */}
-              <p className="text-sm leading-relaxed text-[#b09eb8]">
-                {step.description}
-              </p>
-
-              {/* Dot Indicator */}
-              <div className="mt-6 flex gap-2">
-                <div className="h-2 w-2 rounded-full bg-primary" />
-                <div className="h-2 w-2 rounded-full bg-primary/50" />
-                <div className="h-2 w-2 rounded-full bg-primary/30" />
+                {/* Description */}
+                <p className="text-sm leading-relaxed text-white/50">
+                  {step.description}
+                </p>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Bottom CTA */}
-      <div className="mt-16 text-center">
-        <Link
-          href="/pricing"
-          className="inline-block transform rounded-lg bg-primary px-8 py-3 font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-primary/90"
-        >
-          Choose Your Plan
-        </Link>
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <Link
+            href="/pricing"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 active:scale-95"
+          >
+            Choose your plan →
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -191,71 +191,95 @@ const faqs: FAQ[] = [
 
 export default function FAQPage() {
   return (
-    <section className="animate-fade-in mx-auto max-w-4xl px-4 pt-32 pb-16 text-white">
-      <div className="mb-12 text-center">
-        <h1 className="mb-4 text-5xl font-bold">Frequently Asked Questions</h1>
-        <p className="text-lg text-[#b09eb8]">
-          Find answers to common questions about Snap Notes. Can&apos;t find
-          what you&apos;re looking for?{' '}
-          <Link href="/contact" className="text-primary hover:underline">
-            Contact us
-          </Link>
-        </p>
-      </div>
+    <div className="text-white">
+      {/* Hero */}
+      <section className="relative overflow-hidden px-4 pt-36 pb-16 text-center">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[500px] rounded-full bg-primary/12 blur-[120px]"
+        />
+        <div className="relative mx-auto max-w-2xl">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+            FAQ
+          </p>
+          <h1 className="mb-5 text-5xl font-bold md:text-6xl">
+            Frequently asked questions
+          </h1>
+          <p className="text-lg text-white/55">
+            Can&apos;t find what you&apos;re looking for?{' '}
+            <Link href="/contact" className="text-primary hover:underline">
+              Contact us
+            </Link>
+          </p>
+        </div>
+      </section>
 
-      <div className="space-y-8">
-        {faqs.map((section, sectionIdx) => (
-          <div key={sectionIdx}>
-            <h2 className="mb-4 text-2xl font-bold text-primary">
-              {section.category}
-            </h2>
+      {/* FAQ Sections */}
+      <section className="animate-fade-in px-4 py-16">
+        <div className="mx-auto max-w-3xl space-y-12">
+          {faqs.map((section, sectionIdx) => (
+            <div key={sectionIdx}>
+              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-primary">
+                {section.category}
+              </p>
 
-            <div className="space-y-2">
-              {section.questions.map((item, qIdx) => (
-                <details
-                  key={qIdx}
-                  className="group overflow-hidden rounded-lg border border-[#4d3d54] bg-[#241c26] transition-all duration-300 hover:border-primary/50"
+              <div className="space-y-2">
+                {section.questions.map((item, qIdx) => (
+                  <details
+                    key={qIdx}
+                    className="group overflow-hidden rounded-xl border border-white/8 bg-white/3 transition-colors hover:border-primary/30 hover:bg-white/5"
+                  >
+                    <summary className="flex cursor-pointer list-none items-center justify-between px-6 py-4">
+                      <span className="pr-4 font-medium text-white/85 transition-colors group-open:text-primary">
+                        {item.q}
+                      </span>
+                      <Arrow className="size-4 shrink-0 text-white/40 transition-transform duration-300 group-open:rotate-180" />
+                    </summary>
+
+                    <div className="border-t border-white/8 px-6 py-4">
+                      <p className="text-sm leading-relaxed text-white/55">
+                        {item.a}
+                      </p>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Bottom CTA */}
+      <section className="px-4 py-16">
+        <div className="mx-auto max-w-2xl">
+          <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-linear-to-br from-primary/15 via-primary/5 to-transparent p-12 text-center">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[300px] rounded-full bg-primary/15 blur-[70px]"
+            />
+            <div className="relative">
+              <h2 className="mb-3 text-2xl font-bold">Still have questions?</h2>
+              <p className="mb-8 text-white/55">
+                Our support team is ready to help. Reach out to us anytime.
+              </p>
+              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3 font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
                 >
-                  <summary className="flex cursor-pointer items-center justify-between px-6 py-4 transition-colors hover:bg-[#2a2230]">
-                    <span className="font-semibold text-[#e0e0e0] transition-colors group-open:text-primary">
-                      {item.q}
-                    </span>
-                    <Arrow className="h-5 w-5 text-[#b09eb8] transition-transform duration-300 group-open:rotate-180" />
-                  </summary>
-
-                  <div className="border-t border-[#4d3d54] bg-[#1a1520]/50 px-6 pb-4">
-                    <p className="leading-relaxed text-[#b09eb8]">{item.a}</p>
-                  </div>
-                </details>
-              ))}
+                  Contact support
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center rounded-xl border border-white/10 bg-white/5 px-7 py-3 font-semibold text-white/70 transition-all hover:border-white/20 hover:bg-white/8 hover:text-white"
+                >
+                  View plans
+                </Link>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* CTA Section */}
-      <div className="mt-16 border-t border-[#4d3d54] pt-12">
-        <div className="rounded-lg bg-linear-to-r from-primary/10 to-transparent p-8 text-center">
-          <h3 className="mb-4 text-2xl font-bold">Still have questions?</h3>
-          <p className="mb-6 text-[#b09eb8]">
-            Our support team is ready to help. Reach out to us anytime.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              href="/contact"
-              className="transform rounded-lg bg-primary px-6 py-3 font-bold transition-all duration-300 hover:scale-105 hover:bg-primary/90"
-            >
-              Contact Support
-            </Link>
-            <Link
-              href="/pricing"
-              className="rounded-lg border border-primary/30 bg-[#332938] px-6 py-3 font-bold transition-all duration-300 hover:bg-[#3a303d]"
-            >
-              View Plans
-            </Link>
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

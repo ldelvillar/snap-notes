@@ -15,10 +15,10 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="bg-[#0e0a12]">
       <Header />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }

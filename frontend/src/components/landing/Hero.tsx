@@ -2,60 +2,68 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <section className="min-h-[700px] overflow-hidden text-center text-white">
-      <div className="z-10 mx-auto mt-40 flex flex-col items-center">
-        <h1 className="mb-6 max-w-md text-4xl font-bold text-gray-50 md:text-5xl lg:text-6xl">
-          All your notes, in one place
+    <section className="relative overflow-hidden px-4 pt-36 pb-24 text-white">
+      {/* Radial glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[700px] rounded-full bg-primary/15 blur-[140px]"
+      />
+
+      <div className="relative mx-auto max-w-3xl text-center">
+        {/* Badge */}
+        <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary">
+          ✨ Simple, fast, secure note-taking
+        </div>
+
+        {/* Headline */}
+        <h1 className="mb-6 text-5xl font-bold leading-tight tracking-tight md:text-6xl lg:text-7xl">
+          All your notes,{' '}
+          <span className="text-primary">in one place</span>
         </h1>
-        <p className="mb-8 max-w-2xl text-center text-lg text-gray-200">
-          The #1 app to organize and manage your notes efficiently and securely.
+
+        {/* Subheadline */}
+        <p className="mx-auto mb-10 max-w-xl text-lg text-white/55">
+          Capture your thoughts, organize your ideas, and access them from
+          anywhere. Free forever.
         </p>
-        <div className="flex flex-col items-center gap-3 font-medium md:flex-row">
-          <Link
-            href="/notes"
-            className="inline-block rounded-lg border-2 border-primary bg-primary px-6 py-3 text-center text-white shadow-lg transition hover:border-primary/90 hover:bg-primary/90"
-          >
-            Go to SnapNotes
-          </Link>
+
+        {/* CTAs */}
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/register"
-            className="inline-block w-fit rounded-lg border-2 border-gray-800 px-6 py-3 text-center text-gray-100 transition-colors hover:border-gray-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-3.5 font-semibold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-primary/40 active:scale-95"
           >
-            Sign up for free
+            Start for free →
+          </Link>
+          <Link
+            href="/features"
+            className="inline-flex items-center rounded-xl border border-white/10 bg-white/5 px-7 py-3.5 font-semibold text-white/70 transition-all hover:border-white/20 hover:bg-white/8 hover:text-white"
+          >
+            See features
           </Link>
         </div>
       </div>
 
-      <div className="clip-custom-hero mt-22 w-full bg-primary/10">
-        <div className="flex flex-row items-start justify-center gap-12 py-8 md:items-center md:gap-24">
-          <div className="relative border-r border-gray-500 text-center md:px-24">
-            <p
-              className="text-3xl font-semibold md:text-5xl"
-              aria-label="15,000 plus active users"
-            >
+      {/* Stats */}
+      <div className="relative mx-auto mt-20 max-w-lg px-4">
+        <div className="grid grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/4 py-6 backdrop-blur-sm">
+          <div className="px-6 text-center">
+            <p className="text-3xl font-bold md:text-4xl" aria-label="15,000 plus active users">
               15k+
             </p>
-            <p className="mt-1 text-sm text-gray-500">Active Users</p>
+            <p className="mt-1 text-xs text-white/45">Active Users</p>
           </div>
-
-          <div className="relative border-r border-gray-500 text-center md:pr-24">
-            <p
-              className="text-3xl font-semibold md:text-5xl"
-              aria-label="30,000 plus total downloads"
-            >
+          <div className="px-6 text-center">
+            <p className="text-3xl font-bold md:text-4xl" aria-label="30,000 plus total downloads">
               30k+
             </p>
-            <p className="mt-1 text-sm text-gray-500">Total Downloads</p>
+            <p className="mt-1 text-xs text-white/45">Downloads</p>
           </div>
-
-          <div className="text-center">
-            <p
-              className="text-3xl font-semibold md:text-5xl"
-              aria-label="10,000 plus customers"
-            >
+          <div className="px-6 text-center">
+            <p className="text-3xl font-bold md:text-4xl" aria-label="10,000 plus customers">
               10k+
             </p>
-            <p className="mt-1 text-sm text-gray-500">Customers</p>
+            <p className="mt-1 text-xs text-white/45">Customers</p>
           </div>
         </div>
       </div>
