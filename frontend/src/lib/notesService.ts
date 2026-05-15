@@ -1,16 +1,7 @@
-import { User, Note } from '@/types/index';
+import { User, Note, NoteDto } from '@/types/index';
 import { getCsrfToken } from '@/lib/csrf';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-
-interface NoteDto {
-  id: string;
-  title: string;
-  text: string;
-  creator: string;
-  updatedAt: string;
-  pinnedAt: string | null;
-}
 
 const mapNote = (note: NoteDto): Note => ({
   id: note.id,

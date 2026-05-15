@@ -1,5 +1,16 @@
 export type PlanName = 'free' | 'pro' | 'team';
 
+// Wire format returned by the API — dates are ISO strings.
+// Use Note (below) for app-level code after passing through mapNote().
+export interface NoteDto {
+  id: string;
+  title: string;
+  text: string;
+  creator: string;
+  updatedAt: string;
+  pinnedAt: string | null;
+}
+
 export interface Note {
   id: string;
   title: string;
