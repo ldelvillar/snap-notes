@@ -26,7 +26,7 @@ export default function Footer() {
         </div>
 
         <p className="text-center text-[#b09eb8]">
-          © 2025 Snap Notes. All rights reserved.
+          © {new Date().getFullYear()} Snap Notes. All rights reserved.
         </p>
       </div>
     </footer>
