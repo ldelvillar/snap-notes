@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { useAuth } from '@/context/useGlobalContext';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { Note } from '@/types';
+import { NoteListItem } from '@/types';
 import AccountMenu from '@/components/AccountMenu';
 import SearchResults from '@/components/SearchResults';
 import KeyboardShortcuts from '@/components/KeyboardShortcuts';
@@ -23,7 +23,7 @@ import PinIcon from '@/assets/Pin';
 
 interface SidebarProps {
   children: React.ReactNode;
-  notes: Note[];
+  notes: NoteListItem[];
   notesLoading: boolean;
 }
 
@@ -55,7 +55,7 @@ export default function Sidebar({
 
   // Listen for global open-search event
   useEffect(() => {
-    const handleOpenSearch = (event: Event) => {
+    const handleOpenSearch = (_event: Event) => {
       setSearchOpen(prev => !prev);
     };
     window.addEventListener('toggle-search', handleOpenSearch);
