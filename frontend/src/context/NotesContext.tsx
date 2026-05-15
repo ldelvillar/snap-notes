@@ -11,6 +11,15 @@ interface NotesContextType {
   notesLoading: boolean;
   fetchError: string | null;
   fetchNotes: () => Promise<void>;
+  mutateNotes: (updater: (notes: Note[]) => Note[]) => Promise<void>;
+}
+
+function sortNotes(notes: Note[]): Note[] {
+  return [...notes].sort((a, b) => {
+    if (a.pinnedAt && !b.pinnedAt) return -1;
+    if (!a.pinnedAt && b.pinnedAt) return 1;
+    return b.updatedAt.getTime() - a.updatedAt.getTime();
+  });
 }
 
 const NotesContext = createContext<NotesContextType | undefined>(undefined);
@@ -33,6 +42,9 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
         notesLoading: !user || isLoading,
         fetchError: error ? 'Failed to load notes. Please try again.' : null,
         fetchNotes: async () => { await mutate(); },
+        mutateNotes: async (updater) => {
+          await mutate(current => sortNotes(updater(current ?? [])), { revalidate: false });
+        },
       }}
     >
       {children}

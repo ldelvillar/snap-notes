@@ -53,7 +53,7 @@ function NoteDetailSkeleton() {
 
 export default function NotePage() {
   const { user, loading: authLoading } = useAuth();
-  const { notes, fetchNotes } = useNotes();
+  const { notes, mutateNotes } = useNotes();
   const { id } = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const editTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -135,7 +135,7 @@ export default function NotePage() {
     try {
       setIsDeleting(noteId);
       await deleteNote(user, noteId);
-      fetchNotes();
+      await mutateNotes(notes => notes.filter(n => n.id !== noteId));
       router.push('/notes');
     } catch (err) {
       setDeletionError(
@@ -166,10 +166,10 @@ export default function NotePage() {
     try {
       setIsSaving(true);
       setEditError(null);
-      await updateNote(user, editedNote);
-      setNote(editedNote);
+      const updatedNote = await updateNote(user, editedNote);
+      setNote(updatedNote);
       setIsEditing(false);
-      fetchNotes();
+      await mutateNotes(notes => notes.map(n => n.id === updatedNote.id ? updatedNote : n));
     } catch (err) {
       setEditError(
         err instanceof Error
@@ -179,7 +179,7 @@ export default function NotePage() {
     } finally {
       setIsSaving(false);
     }
-  }, [user, editedNote, router, fetchNotes]);
+  }, [user, editedNote, router, mutateNotes]);
 
   useEffect(() => {
     const handleSaveEvent = () => {

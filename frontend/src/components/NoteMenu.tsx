@@ -24,7 +24,7 @@ export default function NoteMenu({
 }: NoteMenuProps) {
   const router = useRouter();
   const { user } = useAuth();
-  const { fetchNotes } = useNotes();
+  const { mutateNotes } = useNotes();
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isPinning, setIsPinning] = useState(false);
 
@@ -36,8 +36,8 @@ export default function NoteMenu({
 
     try {
       setIsPinning(true);
-      await pinNote(user, note);
-      fetchNotes();
+      const pinnedNote = await pinNote(user, note);
+      await mutateNotes(notes => notes.map(n => n.id === pinnedNote.id ? pinnedNote : n));
       setOpenNoteMenuId(null);
     } catch (err) {
       setError(
@@ -66,7 +66,7 @@ export default function NoteMenu({
     try {
       setIsDeleting(noteId);
       await deleteNote(user, noteId);
-      fetchNotes();
+      await mutateNotes(notes => notes.filter(n => n.id !== noteId));
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Failed to delete note. Please try again later.'

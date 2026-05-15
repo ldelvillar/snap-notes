@@ -27,7 +27,7 @@ interface FormErrors {
 export default function CreateNotePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const { fetchNotes } = useNotes();
+  const { mutateNotes } = useNotes();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [formData, setFormData] = useState<NoteFormData>({ title: '', text: '' });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -79,8 +79,8 @@ export default function CreateNotePage() {
     setError(null);
 
     try {
-      await createNote(user, formData.title, formData.text);
-      fetchNotes();
+      const newNote = await createNote(user, formData.title, formData.text);
+      await mutateNotes(notes => [newNote, ...notes]);
       router.replace('/notes');
     } catch (err) {
       setError(

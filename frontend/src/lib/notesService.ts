@@ -16,7 +16,7 @@ export const createNote = async (
   user: User,
   title: string,
   text: string
-): Promise<void> => {
+): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {
@@ -37,6 +37,9 @@ export const createNote = async (
       } | null;
       throw new Error(data?.message || 'Failed to create note');
     }
+
+    const data = (await response.json()) as { note: NoteDto };
+    return mapNote(data.note);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
@@ -117,7 +120,7 @@ export const deleteNote = async (user: User, noteId: string): Promise<void> => {
   }
 };
 
-export const updateNote = async (user: User, note: Note): Promise<void> => {
+export const updateNote = async (user: User, note: Note): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {
@@ -141,13 +144,16 @@ export const updateNote = async (user: User, note: Note): Promise<void> => {
       } | null;
       throw new Error(data?.message || 'Failed to update note');
     }
+
+    const data = (await response.json()) as { note: NoteDto };
+    return mapNote(data.note);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
   }
 };
 
-export const pinNote = async (user: User, note: Note): Promise<void> => {
+export const pinNote = async (user: User, note: Note): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {
@@ -164,6 +170,9 @@ export const pinNote = async (user: User, note: Note): Promise<void> => {
       } | null;
       throw new Error(data?.message || 'Failed to pin note');
     }
+
+    const data = (await response.json()) as { note: NoteDto };
+    return mapNote(data.note);
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');
