@@ -5,5 +5,8 @@
   "scripts": {
     "dev:frontend": "pnpm --filter frontend dev",
     "build:frontend": "pnpm --filter frontend build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@prisma/engines", "@scarf/scarf", "bcrypt", "prisma", "sharp", "unrs-resolver"]
   }
 }

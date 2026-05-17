@@ -129,6 +129,9 @@ jobs:
       - name: Lint
         run: pnpm --filter frontend lint
 
+      - name: Run tests
+        run: pnpm --filter frontend test:run
+
       - name: Build
         run: pnpm --filter frontend build
         env:
