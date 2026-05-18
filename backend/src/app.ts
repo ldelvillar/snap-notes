@@ -13,6 +13,7 @@ import { paymentsRouter } from '@/routes/payments';
 
 export const app = express();
 
+app.set('trust proxy', 1);
 app.disable('x-powered-by');
 app.use(
   pinoHttp({
