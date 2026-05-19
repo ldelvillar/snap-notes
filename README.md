@@ -50,20 +50,25 @@ pnpm install
 Create `frontend/.env` using `frontend/.env.example`:
 
 ```env
-NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+NEXT_PUBLIC_BACKEND_URL=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 ```
 
 Create `backend/.env` using `backend/.env.example`:
 
 ```env
-PORT=3001
-CORS_ALLOWED_ORIGINS=frontend URL (e.g. http://localhost:3000)
-DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB_NAME?sslmode=require
-AUTH_JWT_SECRET=your_super_secret_key
-AUTH_COOKIE_NAME=snapnotes_session
+APP_URL=
+PORT=
+CORS_ALLOWED_ORIGINS=
+DATABASE_URL=
+AUTH_JWT_SECRET=
+AUTH_COOKIE_NAME=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
+RESEND_API_KEY=
+EMAIL_FROM=onboarding@resend.dev
+CSRF_SECRET=
+
 ```
 
 To get `STRIPE_WEBHOOK_SECRET` for local development, use the [Stripe CLI](https://docs.stripe.com/stripe-cli):
@@ -119,12 +124,17 @@ When the backend is running, interactive API docs are available at [http://local
 # frontend
 pnpm --filter frontend dev
 pnpm --filter frontend build
+pnpm --filter frontend test
+pnpm --filter frontend test:run
+pnpm --filter frontend format
+pnpm --filter frontend format:check
 pnpm --filter frontend lint
 
 # backend
 pnpm --filter backend dev
 pnpm --filter backend test
 pnpm --filter backend lint
+pnpm --filter backend lint:fix
 pnpm --filter backend format
 pnpm --filter backend format:check
 ```
