@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import LogoutConfirmation from '@/components/LogoutConfirmation';
@@ -70,14 +71,25 @@ export default function AccountPage() {
           </div>
 
           {/* Actions */}
-          <div className="flex w-full items-center justify-between pt-4">
-            <p>Log out from this device</p>
-            <button
-              onClick={() => setConfirmationOpen(true)}
-              className="transform rounded-lg bg-primary px-4 py-1 text-white transition-colors hover:bg-primary/90 focus:ring-2 focus:ring-primary/50 focus:outline-none active:scale-95"
-            >
-              Log out
-            </button>
+          <div className="space-y-3 pt-4">
+            <div className="flex w-full items-center justify-between">
+              <p>Change password</p>
+              <Link
+                href="/forgot-password"
+                className="transform rounded-lg bg-bg-700 px-4 py-1 text-sm text-text-100 transition-colors hover:bg-bg-600 focus:ring-2 focus:ring-primary/50 focus:outline-none active:scale-95"
+              >
+                Reset password
+              </Link>
+            </div>
+            <div className="flex w-full items-center justify-between">
+              <p>Log out from this device</p>
+              <button
+                onClick={() => setConfirmationOpen(true)}
+                className="transform rounded-lg bg-primary px-4 py-1 text-white transition-colors hover:bg-primary/90 focus:ring-2 focus:ring-primary/50 focus:outline-none active:scale-95"
+              >
+                Log out
+              </button>
+            </div>
           </div>
         </div>
       </section>

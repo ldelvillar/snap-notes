@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import ContentSkeleton from '@/components/ContentSkeleton';
 import EyeIcon from '@/assets/Eye';
@@ -23,8 +23,10 @@ interface FormErrors {
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const passwordReset = searchParams.get('reset') === '1';
   const { user, loading, refreshSession } = useAuth();
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,6 +142,11 @@ export default function LoginPage() {
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-neutral-900 p-8">
+          {passwordReset && (
+            <div className="mb-6 rounded-lg border border-green-800/50 bg-green-900/20 px-4 py-3 text-sm text-green-400">
+              Password reset successfully. You can now sign in with your new password.
+            </div>
+          )}
           {error && (
             <div className="mb-6 rounded-lg border border-red-800/50 bg-red-900/20 px-4 py-3 text-sm text-red-400">
               <p>{error}</p>
@@ -215,6 +222,14 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password}</p>}
+              <div className="mt-1 text-right">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-gray-500 transition hover:text-gray-300"
+                >
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             <button
@@ -242,5 +257,13 @@ export default function LoginPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

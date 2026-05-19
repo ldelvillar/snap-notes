@@ -5,6 +5,7 @@ import LoginPage from '@/app/(public)/login/page';
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn() }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 vi.mock('next/link', () => ({

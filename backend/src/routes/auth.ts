@@ -1,16 +1,19 @@
+import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import { prisma } from '@/lib/prisma';
 import { env } from '@/lib/env';
-import { sendVerificationEmail } from '@/lib/email';
+import { sendVerificationEmail, sendPasswordResetEmail } from '@/lib/email';
 import { requireAuth } from '@/middlewares/requireAuth';
 import { validate } from '@/middlewares/validate';
 import {
   loginSchema,
   registerSchema,
   resendVerificationSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from '@/schemas/auth';
 import { generateCsrfToken } from '@/lib/csrf';
 import { logger } from '@/lib/logger';
@@ -299,6 +302,120 @@ authRouter.post(
     }
 
     return res.json(successMessage);
+  }
+);
+
+const forgotPasswordLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    message: 'Too many password reset requests, please try again later',
+  },
+});
+
+authRouter.post(
+  '/forgot-password',
+  forgotPasswordLimiter,
+  validate(forgotPasswordSchema),
+  async (req, res) => {
+    const { email } = req.body;
+    const successMessage = {
+      message:
+        'If that email is registered, a password reset link has been sent',
+    };
+
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email: email.trim().toLowerCase() },
+        select: {
+          id: true,
+          email: true,
+          passwordHash: true,
+          emailVerifiedAt: true,
+        },
+      });
+
+      if (!user || !user.emailVerifiedAt) {
+        return res.json(successMessage);
+      }
+
+      // pf = fingerprint of current password hash; invalidates token if password changes
+      const pf = crypto
+        .createHash('sha256')
+        .update(user.passwordHash)
+        .digest('hex')
+        .slice(0, 16);
+      const token = jwt.sign(
+        { sub: user.id, purpose: 'password-reset', pf },
+        env.jwtSecret,
+        { expiresIn: '1h' }
+      );
+
+      await sendPasswordResetEmail(user.email, token);
+    } catch (err) {
+      logger.error(err, 'Failed to send password reset email');
+    }
+
+    return res.json(successMessage);
+  }
+);
+
+authRouter.post(
+  '/reset-password',
+  validate(resetPasswordSchema),
+  async (req, res) => {
+    const { token, password } = req.body;
+
+    let payload: jwt.JwtPayload;
+    try {
+      payload = jwt.verify(token, env.jwtSecret) as jwt.JwtPayload;
+    } catch {
+      return res.status(400).json({ message: 'Invalid or expired reset link' });
+    }
+
+    if (
+      payload.purpose !== 'password-reset' ||
+      typeof payload.sub !== 'string' ||
+      typeof payload.pf !== 'string'
+    ) {
+      return res.status(400).json({ message: 'Invalid reset link' });
+    }
+
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: payload.sub },
+        select: { id: true, passwordHash: true },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid reset link' });
+      }
+
+      const currentPf = crypto
+        .createHash('sha256')
+        .update(user.passwordHash)
+        .digest('hex')
+        .slice(0, 16);
+
+      if (currentPf !== payload.pf) {
+        return res
+          .status(400)
+          .json({ message: 'Reset link has already been used' });
+      }
+
+      const passwordHash = await bcrypt.hash(password, 10);
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { passwordHash },
+      });
+
+      return res.json({ message: 'Password reset successfully' });
+    } catch (err) {
+      logger.error(err, 'Failed to reset password');
+      return res.status(500).json({ message: 'Failed to reset password' });
+    }
   }
 );
 
