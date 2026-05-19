@@ -11,7 +11,7 @@ interface SearchResultsProps {
 }
 
 export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
-  const { notes } = useNotes();
+  const { notes, hasMore, total, loadAll } = useNotes();
   const [searchQuery, setSearchQuery] = useState('');
   const isEmpty = searchQuery.trim() === '';
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -19,6 +19,12 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
 
   const closeModal = useCallback(() => setSearchOpen(false), [setSearchOpen]);
   useEscapeKey(closeModal);
+
+  // Eager-load all notes when the search modal opens so client-side filtering
+  // doesn't silently miss notes that haven't been paginated into view yet.
+  useEffect(() => {
+    loadAll();
+  }, [loadAll]);
 
   // Close search results when clicking outside the modal
   useEffect(() => {
@@ -74,6 +80,11 @@ export default function SearchResults({ setSearchOpen }: SearchResultsProps) {
 
         {/* Results */}
         <div className="max-h-[calc(100vh-5rem)] overflow-y-auto md:max-h-96">
+          {hasMore && (
+            <div className="border-b border-border px-4 py-2 text-center text-xs text-text-400 md:px-6">
+              Loading all notes… searching {notes.length} of {total}
+            </div>
+          )}
           {isEmpty ? (
             <div className="p-4 md:p-6">
               <h3 className="mb-4 text-xs font-semibold tracking-wide text-text-400">

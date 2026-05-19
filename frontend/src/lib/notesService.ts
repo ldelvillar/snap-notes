@@ -69,11 +69,27 @@ export const noteToListItem = ({ text: _, ...rest }: Note): NoteListItem => ({
   textPreview: _.substring(0, 150),
 });
 
-export const getNotes = async (user: User): Promise<NoteListItem[]> => {
+export interface NotesPage {
+  notes: NoteListItem[];
+  nextCursor: string | null;
+  total: number;
+  pinnedTotal: number;
+}
+
+export const getNotes = async (
+  user: User,
+  options?: { cursor?: string | null; limit?: number }
+): Promise<NotesPage> => {
   if (!user) throw new Error('User is not defined');
 
+  const params = new URLSearchParams();
+  if (options?.cursor) params.set('cursor', options.cursor);
+  if (options?.limit) params.set('limit', String(options.limit));
+  const qs = params.toString();
+  const url = qs ? `${API_URL}/notes?${qs}` : `${API_URL}/notes`;
+
   try {
-    const response = await fetch(`${API_URL}/notes`, {
+    const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',
     });
@@ -85,15 +101,25 @@ export const getNotes = async (user: User): Promise<NoteListItem[]> => {
       throw new Error(data?.message || 'Failed to fetch notes');
     }
 
-    const data = (await response.json()) as { notes: NoteListItemDto[] };
-    return data.notes.map(dto => ({
-      id: dto.id,
-      title: dto.title,
-      textPreview: dto.textPreview,
-      creator: dto.creator,
-      updatedAt: new Date(dto.updatedAt),
-      pinnedAt: dto.pinnedAt ? new Date(dto.pinnedAt) : null,
-    }));
+    const data = (await response.json()) as {
+      notes: NoteListItemDto[];
+      nextCursor: string | null;
+      total?: number;
+      pinnedTotal?: number;
+    };
+    return {
+      notes: data.notes.map(dto => ({
+        id: dto.id,
+        title: dto.title,
+        textPreview: dto.textPreview,
+        creator: dto.creator,
+        updatedAt: new Date(dto.updatedAt),
+        pinnedAt: dto.pinnedAt ? new Date(dto.pinnedAt) : null,
+      })),
+      nextCursor: data.nextCursor ?? null,
+      total: data.total ?? data.notes.length,
+      pinnedTotal: data.pinnedTotal ?? 0,
+    };
   } catch (error) {
     if (error instanceof Error) throw error;
     else throw new Error('An unknown error occurred');

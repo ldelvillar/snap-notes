@@ -38,7 +38,6 @@ model Note {
   pinnedAt   DateTime?
   createdAt  DateTime @default(now())
 
-  @@index([userId])
-  @@index([updatedAt])
+  @@index([userId, pinnedAt(sort: Desc), updatedAt(sort: Desc)])
 }
 

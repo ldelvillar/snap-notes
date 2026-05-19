@@ -52,12 +52,18 @@ const USER: User = {
   updatedAt: '2024-01-01T00:00:00Z',
 };
 
-function mockNotesResponse(notes: unknown[]) {
+function mockNotesResponse(notes: unknown[], nextCursor: string | null = null) {
   vi.stubGlobal(
     'fetch',
     vi.fn().mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ notes }),
+      json: () =>
+        Promise.resolve({
+          notes,
+          nextCursor,
+          total: notes.length,
+          pinnedTotal: 0,
+        }),
     })
   );
 }
@@ -83,7 +89,7 @@ describe('getNotes', () => {
       },
     ]);
 
-    const notes = await getNotes(USER);
+    const { notes } = await getNotes(USER);
 
     expect(notes[0].updatedAt).toBeInstanceOf(Date);
     expect(notes[0].updatedAt.toISOString()).toBe('2024-01-01T00:00:00.000Z');
@@ -101,7 +107,7 @@ describe('getNotes', () => {
       },
     ]);
 
-    const notes = await getNotes(USER);
+    const { notes } = await getNotes(USER);
 
     expect(notes[0].pinnedAt).toBeNull();
   });
@@ -118,10 +124,50 @@ describe('getNotes', () => {
       },
     ]);
 
-    const notes = await getNotes(USER);
+    const { notes } = await getNotes(USER);
 
     expect(notes[0].pinnedAt).toBeInstanceOf(Date);
     expect(notes[0].pinnedAt?.toISOString()).toBe('2024-06-01T00:00:00.000Z');
+  });
+
+  it('returns the nextCursor from the response', async () => {
+    mockNotesResponse(
+      [
+        {
+          id: '1',
+          title: 't',
+          textPreview: 'p',
+          creator: 'c',
+          updatedAt: '2024-01-01T00:00:00Z',
+          pinnedAt: null,
+        },
+      ],
+      'next-id-xyz'
+    );
+
+    const { nextCursor } = await getNotes(USER);
+
+    expect(nextCursor).toBe('next-id-xyz');
+  });
+
+  it('sends cursor and limit as query params when provided', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: () =>
+        Promise.resolve({
+          notes: [],
+          nextCursor: null,
+          total: 0,
+          pinnedTotal: 0,
+        }),
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    await getNotes(USER, { cursor: 'abc-123', limit: 25 });
+
+    const calledWith = fetchMock.mock.calls[0][0] as string;
+    expect(calledWith).toMatch(/cursor=abc-123/);
+    expect(calledWith).toMatch(/limit=25/);
   });
 
   it('throws when user is not defined', async () => {

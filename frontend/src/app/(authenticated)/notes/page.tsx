@@ -128,7 +128,8 @@ const GRID = 'grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4';
 
 export default function NotesPage() {
   const { loading } = useAuth();
-  const { notes } = useNotes();
+  const { notes, hasMore, isLoadingMore, loadMore, total, pinnedTotal } =
+    useNotes();
   const [openNoteMenuId, setOpenNoteMenuId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const noteMenuRef = useRef<HTMLDivElement>(null);
@@ -199,9 +200,9 @@ export default function NotesPage() {
             Your notes
           </h1>
           <p className="text-sm text-text-400">
-            {notes.length === 0
+            {total === 0
               ? 'Start creating your first note'
-              : `${notes.length} ${notes.length === 1 ? 'note' : 'notes'}${pinnedNotes.length > 0 ? ` · ${pinnedNotes.length} pinned` : ''}`}
+              : `${total} ${total === 1 ? 'note' : 'notes'}${pinnedTotal > 0 ? ` · ${pinnedTotal} pinned` : ''}${hasMore ? ` · showing ${notes.length}` : ''}`}
           </p>
         </div>
         <Link
@@ -261,6 +262,18 @@ export default function NotesPage() {
                   <NoteCard key={note.id} note={note} {...sharedCardProps} />
                 ))}
               </div>
+            </div>
+          )}
+
+          {hasMore && (
+            <div className="flex justify-center pt-4">
+              <button
+                onClick={() => loadMore()}
+                disabled={isLoadingMore}
+                className="rounded-lg border border-border bg-bg-800 px-6 py-2.5 text-sm font-medium text-text-200 transition-all hover:border-primary/40 hover:bg-bg-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoadingMore ? 'Loading…' : 'Load more'}
+              </button>
             </div>
           )}
         </div>

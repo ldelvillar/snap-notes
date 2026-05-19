@@ -248,16 +248,52 @@ registry.registerPath({
 registry.registerPath({
   method: 'get',
   path: '/notes',
-  summary: 'List all notes (pinned first, then by updatedAt desc)',
+  summary:
+    'List notes with cursor pagination (pinned first, then by updatedAt desc)',
   security: [{ cookieAuth: [] }],
+  request: {
+    query: z.object({
+      cursor: z.string().uuid().optional().openapi({
+        description:
+          'ID of the last note from the previous page. Omit to fetch the first page.',
+      }),
+      limit: z.coerce
+        .number()
+        .int()
+        .min(1)
+        .max(100)
+        .optional()
+        .openapi({ description: 'Page size (1-100). Defaults to 50.' }),
+    }),
+  },
   responses: {
     200: {
-      description: "User's notes",
+      description: "User's notes (one page)",
       content: {
         'application/json': {
-          schema: z.object({ notes: z.array(NoteListItemSchema) }),
+          schema: z.object({
+            notes: z.array(NoteListItemSchema),
+            nextCursor: z.string().uuid().nullable().openapi({
+              description:
+                'Pass this as `cursor` to fetch the next page. Null when there are no more notes.',
+            }),
+            total: z
+              .number()
+              .int()
+              .nonnegative()
+              .openapi({ description: 'Total notes for the user.' }),
+            pinnedTotal: z
+              .number()
+              .int()
+              .nonnegative()
+              .openapi({ description: 'Total pinned notes for the user.' }),
+          }),
         },
       },
+    },
+    400: {
+      description: 'Invalid cursor or limit',
+      content: { 'application/json': { schema: ErrorSchema } },
     },
     401: {
       description: 'Unauthorized',
