@@ -39,9 +39,17 @@ If tests fail:
 
 ```bash
 pnpm --filter frontend format       # Auto-fixes formatting
+pnpm --filter frontend test:run     # Vitest — must pass
 pnpm --filter frontend lint         # ESLint — fix auto-fixable issues
 pnpm --filter frontend build        # Production build + type-check — must pass
 ```
+
+If tests fail:
+
+- Diagnose the failure.
+- Fix it if the cause is clear and the fix is small and safe.
+- Re-run tests to confirm.
+- If the fix is non-trivial or risky, stop and explain what's broken before touching anything.
 
 If the build fails due to type errors, fix them. If lint errors are not auto-fixable, fix them manually.
 
