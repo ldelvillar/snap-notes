@@ -4,7 +4,9 @@ let tokenPromise: Promise<string> | null = null;
 
 export function getCsrfToken(): Promise<string> {
   if (!tokenPromise) {
-    tokenPromise = fetch(`${API_URL}/auth/csrf-token`, { credentials: 'include' })
+    tokenPromise = fetch(`${API_URL}/auth/csrf-token`, {
+      credentials: 'include',
+    })
       .then(r => r.json())
       .then((data: { csrfToken: string }) => data.csrfToken)
       .catch(err => {

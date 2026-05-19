@@ -37,7 +37,11 @@ export default function NoteMenu({
     try {
       setIsPinning(true);
       const pinnedNote = await pinNote(user, note);
-      await mutateNotes(notes => notes.map(n => n.id === pinnedNote.id ? noteToListItem(pinnedNote) : n));
+      await mutateNotes(notes =>
+        notes.map(n =>
+          n.id === pinnedNote.id ? noteToListItem(pinnedNote) : n
+        )
+      );
       setOpenNoteMenuId(null);
     } catch (err) {
       setError(
@@ -69,7 +73,9 @@ export default function NoteMenu({
       await mutateNotes(notes => notes.filter(n => n.id !== noteId));
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to delete note. Please try again later.'
+        err instanceof Error
+          ? err.message
+          : 'Failed to delete note. Please try again later.'
       );
     } finally {
       setIsDeleting(null);

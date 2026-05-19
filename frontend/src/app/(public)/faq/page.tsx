@@ -196,10 +196,10 @@ export default function FAQPage() {
       <section className="relative overflow-hidden px-4 pt-36 pb-16 text-center">
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[500px] rounded-full bg-primary/12 blur-[120px]"
+          className="pointer-events-none absolute top-0 left-1/2 size-[500px] -translate-x-1/2 rounded-full bg-primary/12 blur-[120px]"
         />
         <div className="relative mx-auto max-w-2xl">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-4 text-sm font-semibold tracking-widest text-primary uppercase">
             FAQ
           </p>
           <h1 className="mb-5 text-5xl font-bold md:text-6xl">
@@ -219,7 +219,7 @@ export default function FAQPage() {
         <div className="mx-auto max-w-3xl space-y-12">
           {faqs.map((section, sectionIdx) => (
             <div key={sectionIdx}>
-              <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-primary">
+              <p className="mb-5 text-xs font-semibold tracking-widest text-primary uppercase">
                 {section.category}
               </p>
 
@@ -255,7 +255,7 @@ export default function FAQPage() {
           <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-linear-to-br from-primary/15 via-primary/5 to-transparent p-12 text-center">
             <div
               aria-hidden
-              className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[300px] rounded-full bg-primary/15 blur-[70px]"
+              className="pointer-events-none absolute top-0 left-1/2 size-[300px] -translate-x-1/2 rounded-full bg-primary/15 blur-[70px]"
             />
             <div className="relative">
               <h2 className="mb-3 text-2xl font-bold">Still have questions?</h2>

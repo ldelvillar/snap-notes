@@ -42,7 +42,8 @@ export default function AccountPage() {
   ];
 
   const subscription = user.subscription || 'free';
-  const subscriptionLabel = subscription.charAt(0).toUpperCase() + subscription.slice(1);
+  const subscriptionLabel =
+    subscription.charAt(0).toUpperCase() + subscription.slice(1);
 
   return (
     <>
@@ -77,7 +78,9 @@ export default function AccountPage() {
 
         {/* Personal information */}
         <div className="rounded-lg border border-border p-6">
-          <h2 className="text-lg font-semibold text-text-100">Personal information</h2>
+          <h2 className="text-lg font-semibold text-text-100">
+            Personal information
+          </h2>
           <p className="mt-1 text-sm text-text-200">
             The details associated with your SnapNotes account.
           </p>
@@ -88,11 +91,13 @@ export default function AccountPage() {
                 key={label}
                 className={`flex flex-col gap-1 ${fullWidth ? 'sm:col-span-2' : ''}`}
               >
-                <dt className="text-xs font-medium uppercase tracking-wide text-text-200">
+                <dt className="text-xs font-medium tracking-wide text-text-200 uppercase">
                   {label}
                 </dt>
                 <dd className="text-sm text-text-100">
-                  {value || <span className="text-text-200 italic">Not set</span>}
+                  {value || (
+                    <span className="text-text-200 italic">Not set</span>
+                  )}
                 </dd>
               </div>
             ))}

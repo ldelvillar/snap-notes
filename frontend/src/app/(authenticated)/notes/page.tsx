@@ -76,8 +76,11 @@ function NoteCard({
           : 'border-border bg-linear-to-br from-bg-800 to-bg-900 hover:border-primary/40 hover:shadow-primary/10'
       }`}
     >
-      <Link href={`/notes/${note.id}`} className="flex flex-1 flex-col p-5 pr-10">
-        <h2 className="mb-2 line-clamp-2 text-base font-semibold leading-snug text-text-100">
+      <Link
+        href={`/notes/${note.id}`}
+        className="flex flex-1 flex-col p-5 pr-10"
+      >
+        <h2 className="mb-2 line-clamp-2 text-base leading-snug font-semibold text-text-100">
           {note.title || 'Untitled'}
         </h2>
         <p className="mb-4 line-clamp-3 flex-1 text-sm leading-relaxed text-text-400">
@@ -94,11 +97,13 @@ function NoteCard({
         </div>
       </Link>
 
-      <div className="absolute right-3 top-3">
+      <div className="absolute top-3 right-3">
         <button
           onClick={e => toggleNoteMenu(e, note.id)}
           className={`rounded-md p-1 text-text-300 transition-all hover:bg-bg-700 ${
-            isMenuOpen ? 'bg-bg-700 opacity-100' : 'opacity-0 group-hover:opacity-100'
+            isMenuOpen
+              ? 'bg-bg-700 opacity-100'
+              : 'opacity-0 group-hover:opacity-100'
           }`}
           aria-label="Note options"
         >
@@ -232,7 +237,7 @@ export default function NotesPage() {
         <div className="space-y-10">
           {pinnedNotes.length > 0 && (
             <div>
-              <h2 className="mb-4 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-text-400">
+              <h2 className="mb-4 flex items-center gap-1.5 text-xs font-semibold tracking-widest text-text-400 uppercase">
                 <PinIcon className="size-3.5" />
                 Pinned
               </h2>
@@ -247,7 +252,7 @@ export default function NotesPage() {
           {unpinnedNotes.length > 0 && (
             <div>
               {pinnedNotes.length > 0 && (
-                <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-text-400">
+                <h2 className="mb-4 text-xs font-semibold tracking-widest text-text-400 uppercase">
                   Notes
                 </h2>
               )}

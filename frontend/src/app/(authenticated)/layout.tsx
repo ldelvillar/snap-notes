@@ -21,7 +21,8 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
     const applyTheme = (theme: Theme) => {
       let resolvedTheme = theme;
       if (theme === 'system') {
-        resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)')
+          .matches
           ? 'dark'
           : 'light';
       }
@@ -36,7 +37,8 @@ function AuthenticatedContent({ children }: { children: React.ReactNode }) {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       const handleSystemThemeChange = () => applyTheme('system');
       mediaQuery.addEventListener('change', handleSystemThemeChange);
-      return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+      return () =>
+        mediaQuery.removeEventListener('change', handleSystemThemeChange);
     }
   }, []);
 

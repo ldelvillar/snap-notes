@@ -9,9 +9,13 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('next/link', () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
-  ),
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>,
 }));
 
 vi.mock('@/context/useGlobalContext', () => ({
@@ -40,7 +44,9 @@ async function fillAndSubmit(overrides: FormOverrides = {}) {
   if (email) await user.type(screen.getByLabelText(/email address/i), email);
   if (password) await user.type(screen.getByLabelText(/password/i), password);
 
-  fireEvent.submit(screen.getByRole('button', { name: /sign in/i }).closest('form')!);
+  fireEvent.submit(
+    screen.getByRole('button', { name: /sign in/i }).closest('form')!
+  );
 }
 
 describe('LoginPage — form validation', () => {
@@ -60,11 +66,15 @@ describe('LoginPage — form validation', () => {
 
   it('shows error when password is missing', async () => {
     await fillAndSubmit({ password: '' });
-    expect(await screen.findByText(/password is required/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/password is required/i)
+    ).toBeInTheDocument();
   });
 
   it('shows error when password is too short', async () => {
     await fillAndSubmit({ password: 'abc' });
-    expect(await screen.findByText(/at least 6 characters/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/at least 6 characters/i)
+    ).toBeInTheDocument();
   });
 });

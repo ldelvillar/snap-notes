@@ -58,7 +58,7 @@ function mockNotesResponse(notes: unknown[]) {
     vi.fn().mockResolvedValue({
       ok: true,
       json: () => Promise.resolve({ notes }),
-    }),
+    })
   );
 }
 
@@ -125,6 +125,8 @@ describe('getNotes', () => {
   });
 
   it('throws when user is not defined', async () => {
-    await expect(getNotes(null as unknown as User)).rejects.toThrow('User is not defined');
+    await expect(getNotes(null as unknown as User)).rejects.toThrow(
+      'User is not defined'
+    );
   });
 });

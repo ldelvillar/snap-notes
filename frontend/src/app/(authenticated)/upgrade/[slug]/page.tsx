@@ -61,8 +61,14 @@ export default function UpgradePlanPage() {
         const response = await fetch(`${API_URL}/payments/payment-intent`, {
           method: 'POST',
           credentials: 'include',
-          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
-          body: JSON.stringify({ amount: PLAN_AMOUNTS[slug as ValidSlug], plan: slug }),
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken,
+          },
+          body: JSON.stringify({
+            amount: PLAN_AMOUNTS[slug as ValidSlug],
+            plan: slug,
+          }),
         });
 
         if (!response.ok) throw new Error('Failed to create payment intent');

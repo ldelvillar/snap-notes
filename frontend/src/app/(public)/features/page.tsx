@@ -58,13 +58,13 @@ export default function FeaturesPage() {
       <section className="relative overflow-hidden px-4 pt-36 pb-20">
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[600px] rounded-full bg-primary/12 blur-[120px]"
+          className="pointer-events-none absolute top-0 left-1/2 size-[600px] -translate-x-1/2 rounded-full bg-primary/12 blur-[120px]"
         />
         <div className="relative mx-auto max-w-3xl text-center">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-4 text-sm font-semibold tracking-widest text-primary uppercase">
             Features
           </p>
-          <h1 className="mb-6 text-5xl font-bold leading-tight md:text-6xl">
+          <h1 className="mb-6 text-5xl leading-tight font-bold md:text-6xl">
             Everything you need to take better notes
           </h1>
           <p className="mx-auto mb-10 max-w-xl text-lg text-white/55">
@@ -93,7 +93,7 @@ export default function FeaturesPage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-sm font-semibold tracking-widest text-primary uppercase">
               All features
             </p>
             <h2 className="text-3xl font-bold md:text-4xl">
@@ -125,7 +125,7 @@ export default function FeaturesPage() {
       <section className="px-4 py-20">
         <div className="mx-auto max-w-5xl">
           <div className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-3 text-sm font-semibold tracking-widest text-primary uppercase">
               Deep dive
             </p>
             <h2 className="text-3xl font-bold md:text-4xl">

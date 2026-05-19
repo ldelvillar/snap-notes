@@ -29,7 +29,10 @@ export default function CreateNotePage() {
   const { user, loading } = useAuth();
   const { mutateNotes } = useNotes();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [formData, setFormData] = useState<NoteFormData>({ title: '', text: '' });
+  const [formData, setFormData] = useState<NoteFormData>({
+    title: '',
+    text: '',
+  });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +76,10 @@ export default function CreateNotePage() {
   const handleCreateNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    if (!user) { router.push('/login'); return; }
+    if (!user) {
+      router.push('/login');
+      return;
+    }
 
     setIsSubmitting(true);
     setError(null);
@@ -84,7 +90,9 @@ export default function CreateNotePage() {
       router.replace('/notes');
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'Failed to create note. Please try again.'
+        err instanceof Error
+          ? err.message
+          : 'Failed to create note. Please try again.'
       );
     } finally {
       setIsSubmitting(false);
@@ -178,9 +186,7 @@ export default function CreateNotePage() {
 
           {/* Card footer */}
           <div className="flex items-center justify-between border-t border-border px-6 py-3">
-            <span className="text-xs text-red-400">
-              {errors.text ?? ''}
-            </span>
+            <span className="text-xs text-red-400">{errors.text ?? ''}</span>
             <span
               className={`text-xs tabular-nums transition-colors ${
                 charOver

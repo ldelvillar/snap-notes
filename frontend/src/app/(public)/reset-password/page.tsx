@@ -23,7 +23,9 @@ function ResetPasswordForm() {
 
   useEffect(() => {
     if (!token) {
-      setError('Missing reset token. Please request a new password reset link.');
+      setError(
+        'Missing reset token. Please request a new password reset link.'
+      );
     }
   }, [token]);
 
@@ -52,7 +54,9 @@ function ResetPasswordForm() {
     setError(null);
 
     if (!token) {
-      setError('Missing reset token. Please request a new password reset link.');
+      setError(
+        'Missing reset token. Please request a new password reset link.'
+      );
       return;
     }
     if (!validate()) return;
@@ -63,15 +67,23 @@ function ResetPasswordForm() {
       const csrfToken = await getCsrfToken();
       const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
         credentials: 'include',
         body: JSON.stringify({ token, password }),
       });
 
-      const data = (await response.json().catch(() => null)) as { message?: string } | null;
+      const data = (await response.json().catch(() => null)) as {
+        message?: string;
+      } | null;
 
       if (!response.ok) {
-        setError(data?.message || 'Failed to reset password. The link may have expired.');
+        setError(
+          data?.message ||
+            'Failed to reset password. The link may have expired.'
+        );
         return;
       }
 
@@ -92,7 +104,10 @@ function ResetPasswordForm() {
       )}
 
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="password"
+          className="mb-1.5 block text-sm font-medium text-gray-300"
+        >
           New password
         </label>
         <div className="relative">
@@ -104,21 +119,28 @@ function ResetPasswordForm() {
             placeholder="8+ chars, 1 letter, 1 number"
             disabled={isSubmitting || !token}
             autoComplete="new-password"
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
             tabIndex={-1}
           >
-            {showPassword ? <EyedClosedIcon className="size-4" /> : <EyeIcon className="size-4" />}
+            {showPassword ? (
+              <EyedClosedIcon className="size-4" />
+            ) : (
+              <EyeIcon className="size-4" />
+            )}
           </button>
         </div>
       </div>
 
       <div>
-        <label htmlFor="repeat-password" className="mb-1.5 block text-sm font-medium text-gray-300">
+        <label
+          htmlFor="repeat-password"
+          className="mb-1.5 block text-sm font-medium text-gray-300"
+        >
           Confirm new password
         </label>
         <input
@@ -129,7 +151,7 @@ function ResetPasswordForm() {
           placeholder="Repeat password"
           disabled={isSubmitting || !token}
           autoComplete="new-password"
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
         />
       </div>
 
@@ -149,7 +171,10 @@ function ResetPasswordForm() {
       </button>
 
       <p className="text-center text-sm text-gray-500">
-        <Link href="/login" className="font-medium text-primary transition hover:text-primary/90">
+        <Link
+          href="/login"
+          className="font-medium text-primary transition hover:text-primary/90"
+        >
           Back to login
         </Link>
       </p>
@@ -166,8 +191,12 @@ export default function ResetPasswordPage() {
             <Logo className="size-6 text-white" />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white">Set a new password</h1>
-            <p className="mt-1 text-sm text-gray-400">Choose a strong password for your account</p>
+            <h1 className="text-2xl font-bold text-white">
+              Set a new password
+            </h1>
+            <p className="mt-1 text-sm text-gray-400">
+              Choose a strong password for your account
+            </p>
           </div>
         </div>
 

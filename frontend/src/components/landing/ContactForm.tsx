@@ -63,9 +63,7 @@ export default function ContactForm() {
               className="mb-1.5 block text-sm font-medium text-white/60"
             >
               {input.question}
-              {input.required && (
-                <span className="ml-1 text-primary">*</span>
-              )}
+              {input.required && <span className="ml-1 text-primary">*</span>}
             </label>
             {input.type === 'textarea' ? (
               <textarea

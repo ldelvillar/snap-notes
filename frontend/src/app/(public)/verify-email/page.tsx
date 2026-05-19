@@ -31,7 +31,10 @@ function VerifyEmailContent() {
         const csrfToken = await getCsrfToken();
         const response = await fetch(`${API_URL}/auth/verify-email`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken,
+          },
           credentials: 'include',
           body: JSON.stringify({ token }),
         });

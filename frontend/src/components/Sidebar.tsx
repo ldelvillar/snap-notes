@@ -313,7 +313,9 @@ export default function Sidebar({
                 )}
               </>
             ) : (
-              <div className={`flex items-center p-2 ${isCollapsed ? 'justify-center' : 'space-x-3'}`}>
+              <div
+                className={`flex items-center p-2 ${isCollapsed ? 'justify-center' : 'space-x-3'}`}
+              >
                 <div className="size-8 shrink-0 animate-pulse rounded-full bg-bg-700" />
                 {!isCollapsed && (
                   <div className="flex min-w-0 flex-col gap-1.5">

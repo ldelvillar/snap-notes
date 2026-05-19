@@ -8,7 +8,7 @@ export default function Cta() {
           {/* Background glow */}
           <div
             aria-hidden
-            className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[400px] rounded-full bg-primary/15 blur-[80px]"
+            className="pointer-events-none absolute top-0 left-1/2 size-[400px] -translate-x-1/2 rounded-full bg-primary/15 blur-[80px]"
           />
 
           <div className="relative">

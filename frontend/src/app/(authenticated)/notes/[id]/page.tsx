@@ -6,7 +6,12 @@ import Link from 'next/link';
 
 import { useAuth } from '@/context/useGlobalContext';
 import { useNotes } from '@/context/NotesContext';
-import { getNoteById, deleteNote, updateNote, noteToListItem } from '@/lib/notesService';
+import {
+  getNoteById,
+  deleteNote,
+  updateNote,
+  noteToListItem,
+} from '@/lib/notesService';
 import { Note } from '@/types';
 import ErrorMessage from '@/components/ErrorMessage';
 import TrashIcon from '@/assets/Trash';
@@ -166,7 +171,11 @@ export default function NotePage() {
       const updatedNote = await updateNote(user, editedNote);
       setNote(updatedNote);
       setIsEditing(false);
-      await mutateNotes(notes => notes.map(n => n.id === updatedNote.id ? noteToListItem(updatedNote) : n));
+      await mutateNotes(notes =>
+        notes.map(n =>
+          n.id === updatedNote.id ? noteToListItem(updatedNote) : n
+        )
+      );
     } catch (err) {
       setEditError(
         err instanceof Error
@@ -348,7 +357,7 @@ export default function NotePage() {
           {/* Card */}
           <div className="rounded-xl border border-border bg-bg-800 shadow-sm">
             {/* Body */}
-            <div className="px-6 py-6 text-sm leading-relaxed whitespace-pre-wrap wrap-break-word text-text-200">
+            <div className="px-6 py-6 text-sm leading-relaxed wrap-break-word whitespace-pre-wrap text-text-200">
               {note.text}
             </div>
 

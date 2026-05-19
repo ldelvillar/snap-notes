@@ -11,7 +11,9 @@ interface NotesContextType {
   notesLoading: boolean;
   fetchError: string | null;
   fetchNotes: () => Promise<void>;
-  mutateNotes: (updater: (notes: NoteListItem[]) => NoteListItem[]) => Promise<void>;
+  mutateNotes: (
+    updater: (notes: NoteListItem[]) => NoteListItem[]
+  ) => Promise<void>;
 }
 
 function sortNotes(notes: NoteListItem[]): NoteListItem[] {
@@ -41,9 +43,13 @@ export const NotesProvider: React.FC<{ children: React.ReactNode }> = ({
         notes: data ?? [],
         notesLoading: !user || isLoading,
         fetchError: error ? 'Failed to load notes. Please try again.' : null,
-        fetchNotes: async () => { await mutate(); },
-        mutateNotes: async (updater) => {
-          await mutate(current => sortNotes(updater(current ?? [])), { revalidate: false });
+        fetchNotes: async () => {
+          await mutate();
+        },
+        mutateNotes: async updater => {
+          await mutate(current => sortNotes(updater(current ?? [])), {
+            revalidate: false,
+          });
         },
       }}
     >

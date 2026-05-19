@@ -44,7 +44,7 @@ export default function HowItWorks() {
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-16 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-3 text-sm font-semibold tracking-widest text-primary uppercase">
             How it works
           </p>
           <h2 className="mb-4 text-4xl font-bold md:text-5xl">

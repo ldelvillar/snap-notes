@@ -103,7 +103,10 @@ export default function RegisterPage() {
       const csrfToken = await getCsrfToken();
       const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
         credentials: 'include',
         body: JSON.stringify({
           email: formData.email,
@@ -115,7 +118,9 @@ export default function RegisterPage() {
       });
 
       if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as { message?: string } | null;
+        const data = (await response.json().catch(() => null)) as {
+          message?: string;
+        } | null;
         setError(data?.message || 'Failed to register. Please try again.');
         return;
       }
@@ -142,19 +147,34 @@ export default function RegisterPage() {
           </div>
           <div className="rounded-2xl border border-white/10 bg-neutral-900 p-8 text-center">
             <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-green-500/10">
-              <svg className="size-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <svg
+                className="size-7 text-green-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
             </div>
             <h1 className="text-xl font-bold text-white">Check your email</h1>
             <p className="mt-2 text-sm text-gray-400">
               We sent a verification link to{' '}
-              <span className="font-medium text-gray-200">{formData.email}</span>.
-              Click it to complete your registration.
+              <span className="font-medium text-gray-200">
+                {formData.email}
+              </span>
+              . Click it to complete your registration.
             </p>
             <p className="mt-6 text-sm text-gray-500">
               Already verified?{' '}
-              <Link href="/login" className="font-medium text-primary transition hover:text-primary/90">
+              <Link
+                href="/login"
+                className="font-medium text-primary transition hover:text-primary/90"
+              >
                 Log in here
               </Link>
             </p>
@@ -172,8 +192,12 @@ export default function RegisterPage() {
             <Logo className="size-6 text-white" />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-white">Create your account</h1>
-            <p className="mt-1 text-sm text-gray-400">Start taking notes for free</p>
+            <h1 className="text-2xl font-bold text-white">
+              Create your account
+            </h1>
+            <p className="mt-1 text-sm text-gray-400">
+              Start taking notes for free
+            </p>
           </div>
         </div>
 
@@ -187,7 +211,10 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="fname" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="fname"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   First name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -199,11 +226,14 @@ export default function RegisterPage() {
                   placeholder="Jane"
                   required
                   disabled={isLoading}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="lname" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="lname"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   Last name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -215,11 +245,14 @@ export default function RegisterPage() {
                   placeholder="Doe"
                   required
                   disabled={isLoading}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="email"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   Email address <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -231,11 +264,14 @@ export default function RegisterPage() {
                   placeholder="you@example.com"
                   required
                   disabled={isLoading}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="phone"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   Phone number
                 </label>
                 <input
@@ -246,11 +282,14 @@ export default function RegisterPage() {
                   onChange={handleChange}
                   placeholder="+1 234 567 890"
                   disabled={isLoading}
-                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                  className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="password"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -263,20 +302,27 @@ export default function RegisterPage() {
                     placeholder="8+ chars, 1 letter, 1 number"
                     required
                     disabled={isLoading}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
                     tabIndex={-1}
                   >
-                    {showPassword ? <EyedClosedIcon className="size-4" /> : <EyeIcon className="size-4" />}
+                    {showPassword ? (
+                      <EyedClosedIcon className="size-4" />
+                    ) : (
+                      <EyeIcon className="size-4" />
+                    )}
                   </button>
                 </div>
               </div>
               <div>
-                <label htmlFor="repeatPassword" className="mb-1 block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="repeatPassword"
+                  className="mb-1 block text-sm font-medium text-gray-300"
+                >
                   Confirm password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -289,15 +335,19 @@ export default function RegisterPage() {
                     placeholder="Repeat password"
                     required
                     disabled={isLoading}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 disabled:opacity-50"
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 pr-10 text-sm text-white placeholder-gray-600 transition focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none disabled:opacity-50"
                   />
                   <button
                     type="button"
                     onClick={() => setShowRepeatPassword(!showRepeatPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 transition hover:text-gray-300"
                     tabIndex={-1}
                   >
-                    {showRepeatPassword ? <EyedClosedIcon className="size-4" /> : <EyeIcon className="size-4" />}
+                    {showRepeatPassword ? (
+                      <EyedClosedIcon className="size-4" />
+                    ) : (
+                      <EyeIcon className="size-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -311,9 +361,15 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 className="mt-0.5 size-4 cursor-pointer rounded border-white/20 accent-primary disabled:cursor-not-allowed disabled:opacity-50"
               />
-              <label htmlFor="check" className="cursor-pointer text-xs text-gray-500">
+              <label
+                htmlFor="check"
+                className="cursor-pointer text-xs text-gray-500"
+              >
                 I agree to the{' '}
-                <Link href="/terms-of-service" className="text-primary underline underline-offset-2 hover:text-primary/90">
+                <Link
+                  href="/terms-of-service"
+                  className="text-primary underline underline-offset-2 hover:text-primary/90"
+                >
                   terms and conditions
                 </Link>
               </label>
@@ -337,7 +393,10 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-gray-500">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-primary transition hover:text-primary/90">
+            <Link
+              href="/login"
+              className="font-medium text-primary transition hover:text-primary/90"
+            >
               Sign in
             </Link>
           </p>

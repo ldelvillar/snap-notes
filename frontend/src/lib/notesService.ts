@@ -1,11 +1,17 @@
-import { User, Note, NoteDto, NoteListItem, NoteListItemDto } from '@/types/index';
+import {
+  User,
+  Note,
+  NoteDto,
+  NoteListItem,
+  NoteListItemDto,
+} from '@/types/index';
 import { getCsrfToken, resetCsrfToken } from '@/lib/csrf';
 
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
 async function fetchWithCsrf(
   url: string,
-  buildOptions: (csrfToken: string) => RequestInit,
+  buildOptions: (csrfToken: string) => RequestInit
 ): Promise<Response> {
   let token = await getCsrfToken();
   let response = await fetch(url, buildOptions(token));
@@ -125,11 +131,14 @@ export const deleteNote = async (user: User, noteId: string): Promise<void> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const response = await fetchWithCsrf(`${API_URL}/notes/${noteId}`, token => ({
-      method: 'DELETE',
-      headers: { 'X-CSRF-Token': token },
-      credentials: 'include',
-    }));
+    const response = await fetchWithCsrf(
+      `${API_URL}/notes/${noteId}`,
+      token => ({
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': token },
+        credentials: 'include',
+      })
+    );
 
     if (!response.ok && response.status !== 204) {
       const data = (await response.json().catch(() => null)) as {
@@ -147,12 +156,15 @@ export const updateNote = async (user: User, note: Note): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const response = await fetchWithCsrf(`${API_URL}/notes/${note.id}`, token => ({
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
-      credentials: 'include',
-      body: JSON.stringify({ title: note.title, text: note.text }),
-    }));
+    const response = await fetchWithCsrf(
+      `${API_URL}/notes/${note.id}`,
+      token => ({
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+        credentials: 'include',
+        body: JSON.stringify({ title: note.title, text: note.text }),
+      })
+    );
 
     if (!response.ok) {
       const data = (await response.json().catch(() => null)) as {
@@ -169,15 +181,21 @@ export const updateNote = async (user: User, note: Note): Promise<Note> => {
   }
 };
 
-export const pinNote = async (user: User, note: NoteListItem): Promise<Note> => {
+export const pinNote = async (
+  user: User,
+  note: NoteListItem
+): Promise<Note> => {
   if (!user) throw new Error('User is not defined');
 
   try {
-    const response = await fetchWithCsrf(`${API_URL}/notes/${note.id}/pin`, token => ({
-      method: 'PATCH',
-      headers: { 'X-CSRF-Token': token },
-      credentials: 'include',
-    }));
+    const response = await fetchWithCsrf(
+      `${API_URL}/notes/${note.id}/pin`,
+      token => ({
+        method: 'PATCH',
+        headers: { 'X-CSRF-Token': token },
+        credentials: 'include',
+      })
+    );
 
     if (!response.ok) {
       const data = (await response.json().catch(() => null)) as {
@@ -193,4 +211,3 @@ export const pinNote = async (user: User, note: NoteListItem): Promise<Note> => 
     else throw new Error('An unknown error occurred');
   }
 };
-

@@ -53,15 +53,13 @@ export default function ContactPage() {
       <section className="relative overflow-hidden px-4 pt-36 pb-16 text-center">
         <div
           aria-hidden
-          className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 size-[500px] rounded-full bg-primary/12 blur-[120px]"
+          className="pointer-events-none absolute top-0 left-1/2 size-[500px] -translate-x-1/2 rounded-full bg-primary/12 blur-[120px]"
         />
         <div className="relative mx-auto max-w-2xl">
-          <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="mb-4 text-sm font-semibold tracking-widest text-primary uppercase">
             Contact
           </p>
-          <h1 className="mb-5 text-5xl font-bold md:text-6xl">
-            Get in touch
-          </h1>
+          <h1 className="mb-5 text-5xl font-bold md:text-6xl">Get in touch</h1>
           <p className="text-lg text-white/55">
             Have a question, suggestion, or need help? We&apos;d love to hear
             from you.
@@ -74,7 +72,7 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
           {/* Left — info */}
           <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">
+            <p className="mb-2 text-xs font-semibold tracking-widest text-primary uppercase">
               Reach us
             </p>
             <h2 className="mb-3 text-2xl font-bold">We&apos;re here to help</h2>
@@ -91,7 +89,7 @@ export default function ContactPage() {
                       <method.icon className="size-5" />
                     </span>
                     <div>
-                      <p className="text-xs font-medium uppercase tracking-wider text-white/40">
+                      <p className="text-xs font-medium tracking-wider text-white/40 uppercase">
                         {method.label}
                       </p>
                       <p className="text-sm font-medium text-white/80 transition-colors group-hover:text-primary">

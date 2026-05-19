@@ -43,7 +43,10 @@ describe('getCsrfToken', () => {
   });
 
   it('re-fetches after resetCsrfToken()', async () => {
-    const fetchMock = mockFetch({ csrfToken: 'token-1' }, { csrfToken: 'token-2' });
+    const fetchMock = mockFetch(
+      { csrfToken: 'token-1' },
+      { csrfToken: 'token-2' }
+    );
 
     const first = await getCsrfToken();
     resetCsrfToken();
